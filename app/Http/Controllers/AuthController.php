@@ -6,7 +6,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class LoginController extends Controller
+class AuthController extends Controller
 {
     public function index()
     {
@@ -22,7 +22,11 @@ class LoginController extends Controller
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
 
-            return redirect()->intended('dashboard');
+            if (Auth::user()->role == 'admin') {
+                return to_route('dashboard.admin');
+            } else {
+                return to_route('dashboard.user');
+            }
         }
 
         return back()->withErrors([
@@ -38,6 +42,6 @@ class LoginController extends Controller
 
         $request->session()->regenerateToken();
 
-        return to_route('dashboard');
+        return to_route('login');
     }
 }

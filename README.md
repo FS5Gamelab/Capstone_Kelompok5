@@ -29,7 +29,7 @@ Berikut adalah langkah-langkah untuk mengkloning dan menjalankan proyek ini seca
     ```
 7. **Jalankan Migrasi Database**
     ```bash
-    php artisan migrate
+    php artisan migrate --seed
     ```
 8. **Jalankan Server Lokal**
 

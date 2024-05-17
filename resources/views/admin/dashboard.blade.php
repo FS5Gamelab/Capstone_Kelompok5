@@ -1,5 +1,5 @@
 login berhasil
-{{ auth()->user()->customer }}
+{{ auth()->user()->role }}
 
 <form action="/logout" method="post">
     @csrf
