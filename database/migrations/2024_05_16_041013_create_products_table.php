@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('type');
             $table->text('description');
             $table->integer('price');
-            $table->string('product_image');
+            $table->string('product_image')->nullable();
             $table->boolean('in_stock')->default(true);
             $table->timestamps();
 

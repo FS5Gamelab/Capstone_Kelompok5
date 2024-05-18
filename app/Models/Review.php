@@ -17,6 +17,16 @@ class Review extends Model
         'id',
     ];
 
+    public function product()
+    {
+        return $this->belongsTo(Product::class);
+    }
+
+    public function customers()
+    {
+        return $this->belongsTo(Customer::class);
+    }
+
     public static function boot()
     {
         parent::boot();

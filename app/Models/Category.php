@@ -17,6 +17,11 @@ class Category extends Model
         'id',
     ];
 
+    public function products()
+    {
+        return $this->hasMany(Product::class);
+    }
+
     public static function boot()
     {
         parent::boot();

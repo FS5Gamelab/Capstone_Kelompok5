@@ -2,7 +2,9 @@
 
 namespace Database\Seeders;
 
+use App\Models\Category;
 use App\Models\Customer;
+use App\Models\Product;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -25,13 +27,37 @@ class DatabaseSeeder extends Seeder
             "role" => "admin",
         ]);
 
-        Customer::create([
+        $customer = Customer::create([
             "user_id" => $user->id,
             "name" => "Test Name",
         ]);
-        Customer::create([
+        $customer2 = Customer::create([
             "user_id" => $user2->id,
             "name" => "Admin Test",
+        ]);
+
+        $category = Category::create([
+            "category_name" => "Test Category",
+        ]);
+
+        $product = Product::create([
+            "category_id" => $category->id,
+            "product_name" => "Test Product",
+            "type" => "Test Type",
+            "description" => "Test Description",
+            "price" => 100,
+            "product_image" => "test.png",
+            "in_stock" => true,
+        ]);
+
+        $product2 = Product::create([
+            "category_id" => $category->id,
+            "product_name" => "Test Product 2",
+            "type" => "Test Type 2",
+            "description" => "Test Description 2",
+            "price" => 200,
+            "product_image" => "test.png",
+            "in_stock" => true,
         ]);
     }
 }
