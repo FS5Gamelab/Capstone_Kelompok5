@@ -48,18 +48,19 @@ login berhasil
     <div class="order">
         <a class="cart" href="{{ route('cart') }}"> Cart </a>
         <a class="cart" href="{{ route('history') }}"> History </a>
+        <a class="cart" href="{{ route('checkout-index') }}"> Chekout </a>
     </div>
 </div>
 
 @foreach ($products as $product)
     <div class="card">
         <div>{{ $product->product_name }}</div>
-        <div>{{ $product->price }}</div>
+        <div>Rp. {{ number_format($product->price, 0, ',', '.') }}</div>
         <div>{{ $product->type }}</div>
         <div>{{ $product->description }}</div>
         <div>{{ $product->product_image }}</div>
         <div>{{ $product->category->category_name }}</div>
-        <form action="/add-to-cart" method="post">
+        <form action="/add-to-cart/" method="post">
             @csrf
             <input type="hidden" name="product_id" value="{{ $product->id }}">
             <input type="submit" name="change" value="add to cart">

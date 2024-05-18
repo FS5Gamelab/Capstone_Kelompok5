@@ -17,6 +17,8 @@ return new class extends Migration
             $table->json('order_id');
             $table->boolean('is_paid')->default(false);
             $table->integer('cart_total');
+            $table->string('status')->nullable();
+            $table->string('snap_token')->nullable();
             $table->timestamps();
             $table->foreign('customer_id')->references('id')->on('customers')->onDelete('cascade');
         });

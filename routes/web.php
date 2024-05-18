@@ -28,6 +28,9 @@ Route::middleware(['auth'])->group(function () {
 
     Route::post('/add-to-cart', [OrderController::class, 'addToCart'])->name('add-to-cart');
     Route::post('/checkout', [CartController::class, 'checkOut'])->name('checkout');
+    Route::get('/checkout', [CartController::class, 'checkoutIndex'])->name('checkout-index');
+    Route::get('/pay/{cartId}', [CartController::class, 'pay'])->name('pay');
+    Route::get('/success/{cart}', [CartController::class, 'success'])->name('success');
     Route::get('/cart', [OrderController::class, 'index'])->name('cart');
     Route::get('/history', [OrderController::class, 'history'])->name('history');
     Route::delete('/cart/{cartId}', [CartController::class, 'delete'])->name('cart.delete');

@@ -28,15 +28,14 @@
                     {{ $order->quantity }}
                     <input type="submit" name="change" value="+">
                 </form>
-                <div>{{ $order->total_price }}</div>
+                <div>Rp. {{ number_format($order->total_price, 0, ',', '.') }}</div>
                 <div>{{ $order->checked_out }}</div>
-                <div>{{ $order->order_status }}</div>
             </div>
         @endforeach
         @if (count($orders) == 0)
             <h5>No items in cart</h5>
         @else
-            <h5>Total {{ $total }}</h5>
+            <h5>Total : Rp. {{ number_format($total, 0, ',', '.') }}</h5>
             <form action="/checkout" method="post">
                 @csrf
                 @foreach ($orders as $order)

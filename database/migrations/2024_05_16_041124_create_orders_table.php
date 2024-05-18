@@ -19,7 +19,6 @@ return new class extends Migration
             $table->integer('quantity')->default(1);
             $table->integer('total_price')->nullable();
             $table->boolean('checked_out')->default(false);
-            $table->string('order_status')->nullable();
             $table->timestamps();
 
             $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');

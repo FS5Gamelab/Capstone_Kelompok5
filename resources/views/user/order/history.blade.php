@@ -12,18 +12,16 @@
         @endif
         @foreach ($carts as $index => $cart)
             <div class="card">
-                <form action="{{ route('cart.delete', ['cartId' => $cart->id]) }}" method="post">
-                    @csrf
-                    @method('DELETE')
-                    <button type="submit">Delete Cart</button>
-                </form>
+
                 @foreach ($orders[$index] as $order)
                     <li>Order ID: {{ $order->id }}</li>
                     <div>Product Name: {{ $order->product->product_name }}</div>
                     <div>Quantity: {{ $order->quantity }}</div>
-                    <div>Total Price: {{ $order->total_price }}</div>
-                    <div>Order Status: {{ $order->order_status }}</div>
+                    <div>Total Price: Rp. {{ number_format($order->total_price, 0, ',', '.') }}</div>
                 @endforeach
-                <div>Total Bayar: {{ $cart->cart_total }}</div>
+                @if ($cart->status != null)
+                    <div>Status: {{ $cart->status }}</div>
+                @endif
+                <div>Total Bayar: Rp. {{ number_format($cart->cart_total, 0, ',', '.') }}</div>
             </div>
         @endforeach

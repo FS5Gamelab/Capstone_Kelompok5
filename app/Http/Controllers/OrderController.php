@@ -19,7 +19,7 @@ class OrderController extends Controller
 
     public function history()
     {
-        $carts = Cart::where('customer_id', auth()->user()->customer->id)->get();
+        $carts = Cart::where('customer_id', auth()->user()->customer->id)->where('is_paid', 1)->get();
         $orders = [];
         foreach ($carts as $cart) {
             $orderIds = json_decode($cart->order_id, true);

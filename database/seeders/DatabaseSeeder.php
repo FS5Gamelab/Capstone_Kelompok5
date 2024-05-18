@@ -45,7 +45,7 @@ class DatabaseSeeder extends Seeder
             "product_name" => "Test Product",
             "type" => "Test Type",
             "description" => "Test Description",
-            "price" => 100,
+            "price" => rand(100000, 999999),
             "product_image" => "test.png",
             "in_stock" => true,
         ]);
@@ -55,7 +55,7 @@ class DatabaseSeeder extends Seeder
             "product_name" => "Test Product 2",
             "type" => "Test Type 2",
             "description" => "Test Description 2",
-            "price" => 200,
+            "price" => rand(100000, 999999),
             "product_image" => "test.png",
             "in_stock" => true,
         ]);
