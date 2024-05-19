@@ -4,6 +4,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\OAuthController;
 use App\Http\Controllers\OrderController;
 use Illuminate\Support\Facades\Route;
 
@@ -18,6 +19,9 @@ Route::middleware(['guest'])->group(function () {
     Route::post('/register', [AuthController::class, 'newUser'])->name('new-user');
     Route::get('/login', [AuthController::class, 'index'])->name('login');
     Route::post('/login', [AuthController::class, 'authenticate'])->name('authenticate');
+
+    Route::get('/auth/google/redirect', [OAuthController::class, 'redirect'])->name('auth.redirect');
+    Route::get('/auth/google/callback', [OAuthController::class, 'callback'])->name('auth.callback');
 });
 
 

@@ -17,6 +17,8 @@
             <input type="password" name="password" id="password">
             <input type="submit" value="submit">
         </form>
+
+        <a href="http://127.0.0.1:8000/auth/google/redirect">Login With Google</a>
     </body>
 
 </html>
