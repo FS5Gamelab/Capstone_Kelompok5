@@ -6,9 +6,12 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\OAuthController;
 use App\Http\Controllers\OrderController;
+use App\Livewire\RealtimeMessage;
 use Illuminate\Support\Facades\Route;
 
 Route::redirect('/', '/dashboard');
+
+Route::get('/message', RealtimeMessage::class);
 
 Route::get('/dashboard', function () {
     return !auth()->user() ? redirect('/login') : (auth()->user()->role == 'admin' ? redirect('/admin-dashboard') : redirect('/homepage'));
