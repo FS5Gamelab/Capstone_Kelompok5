@@ -24,7 +24,7 @@ class AuthController extends Controller
     {
         $validatedUser = $request->validate([
             'name' => ['required', 'string', 'max:255'],
-            'no_hp' => ['required', 'string', 'min:10', 'max:15'],
+            'phone' => ['required', 'string', 'min:10', 'max:15'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
         ]);
@@ -39,7 +39,7 @@ class AuthController extends Controller
         Customer::create([
             'user_id' => $user->id,
             'name' => $validatedUser['name'],
-            'no_hp' => $validatedUser['no_hp'],
+            'phone' => $validatedUser['phone'],
         ]);
         Auth::login($user);
         if (Auth::user()->role == 'admin') {

@@ -13,6 +13,10 @@ Route::redirect('/', '/dashboard');
 
 Route::get('/message', RealtimeMessage::class);
 
+Route::get('/landing', function () {
+    return view('landing');
+});
+
 Route::get('/dashboard', function () {
     return !auth()->user() ? redirect('/login') : (auth()->user()->role == 'admin' ? redirect('/admin-dashboard') : redirect('/homepage'));
 });

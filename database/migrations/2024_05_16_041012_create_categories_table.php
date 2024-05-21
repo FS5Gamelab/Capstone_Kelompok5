@@ -11,10 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('categories', function (Blueprint $table) {
+        Schema::create('tbl_categories', function (Blueprint $table) {
             $table->uuid('id')->primary();
+            $table->unsignedBigInteger('user_id');
             $table->string('category_name');
             $table->timestamps();
+            $table->softDeletes();
+
+
+            $table->foreign('user_id')->references('id')->on('tbl_users')->onDelete('cascade');
         });
     }
 
@@ -23,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('categories');
+        Schema::dropIfExists('tbl_categories');
     }
 };

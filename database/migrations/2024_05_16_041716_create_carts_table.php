@@ -11,16 +11,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('carts', function (Blueprint $table) {
+        Schema::create('tbl_orders', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->uuid('customer_id');
-            $table->json('order_id');
+            $table->unsignedBigInteger('user_id');
+            $table->json('cart_id');
             $table->boolean('is_paid')->default(false);
             $table->integer('cart_total');
             $table->string('status')->nullable();
             $table->string('snap_token')->nullable();
             $table->timestamps();
-            $table->foreign('customer_id')->references('id')->on('customers')->onDelete('cascade');
+            $table->softDeletes();
+            $table->foreign('user_id')->references('id')->on('tbl_users')->onDelete('cascade');
         });
     }
 
@@ -29,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('carts');
+        Schema::dropIfExists('tbl_orders');
     }
 };

@@ -17,9 +17,9 @@
                 <div>{{ $message }}</div>
             @enderror
             <br>
-            <label for="no_hp">No. Hp</label>
-            <input type="text" name="no_hp" id="no_hp">
-            @error('no_hp')
+            <label for="phone">No. Hp</label>
+            <input type="text" name="phone" id="phone">
+            @error('phone')
                 <div>{{ $message }}</div>
             @enderror
             <br>
@@ -60,7 +60,7 @@
             }
 
             document.addEventListener("DOMContentLoaded", function() {
-                const noHpInput = document.getElementById("no_hp");
+                const noHpInput = document.getElementById("phone");
                 noHpInput.addEventListener("input", validateInput);
             });
         </script>

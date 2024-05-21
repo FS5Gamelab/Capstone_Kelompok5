@@ -27,17 +27,9 @@ class DatabaseSeeder extends Seeder
             "role" => "admin",
         ]);
 
-        $customer = Customer::create([
-            "user_id" => $user->id,
-            "name" => "Test Name",
-        ]);
-        $customer2 = Customer::create([
-            "user_id" => $user2->id,
-            "name" => "Admin Test",
-        ]);
-
         $category = Category::create([
             "category_name" => "Test Category",
+            "user_id" => $user2->id
         ]);
 
         $product = Product::create([
@@ -48,6 +40,8 @@ class DatabaseSeeder extends Seeder
             "price" => rand(100000, 999999),
             "product_image" => "test.png",
             "in_stock" => true,
+            "user_id" => $user2->id,
+            "quantity" => 5
         ]);
 
         $product2 = Product::create([
@@ -58,6 +52,8 @@ class DatabaseSeeder extends Seeder
             "price" => rand(100000, 999999),
             "product_image" => "test.png",
             "in_stock" => true,
+            "user_id" => $user2->id,
+            "quantity" => 3
         ]);
     }
 }

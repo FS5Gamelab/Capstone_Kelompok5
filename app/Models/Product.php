@@ -5,13 +5,15 @@ namespace App\Models;
 use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Product extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
     protected $primaryKey = 'id';
     public $incrementing = false;
     protected $keyType = 'string';
+    protected $table = 'tbl_products';
 
     protected $guarded = [
         'id',
@@ -22,7 +24,12 @@ class Product extends Model
         return $this->belongsTo(Category::class);
     }
 
-    public function orders()
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function carts()
     {
         return $this->hasMany(Order::class);
     }

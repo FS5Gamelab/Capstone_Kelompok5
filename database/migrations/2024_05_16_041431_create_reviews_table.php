@@ -11,16 +11,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('reviews', function (Blueprint $table) {
+        Schema::create('tbl_reviews', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->uuid('customer_id');
+            $table->unsignedBigInteger('user_id');
             $table->uuid('product_id');
             $table->integer('rating');
             $table->text('comment')->nullable();
             $table->timestamps();
+            $table->softDeletes();
 
-            $table->foreign('customer_id')->references('id')->on('customers')->onDelete('cascade');
-            $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('tbl_users')->onDelete('cascade');
+            $table->foreign('product_id')->references('id')->on('tbl_products')->onDelete('cascade');
         });
     }
 
@@ -29,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('reviews');
+        Schema::dropIfExists('tbl_reviews');
     }
 };
