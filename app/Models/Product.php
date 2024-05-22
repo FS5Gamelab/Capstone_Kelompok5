@@ -13,7 +13,7 @@ class Product extends Model
     protected $primaryKey = 'id';
     public $incrementing = false;
     protected $keyType = 'string';
-    protected $table = 'tbl_products';
+    protected $table = 'products';
 
     protected $guarded = [
         'id',

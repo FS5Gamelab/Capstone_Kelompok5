@@ -13,12 +13,11 @@ Route::redirect('/', '/dashboard');
 
 Route::get('/message', RealtimeMessage::class);
 
-Route::get('/landing', function () {
-    return view('landing');
-});
+Route::get('/homepage', [CustomerController::class, 'index'])->name('dashboard.user');
+
 
 Route::get('/dashboard', function () {
-    return !auth()->user() ? redirect('/login') : (auth()->user()->role == 'admin' ? redirect('/admin-dashboard') : redirect('/homepage'));
+    return !auth()->user() ? redirect('/homepage') : (auth()->user()->role == 'admin' ? redirect('/admin-dashboard') : redirect('/homepage'));
 });
 
 Route::middleware(['guest'])->group(function () {
@@ -34,7 +33,6 @@ Route::middleware(['guest'])->group(function () {
 
 Route::middleware(['auth', 'auth.session'])->group(function () {
     Route::get('/admin-dashboard', [AdminController::class, 'index'])->name('dashboard.admin');
-    Route::get('/homepage', [CustomerController::class, 'index'])->name('dashboard.user');
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
     Route::post('/add-to-cart', [OrderController::class, 'addToCart'])->name('add-to-cart');

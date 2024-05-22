@@ -14,7 +14,7 @@ class Review extends Model
     public $incrementing = false;
     protected $keyType = 'string';
 
-    protected $table = 'tbl_reviews';
+    protected $table = 'reviews';
 
     protected $guarded = [
         'id',

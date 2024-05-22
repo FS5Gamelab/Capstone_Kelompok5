@@ -13,7 +13,7 @@ class Cart extends Model
     protected $primaryKey = 'id';
     public $incrementing = false;
     protected $keyType = 'string';
-    protected $table = 'tbl_carts';
+    protected $table = 'carts';
 
     protected $guarded = [
         'id',

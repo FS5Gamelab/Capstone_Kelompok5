@@ -31,13 +31,9 @@ class OAuthController extends Controller
                 'google_id' => $google_user->id,
             ], [
                 'email' => $google_user->email,
+                'name' => $google_user->name,
                 'remember_token' => Str::random(10),
                 'email_verified_at' => now(),
-            ]);
-
-            Customer::create([
-                'user_id' => $user->id,
-                'name' => $google_user->name,
             ]);
 
             Auth::login($user);

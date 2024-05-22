@@ -32,14 +32,11 @@ class AuthController extends Controller
         $validatedUser['password'] = bcrypt($validatedUser['password']);
         $user = User::create([
             'email' => $validatedUser['email'],
+            'name' => $validatedUser['name'],
+            'phone' => $validatedUser['phone'],
             'password' => $validatedUser['password'],
             'remember_token' => Str::random(10),
             'email_verified_at' => now(),
-        ]);
-        Customer::create([
-            'user_id' => $user->id,
-            'name' => $validatedUser['name'],
-            'phone' => $validatedUser['phone'],
         ]);
         Auth::login($user);
         if (Auth::user()->role == 'admin') {

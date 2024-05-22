@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('tbl_products', function (Blueprint $table) {
+        Schema::create('products', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->uuid('category_id');
             $table->unsignedBigInteger('user_id');
@@ -28,8 +28,8 @@ return new class extends Migration
             $table->softDeletes();
 
 
-            $table->foreign('category_id')->references('id')->on('tbl_categories')->onDelete('cascade');
-            $table->foreign('user_id')->references('id')->on('tbl_users')->onDelete('cascade');
+            $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 
@@ -38,6 +38,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('tbl_products');
+        Schema::dropIfExists('products');
     }
 };
