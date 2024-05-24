@@ -2,12 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\ResetPassword;
 use App\Models\User;
 use App\Models\Customer;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Password;
+use Illuminate\Support\Facades\Validator;
+
+use function Laravel\Prompts\error;
 
 class AuthController extends Controller
 {
@@ -20,32 +26,119 @@ class AuthController extends Controller
         return view('auth/register');
     }
 
-    public function newUser(Request $request): RedirectResponse
+    public function forgotIndex()
     {
-        $validatedUser = $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'phone' => ['required', 'string', 'min:10', 'max:15'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
-        ]);
+        return view('auth/forgot');
+    }
 
-        $validatedUser['password'] = bcrypt($validatedUser['password']);
-        $user = User::create([
-            'email' => $validatedUser['email'],
-            'name' => $validatedUser['name'],
-            'phone' => $validatedUser['phone'],
-            'password' => $validatedUser['password'],
-            'remember_token' => Str::random(10),
-            'email_verified_at' => now(),
-        ]);
-        Auth::login($user);
-        if (Auth::user()->role == 'admin') {
-            return to_route('dashboard.admin');
+    public function resetForm(Request $request)
+    {
+        $user = User::where('remember_token', $request->token)->first();
+        if ($user == null) {
+            return redirect('/login')->with('error', 'Invalid token');
         } else {
-            return to_route('dashboard.user');
+            return view('auth/reset', [
+                'token' => $request->token,
+                'email' => $user->email
+            ]);
         }
     }
-    public function authenticate(Request $request): RedirectResponse
+
+    public function reset(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|string|email|max:255',
+            'password' => 'required|string|min:8|confirmed',
+            'token' => 'required'
+        ]);
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => $validator->errors()
+            ]);
+        } else {
+            $user = User::where('email', $request->email)->first();
+            if (!$user) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'User not found',
+                ]);
+            } elseif ($user->remember_token != $request->token) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Invalid token',
+                ]);
+            } else {
+                $user->password = bcrypt($request->password);
+                $user->remember_token = Str::random(10);
+                $user->save();
+                Auth::login($user);
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Password reset successfully'
+                ]);
+            }
+        }
+    }
+
+    public function forgot(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|string|email|max:255',
+        ]);
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => $validator->errors()
+            ]);
+        } else {
+            $user = User::where('email', $request->email)->first();
+            if (!$user) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'User not found',
+                ]);
+            } else {
+                Mail::to($request->email)->send(new ResetPassword($user->name, $user->remember_token));
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Password reset link has been sent to your email!'
+                ]);
+            }
+        }
+    }
+
+    public function newUser(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
+            'phone' => 'required|string|min:10|max:15',
+            'password' => 'required|string|min:8|confirmed'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'errors' => $validator->errors()
+            ]);
+        } else {
+            $user = User::create([
+                'name' => $request->name,
+                'email' => $request->email,
+                'password' => bcrypt($request->password),
+                'phone' => $request->phone,
+                'remember_token' => Str::random(10),
+                'email_verified_at' => now(),
+            ]);
+            Auth::login($user);
+            return response()->json([
+                'success' => true,
+                'message' => 'User registered successfully!',
+            ]);
+        }
+    }
+    public function authenticate(Request $request)
     {
         $credentials = $request->validate([
             'email' => ['required', 'email'],
@@ -55,16 +148,22 @@ class AuthController extends Controller
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
             Auth::logoutOtherDevices($request->password);
-            if (Auth::user()->role == 'admin') {
-                return to_route('dashboard.admin');
-            } else {
-                return to_route('dashboard.user');
-            }
+            // if (Auth::user()->role == 'admin') {
+            //     return to_route('dashboard.admin');
+            // } else {
+            //     return to_route('dashboard.user');
+            // }
+            return response()->json([
+                'success' => true,
+                'message' => 'Login Success!',
+                "name" => "Welcome " . Auth::user()->name,
+            ]);
+        } else {
+            return response()->json([
+                'success' => false,
+                'message' => 'The provided credentials do not match our records.',
+            ]);
         }
-
-        return back()->withErrors([
-            'email' => 'The provided credentials do not match our records.',
-        ])->onlyInput('email');
     }
 
     public function logout(Request $request): RedirectResponse
@@ -75,6 +174,6 @@ class AuthController extends Controller
 
         $request->session()->regenerateToken();
 
-        return to_route('login');
+        return redirect('/');
     }
 }

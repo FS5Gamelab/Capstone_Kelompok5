@@ -4,11 +4,60 @@ namespace App\Http\Controllers;
 
 use App\Models\Cart;
 use App\Models\Order;
+use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
 
+use function Symfony\Component\Clock\now;
+
 class CartController extends Controller
 {
+    public function index()
+    {
+        // dd(Cart::where('user_id', auth()->user()->id)->where('checked_out', 0)->get());
+        return view('user.cart.index', [
+            'carts' => Cart::where('user_id', auth()->user()->id)->where('checked_out', 0)->get(),
+            'total' => Cart::where('user_id', auth()->user()->id)->where('checked_out', 0)->sum('cart_total'),
+            'cartCount' => Cart::where('user_id', auth()->user()->id)->where('checked_out', 0)->count()
+        ]);
+    }
+    public function addToCart(Request $request)
+    {
+        $message = 'Product added to cart';
+        $quantity = 1;
+        $product = Product::find($request->product_id);
+        $cart = Cart::where('user_id', auth()->user()->id)->where('product_id', $request->product_id)->where('checked_out', 0)->first();
+        $cartCount = Cart::where('user_id', auth()->user()->id)->count();
+        if ($cart) {
+            if ($request->change == "+" || $request->change == "add to cart") {
+                $cart->increment('quantity', $quantity);
+                $cart->increment('cart_total', $product->price * $quantity);
+            } elseif ($request->change == "-") {
+                if ($cart->quantity == 1) {
+                    $cart->delete();
+                    $cartCount = $cartCount - 1;
+                    $message = 'Product removed from cart';
+                } else {
+                    $cart->decrement('quantity', $quantity);
+                    $cart->decrement('cart_total', $product->price * $quantity);
+                    $cart->updated_at = now();
+                }
+            }
+            $cart->save();
+        } else {
+            Cart::create([
+                "product_id" => $request->product_id,
+                "user_id" => auth()->user()->id,
+                "cart_total" => $product->price * $quantity
+            ]);
+            $cartCount = $cartCount + 1;
+        }
+        return response()->json([
+            'success' => true,
+            'message' => $message,
+            'cartCount' => $cartCount
+        ]);
+    }
     public function checkoutIndex()
     {
         $carts = Cart::where('customer_id', auth()->user()->customer->id)->where('is_paid', 0)->get();
@@ -92,18 +141,13 @@ class CartController extends Controller
     public function delete($cartId)
     {
         $cart = Cart::findOrFail($cartId);
-
-        // Perbarui status checked_out dari semua order yang terkait dengan keranjang
-        $orders = Order::where('cart_id', $cart->id)->get();
-        foreach ($orders as $order) {
-            $order->update([
-                'checked_out' => 0,
-            ]);
-        }
-
-        // Hapus keranjang berdasarkan ID
+        $cartCount = Cart::where('user_id', auth()->user()->id)->count();
         $cart->delete();
-
-        return redirect()->route('cart')->with('success', 'Cart deleted');
+        $cartCount = $cartCount - 1;
+        return response()->json([
+            'success' => true,
+            'message' => 'Product removed from cart',
+            'cartCount' => $cartCount
+        ]);
     }
 }

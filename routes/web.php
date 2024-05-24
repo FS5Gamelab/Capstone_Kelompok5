@@ -25,6 +25,10 @@ Route::middleware(['guest'])->group(function () {
     Route::post('/register', [AuthController::class, 'newUser'])->name('new-user');
     Route::get('/login', [AuthController::class, 'index'])->name('login');
     Route::post('/login', [AuthController::class, 'authenticate'])->name('authenticate');
+    Route::get('/forgot', [AuthController::class, 'forgotIndex'])->name('password.request');
+    Route::post('/forgot', [AuthController::class, 'forgot'])->name('password.email');
+    Route::get('/password/reset/{token}', [AuthController::class, 'resetForm'])->name('password.reset');
+    Route::put('/password/reset', [AuthController::class, 'reset'])->name('password.update');
 
     Route::get('/auth/google/redirect', [OAuthController::class, 'redirect'])->name('auth.redirect');
     Route::get('/auth/google/callback', [OAuthController::class, 'callback'])->name('auth.callback');
@@ -35,12 +39,12 @@ Route::middleware(['auth', 'auth.session'])->group(function () {
     Route::get('/admin-dashboard', [AdminController::class, 'index'])->name('dashboard.admin');
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-    Route::post('/add-to-cart', [OrderController::class, 'addToCart'])->name('add-to-cart');
+    Route::post('/add-to-cart', [CartController::class, 'addToCart'])->name('add-to-cart');
+    Route::get('/cart', [CartController::class, 'index'])->name('cart');
     Route::post('/checkout', [CartController::class, 'checkOut'])->name('checkout');
     Route::get('/checkout', [CartController::class, 'checkoutIndex'])->name('checkout-index');
     Route::get('/pay/{cartId}', [CartController::class, 'pay'])->name('pay');
     Route::get('/success/{cart}', [CartController::class, 'success'])->name('success');
-    Route::get('/cart', [OrderController::class, 'index'])->name('cart');
     Route::get('/history', [OrderController::class, 'history'])->name('history');
     Route::delete('/cart/{cartId}', [CartController::class, 'delete'])->name('cart.delete');
 });

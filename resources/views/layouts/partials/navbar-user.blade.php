@@ -1,22 +1,22 @@
 <header class="mb-5">
     <div class="header-top">
         <div class="container">
-            <div class="logo">
+            <div class="logo tw-hidden xl:tw-block">
                 <a href="#"><img src="{{ asset('/static/images/logo/logo.svg') }}" alt="Logo"></a>
             </div>
             <div class="header-top-right">
                 <div class="me-2">
-                    <a class="nav-link position-relative me-4" href="#">
+                    <a class="nav-link position-relative me-4" href="/cart">
                         <i class="bi bi-cart bi-sub fs-4 text-gray-600 "></i>
 
-                        <span
-                            class="position-absolute top-40 start-100 translate-middle-x badge rounded-pill bg-danger">
+                        <span class="position-absolute top-40 start-100 translate-middle-x badge rounded-pill bg-danger"
+                            id="cartCount">
                             {{ $cartCount }}
                         </span>
 
                     </a>
                 </div>
-                <div class="theme-toggle d-flex gap-2  align-items-center mt-2 me-4">
+                <div class="theme-toggle d-flex gap-2 align-items-center mt-2 me-4">
                     <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
                         aria-hidden="true" role="img" class="iconify iconify--system-uicons" width="20"
                         height="20" preserveAspectRatio="xMidYMid meet" viewBox="0 0 21 21">
@@ -45,14 +45,14 @@
                     </svg>
                 </div>
                 @if (auth()->user())
-                    <div class="dropdown">
+                    <div class="dropdown !tw-absolute !tw-right-20 xl:!tw-static ">
                         <a href="#" id="topbarUserDropdown"
                             class="user-dropdown d-flex align-items-center dropend dropdown-toggle "
                             data-bs-toggle="dropdown" aria-expanded="false">
                             <div class="avatar avatar-md2">
                                 <img src="{{ asset('/static/images/faces/1.jpg') }}" alt="Avatar">
                             </div>
-                            <div class="text">
+                            <div class="text tw-hidden sm:tw-block">
                                 <h6 class="user-dropdown-name">{{ auth()->user()->name }}</h6>
                                 <p class="user-dropdown-status text-sm text-muted text-capitalize">
                                     {{ auth()->user()->role }}</p>
@@ -69,25 +69,32 @@
                                     @csrf
                                     <i class="icon-mid bi bi-box-arrow-left me-2"></i>
                                     <button type="submit"
-                                        class="border-0 bg-transparent tw-text-gray-400">Logout</button>
+                                        class="border-0 bg-transparent tw-text-gray-950 dark:tw-text-gray-400">Logout</button>
                                 </form>
                             </li>
                         </ul>
                     </div>
                 @else
-                    <a href="/login" class="btn btn-primary">Login</a>
+                    <a href="/login" class="btn btn-primary !tw-absolute !tw-right-20 xl:!tw-static ">Login</a>
                 @endif
 
-                <!-- Burger button responsive -->
-                <a href="#" class="burger-btn d-block d-xl-none" id="trigger-burger">
+
+                <a href="#" class="burger-btn d-block d-xl-none tw-absolute tw-right-10" id="trigger-burger">
                     <i class="bi bi-justify fs-3"></i>
                 </a>
+
+                <!-- Burger button responsive -->
             </div>
         </div>
     </div>
     <nav class="main-navbar" id="main-navbar">
         <div class="container d-flex align-items-center justify-content-center">
             <ul>
+                <li class="menu-item">
+                    <a href="/" class='menu-link'>
+                        Home
+                    </a>
+                </li>
                 <li class="menu-item">
                     <a href="#" class='menu-link'>
                         About
@@ -113,15 +120,7 @@
                         Blog
                     </a>
                 </li>
-                <li class="menu-item ms-5">
-                    <a href="#" class='menu-link'>
-                        001 (313) 324 567
-                        <span
-                            class=" tw-bg-white rounded-circle dark:tw-bg-gray-700 tw-shadow tw-p-1 d-flex align-items-center">
-                            <i class="bi bi-telephone-fill tw-text-gray-500 dark:tw-text-white tw-text-xs ms-1"></i>
-                        </span>
-                    </a>
-                </li>
+
 
                 {{-- <div
                     class="submenu">
@@ -144,6 +143,17 @@
                         </ul>
                     </div>
                 </div> --}}
+            </ul>
+            <ul class="ms-auto mb-lg-0">
+                <li class="menu-item tw-ms-0 xl:tw-ms-auto">
+                    <a href="#" class='menu-link'>
+                        001 (313) 324 567
+                        <span
+                            class=" tw-bg-white rounded dark:tw-bg-gray-700 tw-shadow tw-p-1 d-flex align-items-center">
+                            <i class="bi bi-telephone-fill tw-text-gray-500 dark:tw-text-white tw-text-xs ms-1"></i>
+                        </span>
+                    </a>
+                </li>
             </ul>
         </div>
     </nav>

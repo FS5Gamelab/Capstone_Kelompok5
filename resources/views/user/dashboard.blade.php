@@ -46,7 +46,7 @@
                     </div>
                 </div>
                 <div class="col-md-6 my-2">
-                    <img src="{{ asset('/static/images/samples/4.png') }}" alt="" class="img-fluid">
+                    <img src="{{ asset('/static/images/samples/4.png') }}" alt="" class="img-fluid ">
                 </div>
             </div>
         </div>
@@ -80,16 +80,31 @@
                             </div>
                             <div class="row">
                                 <div class="col-md-12">
-                                    <button class="button tw-w-full rounded mt-2" data-product="{{ $product->id }}">
-                                        <span>Add to cart</span>
-                                        <div class="cart">
-                                            <svg viewBox="0 0 36 26">
-                                                <polyline points="1 2.5 6 2.5 10 18.5 25.5 18.5 28.5 7.5 7.5 7.5">
-                                                </polyline>
-                                                <polyline points="15 13.5 17 15.5 22 10.5"></polyline>
-                                            </svg>
-                                        </div>
-                                    </button>
+                                    @auth
+                                        <button class="button tw-w-full rounded mt-2" data-user="true"
+                                            data-product="{{ $product->id }}">
+                                            <span>Add to cart</span>
+                                            <div class="cart">
+                                                <svg viewBox="0 0 36 26">
+                                                    <polyline points="1 2.5 6 2.5 10 18.5 25.5 18.5 28.5 7.5 7.5 7.5">
+                                                    </polyline>
+                                                    <polyline points="15 13.5 17 15.5 22 10.5"></polyline>
+                                                </svg>
+                                            </div>
+                                        </button>
+                                    @else
+                                        <button class="button tw-w-full rounded mt-2" data-user="false"
+                                            data-product="{{ $product->id }}">
+                                            <span>Add to cart</span>
+                                            <div class="cart">
+                                                <svg viewBox="0 0 36 26">
+                                                    <polyline points="1 2.5 6 2.5 10 18.5 25.5 18.5 28.5 7.5 7.5 7.5">
+                                                    </polyline>
+                                                    <polyline points="15 13.5 17 15.5 22 10.5"></polyline>
+                                                </svg>
+                                            </div>
+                                        </button>
+                                    @endauth
                                 </div>
                             </div>
                         </div>
@@ -101,6 +116,8 @@
 
         </div>
     </section>
+
+    @include('layouts.loader')
 @endsection
 
 @section('css')
@@ -289,17 +306,122 @@
 @endsection
 @section('js')
     <script>
+        $("#loader").hide();
         buttons = document.querySelectorAll('.button');
         buttons.forEach(button => button.addEventListener('click', e => {
             if (!button.classList.contains('loading')) {
+                $("#loader").show();
 
                 button.classList.add('loading');
+                if (button.getAttribute('data-user') == 'true') {
+                    let product_id = button.getAttribute('data-product');
 
+                    let token = $("meta[name='csrf-token']").attr("content");
+                    $.ajax({
+                        url: `/add-to-cart`,
+                        type: "POST",
+                        cache: false,
+                        data: {
+                            "change": "add to cart",
+                            "product_id": product_id,
+                            "_token": token
+                        },
+                        error: function(error) {
+                            $("#loader").hide();
+                            console.log(error);
+                        },
+                        success: function(response) {
+                            $("#loader").hide();
+                            $("#cartCount").text(response.cartCount);
+                            Swal.fire({
+                                icon: 'success',
+                                title: `${response.message}`,
+                                showConfirmButton: false,
+                                timer: 3000
+                            });
+                        },
+
+                    })
+                } else {
+                    $("#loader").hide();
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops... You are not logged in!',
+                        text: 'Please login to continue',
+                        showConfirmButton: true,
+                        confirmButtonText: 'Login',
+                        showCancelButton: true,
+                        cancelButtonText: 'Cancel',
+
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            window.location.href = '/login';
+                        }
+                    });
+                }
                 setTimeout(() => button.classList.remove('loading'), 3700);
 
-                console.log(button.getAttribute('data-product'))
+
             }
             e.preventDefault();
         }));
     </script>
+
+    {{-- <script>
+        $("#loader").hide();
+        $('#login-form').submit(function(e) {
+            e.preventDefault();
+            $("#loader").show();
+
+            //define variable
+            let email = $('#email').val();
+            let password = $('#password').val();
+            let token = $("meta[name='csrf-token']").attr("content");
+
+            // console.table(email, password, token);
+
+            //ajax
+            $.ajax({
+                url: `/login`,
+                type: "POST",
+                cache: false,
+                data: {
+                    "email": email,
+                    "password": password,
+                    "_token": token
+                },
+                success: function(response) {
+                    $("#loader").hide();
+                    if (response.success) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: `${response.message}`,
+                            text: `${response.name}`,
+                            showConfirmButton: false,
+                            timer: 2000
+                        });
+
+                        //redirect
+                        setTimeout(() => {
+                            window.location.href = '/';
+                        }, 1000);
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: `${response.message}`,
+                            showConfirmButton: false,
+                            timer: 2000
+                        });
+                    }
+                },
+
+                error: function(error) {
+                    console.log(error);
+                }
+
+            });
+
+        });
+    </script> --}}
 @endsection

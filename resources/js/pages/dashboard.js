@@ -1,3 +1,4 @@
+import ApexCharts from "apexcharts";
 var optionsProfileVisit = {
   annotations: {
     position: "back",
@@ -36,7 +37,7 @@ var optionsProfileVisit = {
       "Dec",
     ],
   },
-}
+};
 let optionsVisitorsProfile = {
   series: [70, 30],
   labels: ["Male", "Female"],
@@ -56,7 +57,7 @@ let optionsVisitorsProfile = {
       },
     },
   },
-}
+};
 
 var optionsEurope = {
   series: [
@@ -119,49 +120,49 @@ var optionsEurope = {
       format: "dd/MM/yy HH:mm",
     },
   },
-}
+};
 
 let optionsAmerica = {
   ...optionsEurope,
   colors: ["#008b75"],
-}
+};
 let optionsIndia = {
   ...optionsEurope,
   colors: ["#ffc434"],
-}
+};
 let optionsIndonesia = {
   ...optionsEurope,
   colors: ["#dc3545"],
-}
+};
 
 var chartProfileVisit = new ApexCharts(
   document.querySelector("#chart-profile-visit"),
-  optionsProfileVisit
-)
+  optionsProfileVisit,
+);
 var chartVisitorsProfile = new ApexCharts(
   document.getElementById("chart-visitors-profile"),
-  optionsVisitorsProfile
-)
+  optionsVisitorsProfile,
+);
 var chartEurope = new ApexCharts(
   document.querySelector("#chart-europe"),
-  optionsEurope
-)
+  optionsEurope,
+);
 var chartAmerica = new ApexCharts(
   document.querySelector("#chart-america"),
-  optionsAmerica
-)
+  optionsAmerica,
+);
 var chartIndia = new ApexCharts(
   document.querySelector("#chart-india"),
-  optionsIndia
-)
+  optionsIndia,
+);
 var chartIndonesia = new ApexCharts(
   document.querySelector("#chart-indonesia"),
-  optionsIndonesia
-)
+  optionsIndonesia,
+);
 
-chartIndonesia.render()
-chartAmerica.render()
-chartIndia.render()
-chartEurope.render()
-chartProfileVisit.render()
-chartVisitorsProfile.render()
+chartIndonesia.render();
+chartAmerica.render();
+chartIndia.render();
+chartEurope.render();
+chartProfileVisit.render();
+chartVisitorsProfile.render();
