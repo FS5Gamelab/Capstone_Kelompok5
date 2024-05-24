@@ -15,13 +15,53 @@ class CustomerController extends Controller
         } else {
             $cartCount = 0;
         }
-        return view('user.dashboard', [
+        return view('user.homepage.home', [
+            'cartCount' => $cartCount,
+        ]);
+    }
+    public function menu()
+    {
+        if (auth()->user()) {
+            $cartCount = Cart::where('user_id', auth()->user()->id)->count();
+        } else {
+            $cartCount = 0;
+        }
+        return view('user.homepage.menu', [
             'products' => Product::all(),
             'cartCount' => $cartCount,
         ]);
     }
-    public function homepage()
+    public function about()
     {
-        return view('user.homepage');
+        if (auth()->user()) {
+            $cartCount = Cart::where('user_id', auth()->user()->id)->count();
+        } else {
+            $cartCount = 0;
+        }
+        return view('user.homepage.about', [
+            'cartCount' => $cartCount,
+        ]);
+    }
+    public function reservation()
+    {
+        if (auth()->user()) {
+            $cartCount = Cart::where('user_id', auth()->user()->id)->count();
+        } else {
+            $cartCount = 0;
+        }
+        return view('user.homepage.reservation', [
+            'cartCount' => $cartCount,
+        ]);
+    }
+    public function blog()
+    {
+        if (auth()->user()) {
+            $cartCount = Cart::where('user_id', auth()->user()->id)->count();
+        } else {
+            $cartCount = 0;
+        }
+        return view('user.blog.index', [
+            'cartCount' => $cartCount,
+        ]);
     }
 }

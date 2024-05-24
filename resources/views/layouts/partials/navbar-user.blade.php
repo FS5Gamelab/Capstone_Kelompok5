@@ -96,27 +96,22 @@
                     </a>
                 </li>
                 <li class="menu-item">
-                    <a href="#" class='menu-link'>
+                    <a href="/about" class='menu-link'>
                         About
                     </a>
                 </li>
                 <li class="menu-item">
-                    <a href="#" class='menu-link'>
+                    <a href="/menu" class='menu-link'>
                         Menu
                     </a>
                 </li>
                 <li class="menu-item">
-                    <a href="#" class='menu-link'>
-                        Delivery
-                    </a>
-                </li>
-                <li class="menu-item">
-                    <a href="#" class='menu-link'>
+                    <a href="/reservation" class='menu-link'>
                         Private Dining
                     </a>
                 </li>
                 <li class="menu-item">
-                    <a href="#" class='menu-link'>
+                    <a href="/blog" class='menu-link'>
                         Blog
                     </a>
                 </li>

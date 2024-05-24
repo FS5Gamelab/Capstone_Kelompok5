@@ -13,7 +13,11 @@ Route::redirect('/', '/dashboard');
 
 Route::get('/message', RealtimeMessage::class);
 
-Route::get('/homepage', [CustomerController::class, 'index'])->name('dashboard.user');
+Route::get('/homepage', [CustomerController::class, 'index'])->name('homepage');
+Route::get('/menu', [CustomerController::class, 'menu'])->name('menu');
+Route::get('/reservation', [CustomerController::class, 'reservation'])->name('reservation');
+Route::get('/about', [CustomerController::class, 'about'])->name('about');
+Route::get('/blog', [CustomerController::class, 'blog'])->name('blog');
 
 
 Route::get('/dashboard', function () {
