@@ -7,6 +7,7 @@ use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\OAuthController;
 use App\Http\Controllers\OrderController;
 use App\Livewire\RealtimeMessage;
+use App\Models\Order;
 use Illuminate\Support\Facades\Route;
 
 Route::redirect('/', '/dashboard');
@@ -45,10 +46,16 @@ Route::middleware(['auth', 'auth.session'])->group(function () {
 
     Route::post('/add-to-cart', [CartController::class, 'addToCart'])->name('add-to-cart');
     Route::get('/cart', [CartController::class, 'index'])->name('cart');
-    Route::post('/checkout', [CartController::class, 'checkOut'])->name('checkout');
-    Route::get('/checkout', [CartController::class, 'checkoutIndex'])->name('checkout-index');
-    Route::get('/pay/{cartId}', [CartController::class, 'pay'])->name('pay');
-    Route::get('/success/{cart}', [CartController::class, 'success'])->name('success');
+    Route::post('/checkout', [OrderController::class, 'checkOut'])->name('checkout');
+    Route::get('/checkout', [OrderController::class, 'checkoutIndex'])->name('checkout-index');
+    Route::get('/checkout/pending', [OrderController::class, 'checkoutPending'])->name('checkout-pending');
+    Route::get('/checkout/prepare', [OrderController::class, 'checkoutPrepare'])->name('checkout-prepare');
+    Route::get('/checkout/success', [OrderController::class, 'checkoutSuccess'])->name('checkout-success');
+    Route::get('/checkout/failed', [OrderController::class, 'checkoutFailed'])->name('checkout-failed');
+    Route::post('/pay/{id}', [OrderController::class, 'pay'])->name('pay');
+    Route::post('/success/{id}', [OrderController::class, 'success'])->name('success');
     Route::get('/history', [OrderController::class, 'history'])->name('history');
     Route::delete('/cart/{cartId}', [CartController::class, 'delete'])->name('cart.delete');
+
+    Route::get('/order/{id}', [OrderController::class, 'detail'])->name('order.detail');
 });

@@ -60,7 +60,11 @@
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end shadow-lg" aria-labelledby="topbarUserDropdown">
                             <li><a class="dropdown-item" href="#">My Account</a></li>
-                            <li><a class="dropdown-item" href="#">Settings</a></li>
+                            <li>
+                                <a class="dropdown-item" href="/checkout">
+                                    Orders
+                                </a>
+                            </li>
                             <li>
                                 <hr class="dropdown-divider">
                             </li>

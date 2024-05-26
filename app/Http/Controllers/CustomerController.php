@@ -11,7 +11,7 @@ class CustomerController extends Controller
     public function index()
     {
         if (auth()->user()) {
-            $cartCount = Cart::where('user_id', auth()->user()->id)->count();
+            $cartCount = Cart::where('user_id', auth()->user()->id)->where('checked_out', 0)->count();
         } else {
             $cartCount = 0;
         }
@@ -22,7 +22,7 @@ class CustomerController extends Controller
     public function menu()
     {
         if (auth()->user()) {
-            $cartCount = Cart::where('user_id', auth()->user()->id)->count();
+            $cartCount = Cart::where('user_id', auth()->user()->id)->where('checked_out', 0)->count();
         } else {
             $cartCount = 0;
         }
@@ -34,7 +34,7 @@ class CustomerController extends Controller
     public function about()
     {
         if (auth()->user()) {
-            $cartCount = Cart::where('user_id', auth()->user()->id)->count();
+            $cartCount = Cart::where('user_id', auth()->user()->id)->where('checked_out', 0)->count();
         } else {
             $cartCount = 0;
         }
@@ -45,7 +45,7 @@ class CustomerController extends Controller
     public function reservation()
     {
         if (auth()->user()) {
-            $cartCount = Cart::where('user_id', auth()->user()->id)->count();
+            $cartCount = Cart::where('user_id', auth()->user()->id)->where('checked_out', 0)->count();
         } else {
             $cartCount = 0;
         }
@@ -56,7 +56,7 @@ class CustomerController extends Controller
     public function blog()
     {
         if (auth()->user()) {
-            $cartCount = Cart::where('user_id', auth()->user()->id)->count();
+            $cartCount = Cart::where('user_id', auth()->user()->id)->where('checked_out', 0)->count();
         } else {
             $cartCount = 0;
         }

@@ -1,7 +1,5 @@
-import simpleDatatables from "simple-datatables";
-let dataTable = new simpleDatatables.DataTable(
-  document.getElementById("table1"),
-);
+import { DataTable } from "simple-datatables";
+let dataTable = new DataTable(document.getElementById("table1"));
 // Move "per page dropdown" selector element out of label
 // to make it work with bootstrap 5. Add bs5 classes.
 function adaptPageDropdown() {
@@ -51,3 +49,19 @@ dataTable.on("datatable.sort", refreshPagination);
 
 // Re-patch pagination after the page was changed
 dataTable.on("datatable.page", adaptPagination);
+
+// Filter function
+function filterTable() {
+  const filterValue = document
+    .getElementById("filterSelect")
+    .value.toLowerCase();
+  dataTable.search(filterValue);
+  refreshPagination();
+}
+
+let select = document.getElementById("filterSelect");
+if (select) {
+  document
+    .getElementById("filterSelect")
+    .addEventListener("change", filterTable);
+}

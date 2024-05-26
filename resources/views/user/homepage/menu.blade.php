@@ -11,7 +11,7 @@
                             <div class="card hover:tw-scale-105 tw-transition-all tw-delay-100">
                                 <div class="card-content">
                                     <div class="card-body">
-                                        <h4 class="card-title">{{ $product->category->category_name }}</h4>
+                                        <h4 class="card-title !tw-text-lg">{{ $product->category->category_name }}</h4>
                                     </div>
                                     <img class="img-fluid w-100" src="{{ asset('/static/images/samples/banana.jpg') }}"
                                         alt="Card image cap">

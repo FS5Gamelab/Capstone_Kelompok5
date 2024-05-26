@@ -106,8 +106,11 @@
                         </div>
                     </div> --}}
 
-
-                            <div class="tw-mt-6 tw-flex tw-items-center tw-justify-between tw-border-t tw-border-b pt-2">
+                            <div class="form-group tw-mt-6">
+                                <label for="note">Note</label>
+                                <textarea class="form-control" placeholder="Leave a note here" id="note" name="note"></textarea>
+                            </div>
+                            <div class="tw-mt-3 tw-flex tw-items-center tw-justify-between tw-border-t tw-border-b py-2">
                                 <p class="tw-text-sm tw-font-medium tw-text-gray-400">Total</p>
                                 <p class="tw-text-2xl tw-font-semibold tw-text-gray-900 dark:tw-text-gray-200"
                                     id="total" data-value="{{ $total }}">
@@ -117,15 +120,24 @@
                             </div>
 
                             <div class="tw-mt-6 tw-text-center">
-                                <button type="button"
-                                    class="tw-group tw-inline-flex tw-w-full tw-items-center tw-justify-center tw-rounded-md tw-bg-blue-600 tw-px-6 tw-py-4 tw-text-lg tw-font-semibold tw-text-white tw-transition-all tw-duration-200 tw-ease-in-out focus:tw-shadow hover:tw-bg-blue-800">
-                                    Checkout
-                                    <svg xmlns="http://www.w3.org/2000/svg"
-                                        class="tw-group-hover:tw-ml-8 tw-ml-4 tw-h-6 tw-w-6 tw-transition-all"
-                                        fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
-                                    </svg>
-                                </button>
+                                <form id="checkout-form" action="/checkout" method="post">
+                                    @foreach ($carts as $cart)
+                                        <input type="hidden" name="ids[]" value="{{ $cart->id }}">
+                                    @endforeach
+                                    @csrf
+
+                                    <button type="button"
+                                        class="tw-group tw-inline-flex tw-w-full tw-items-center tw-justify-center tw-rounded-md tw-bg-blue-600 tw-px-6 tw-py-4 tw-text-lg tw-font-semibold tw-text-white tw-transition-all tw-duration-200 tw-ease-in-out focus:tw-shadow hover:tw-bg-blue-800"
+                                        id="checkout-button">
+                                        Checkout
+                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                            class="tw-group-hover:tw-ml-8 tw-ml-4 tw-h-6 tw-w-6 tw-transition-all"
+                                            fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                                        </svg>
+                                    </button>
+                                </form>
                             </div>
                         </div>
                     </div>
@@ -256,7 +268,7 @@
                     })
                 } else if (quantity > 1) {
 
-                    $("#loader").show();
+                    // $("#loader").show();
                     $.ajax({
                         url: `/add-to-cart`,
                         type: "POST",
@@ -304,7 +316,7 @@
             let quantity = parseInt($("#quantity" + dataNumber).text());
             let cart_total = parseInt($("#cart_total" + dataNumber).attr('data-value'));
             let total = parseInt($("#total").attr('data-value'));
-            $("#loader").show();
+            // $("#loader").show();
             $.ajax({
                 url: `/add-to-cart`,
                 type: "POST",
@@ -339,6 +351,69 @@
 
                 },
             })
+        });
+    </script>
+
+    <script>
+        $("#loader").hide();
+        $(document).ready(function() {
+            $('#checkout-button').on('click', function(e) {
+                $("#loader").show();
+                e.preventDefault();
+
+                let ids = [];
+                let total = parseInt($('#total').attr('data-value'));
+                let note = $('#note').val();
+                $('#checkout-form input[name="ids[]"]').each(function() {
+                    ids.push($(this).val());
+                });
+
+                let formData = {
+                    "ids": ids,
+                    "total": total,
+                    "note": note,
+                    "_token": '{{ csrf_token() }}'
+                };
+
+                $.ajax({
+                    url: '/checkout',
+                    type: 'POST',
+                    data: formData,
+                    success: function(response) {
+                        $("#loader").hide();
+                        if (response.success) {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Success',
+                                text: response.message,
+                                showConfirmButton: false,
+                                timer: 2000
+                            })
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Oops...',
+                                text: response.message,
+                                showConfirmButton: true
+                            })
+                        }
+                        setTimeout(() => {
+                            window.location.href = '/checkout';
+                        }, 1000);
+
+                    },
+                    error: function(error) {
+                        $("#loader").hide();
+                        console.log(error);
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: 'Something went wrong. Please try again later.',
+                            showConfirmButton: true
+                        });
+                    }
+                });
+            });
         });
     </script>
 @endsection
