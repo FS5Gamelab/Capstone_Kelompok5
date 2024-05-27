@@ -50,7 +50,12 @@
                             class="user-dropdown d-flex align-items-center dropend dropdown-toggle "
                             data-bs-toggle="dropdown" aria-expanded="false">
                             <div class="avatar avatar-md2">
-                                <img src="{{ asset('/static/images/faces/1.jpg') }}" alt="Avatar">
+                                @if (Auth::user()->profile_image)
+                                    <img src="{{ asset('storage/' . Auth::user()->profile_image) }}" alt="Avatar"
+                                        class="nav-img">
+                                @else
+                                    <img src="{{ asset('/static/images/faces/1.jpg') }}" alt="Avatar" class="nav-img">
+                                @endif
                             </div>
                             <div class="text tw-hidden sm:tw-block">
                                 <h6 class="user-dropdown-name">{{ auth()->user()->name }}</h6>
@@ -59,7 +64,7 @@
                             </div>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end shadow-lg" aria-labelledby="topbarUserDropdown">
-                            <li><a class="dropdown-item" href="#">My Account</a></li>
+                            <li><a class="dropdown-item" href="/profile">My Account</a></li>
                             <li>
                                 <a class="dropdown-item" href="/checkout">
                                     Orders

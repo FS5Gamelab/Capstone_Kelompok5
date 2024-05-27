@@ -389,17 +389,23 @@
                                 showConfirmButton: false,
                                 timer: 2000
                             })
+
+                            setTimeout(() => {
+                                window.location.href = '/checkout';
+                            }, 1000);
                         } else {
                             Swal.fire({
                                 icon: 'error',
                                 title: 'Oops...',
                                 text: response.message,
-                                showConfirmButton: true
+                                showConfirmButton: true,
+                                backdrop: false
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    window.location.href = '/profile';
+                                }
                             })
                         }
-                        setTimeout(() => {
-                            window.location.href = '/checkout';
-                        }, 1000);
 
                     },
                     error: function(error) {

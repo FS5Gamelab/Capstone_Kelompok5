@@ -58,4 +58,10 @@ Route::middleware(['auth', 'auth.session'])->group(function () {
     Route::delete('/cart/{cartId}', [CartController::class, 'delete'])->name('cart.delete');
 
     Route::get('/order/{id}', [OrderController::class, 'detail'])->name('order.detail');
+
+
+    Route::get('/profile', [CustomerController::class, 'profile'])->name('profile');
+    Route::put('/profile/update', [CustomerController::class, 'profileUpdate'])->name('profile-update');
+    Route::put('/security/update', [CustomerController::class, 'securityUpdate'])->name('security-update');
+    Route::post('/image/update', [CustomerController::class, 'imageUpdate'])->name('image-update');
 });

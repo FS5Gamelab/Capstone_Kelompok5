@@ -11,55 +11,55 @@ class OrderController extends Controller
 
     public function checkOut(Request $request)
     {
-        // if (auth()->user()->address == null && auth()->user()->phone == null) {
-        //     return response()->json([
-        //         'success' => false,
-        //         'message' => 'Address and Phone number must be filled'
-        //     ]);
-        // } else {
-        $order = Order::create([
-            "cart_id" => json_encode($request->ids),
-            "user_id" => auth()->user()->id,
-            "total_price" => $request->total,
-            "note" => $request->note
-        ]);
-        $order = Order::findOrFail($order->id);
-        $total_price = $order->total_price;
-        // Set your Merchant Server Key
-        \Midtrans\Config::$serverKey = config('midtrans.serverKey');
-        // Set to Development/Sandbox Environment (default). Set to true for Production Environment (accept real transaction).
-        \Midtrans\Config::$isProduction = config('midtrans.isProduction');
-        // Set sanitization on (default)
-        \Midtrans\Config::$isSanitized = config('midtrans.isSanitized');
-        // Set 3DS transaction for credit card to true
-        \Midtrans\Config::$is3ds = config('midtrans.is3ds');
+        if (auth()->user()->address == null && auth()->user()->phone == null) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Address and Phone number must be filled'
+            ]);
+        } else {
+            $order = Order::create([
+                "cart_id" => json_encode($request->ids),
+                "user_id" => auth()->user()->id,
+                "total_price" => $request->total,
+                "note" => $request->note
+            ]);
+            $order = Order::findOrFail($order->id);
+            $total_price = $order->total_price;
+            // Set your Merchant Server Key
+            \Midtrans\Config::$serverKey = config('midtrans.serverKey');
+            // Set to Development/Sandbox Environment (default). Set to true for Production Environment (accept real transaction).
+            \Midtrans\Config::$isProduction = config('midtrans.isProduction');
+            // Set sanitization on (default)
+            \Midtrans\Config::$isSanitized = config('midtrans.isSanitized');
+            // Set 3DS transaction for credit card to true
+            \Midtrans\Config::$is3ds = config('midtrans.is3ds');
 
-        $params = array(
-            'transaction_details' => array(
-                'order_id' => $order->id,
-                'gross_amount' => $total_price,
-            ),
-        );
-        $snapToken = \Midtrans\Snap::getSnapToken($params);
+            $params = array(
+                'transaction_details' => array(
+                    'order_id' => $order->id,
+                    'gross_amount' => $total_price,
+                ),
+            );
+            $snapToken = \Midtrans\Snap::getSnapToken($params);
 
-        $order->update([
-            'snap_token' => $snapToken,
-            'status' => 'pending',
-        ]);
+            $order->update([
+                'snap_token' => $snapToken,
+                'status' => 'pending',
+            ]);
 
-        foreach ($request->ids as $id) {
-            $cart = Cart::find($id);
-            $cart->update([
-                "order_id" => $order->id,
-                "checked_out" => 1,
+            foreach ($request->ids as $id) {
+                $cart = Cart::find($id);
+                $cart->update([
+                    "order_id" => $order->id,
+                    "checked_out" => 1,
 
+                ]);
+            }
+            return response()->json([
+                'success' => true,
+                'message' => 'Cart checked out',
             ]);
         }
-        return response()->json([
-            'success' => true,
-            'message' => 'Cart checked out',
-        ]);
-        // }
         // return to_route('checkout-index')->with('success', 'Cart checked out');
     }
 
