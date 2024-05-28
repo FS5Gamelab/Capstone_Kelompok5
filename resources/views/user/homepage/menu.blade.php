@@ -277,7 +277,7 @@
                         },
                         error: function(error) {
                             $("#loader").hide();
-                            console.log(error);
+
                         },
                         success: function(response) {
                             $("#loader").hide();

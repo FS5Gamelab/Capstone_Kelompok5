@@ -178,7 +178,6 @@
                         },
                         error: function(error) {
                             $("#loader").hide();
-                            console.log(error);
                         },
                         success: function(response) {
                             $("#loader").hide();
@@ -239,7 +238,6 @@
                                 },
                                 error: function(error) {
                                     $("#loader").hide();
-                                    console.log(error);
                                 },
                                 success: function(response) {
                                     $("#loader").hide();
@@ -280,7 +278,6 @@
                         },
                         error: function(error) {
                             $("#loader").hide();
-                            console.log(error);
                         },
                         success: function(response) {
                             $("#loader").hide();
@@ -328,7 +325,6 @@
                 },
                 error: function(error) {
                     $("#loader").hide();
-                    console.log(error);
                 },
                 success: function(response) {
                     $("#loader").hide();
@@ -410,7 +406,6 @@
                     },
                     error: function(error) {
                         $("#loader").hide();
-                        console.log(error);
                         Swal.fire({
                             icon: 'error',
                             title: 'Oops...',

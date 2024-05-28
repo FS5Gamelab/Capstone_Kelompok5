@@ -71,9 +71,13 @@ class CustomerController extends Controller
 
     public function profile()
     {
-        return view('user.account.profile', [
-            'cartCount' => Cart::where('user_id', auth()->user()->id)->where('checked_out', 0)->count(),
-        ]);
+        if (auth()->user()->role != "admin") {
+            return view('user.account.profile', [
+                'cartCount' => Cart::where('user_id', auth()->user()->id)->where('checked_out', 0)->count(),
+            ]);
+        } else {
+            return view('admin.account.profile');
+        }
     }
 
     public function imageUpdate(Request $request)
@@ -89,8 +93,10 @@ class CustomerController extends Controller
             ]);
         } else {
             $image = $request->file('image');
-            if ($image) {
-                Storage::disk('public')->delete(auth()->user()->profile_image);
+            if (auth()->user()->profile_image) {
+                if ($image) {
+                    Storage::disk('public')->delete(auth()->user()->profile_image);
+                }
             }
             $extension = $image->getClientOriginalExtension();
             $originalName = pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME);

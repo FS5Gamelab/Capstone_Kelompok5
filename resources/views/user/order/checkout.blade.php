@@ -104,63 +104,6 @@
     <script>
         $('#loader').hide();
         $(document).ready(function() {
-            $(document).on('click', '#btn-detail', function() {
-                let id = $(this).data('id');
-                $('#loader').show();
-                $.ajax({
-                    url: `/order/${id}`,
-                    type: 'GET',
-                    success: function(response) {
-                        $('#loader').hide();
-
-                        // Clear previous content
-                        $('#cart-items').empty();
-                        $('#note').text('');
-                        $('#total-price').text('');
-
-                        // Insert new content
-                        response.carts.forEach(cart => {
-                            $('#cart-items').append(`
-                        <div class="col-md-6">
-                            <div class="row">
-                                <div class="col-md-2 tw-font-bold">
-                                    ${cart.quantity}
-                                </div>
-                                <div class="col-md-10">
-                                    ${cart.product.product_name}
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="row">
-                                <div class="col-md-6 !tw-text-xs">
-                                    &#64;Rp${cart.product.price.toLocaleString('id-ID')}
-                                </div>
-                                <div class="col-md-6 tw-font-bold">
-                                    Rp${cart.cart_total.toLocaleString('id-ID')}
-                                </div>
-                            </div>
-                        </div>
-                    `);
-                        });
-
-                        $('#note').text(response.order.note);
-                        $('#total-price').text(
-                            `Rp${response.order.total_price.toLocaleString('id-ID')}`);
-
-                        $('#modal-order').modal('show');
-                    },
-                    error: function(xhr, status, error) {
-                        $('#loader').hide();
-                        console.error('AJAX Error:', error);
-                    }
-                });
-            })
-        });
-    </script>
-    <script>
-        $('#loader').hide();
-        $(document).ready(function() {
             $(document).on('click', '#pay-button', function() {
                 let id = $(this).data('id');
                 $('#loader').show();
@@ -231,3 +174,63 @@
         });
     </script>
 @endSection
+
+@section('js')
+    <script>
+        $('#loader').hide();
+        $(document).ready(function() {
+            $(document).on('click', '#btn-detail', function() {
+                let id = $(this).data('id');
+                $('#loader').show();
+                $.ajax({
+                    url: `/order/${id}`,
+                    type: 'GET',
+                    success: function(response) {
+                        $('#loader').hide();
+
+                        // Clear previous content
+                        $('#cart-items').empty();
+                        $('#note').text('');
+                        $('#total-price').text('');
+
+                        // Insert new content
+                        response.carts.forEach(cart => {
+                            $('#cart-items').append(`
+                    <div class="col-md-6">
+                        <div class="row">
+                            <div class="col-md-2 tw-font-bold">
+                                ${cart.quantity}
+                            </div>
+                            <div class="col-md-10">
+                                ${cart.product.product_name}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="row">
+                            <div class="col-md-6 !tw-text-xs">
+                                &#64;Rp${cart.product.price.toLocaleString('id-ID')}
+                            </div>
+                            <div class="col-md-6 tw-font-bold">
+                                Rp${cart.cart_total.toLocaleString('id-ID')}
+                            </div>
+                        </div>
+                    </div>
+                `);
+                        });
+
+                        $('#note').text(response.order.note);
+                        $('#total-price').text(
+                            `Rp${response.order.total_price.toLocaleString('id-ID')}`);
+
+                        $('#modal-order').modal('show');
+                    },
+                    error: function(xhr, status, error) {
+                        $('#loader').hide();
+                        console.error('AJAX Error:', error);
+                    }
+                });
+            })
+        });
+    </script>
+@endsection

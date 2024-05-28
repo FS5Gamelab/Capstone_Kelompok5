@@ -117,7 +117,7 @@ class OrderController extends Controller
             $cartIds = json_decode($order->cart_id, true);
             $carts[] = Cart::whereIn('id', $cartIds)->get();
         }
-        return view('user.order.checkout', [
+        return view('user.order.checkout-prepare', [
             "orders" => $orders,
             'carts' => $carts,
             'cartCount' => Cart::where('user_id', auth()->user()->id)->where('checked_out', 0)->count()
