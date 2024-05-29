@@ -134,6 +134,8 @@
                                                 showConfirmButton: false,
                                                 timer: 3000
                                             })
+                                            window.location.href =
+                                                '/checkout/prepare';
                                         },
                                         error: function(xhr, status,
                                             error) {

@@ -20,7 +20,6 @@ return new class extends Migration
             $table->integer('cart_total')->nullable();
             $table->boolean('checked_out')->default(false);
             $table->timestamps();
-            $table->softDeletes();
 
 
             $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');

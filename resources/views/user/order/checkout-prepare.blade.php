@@ -1,115 +1,117 @@
 @extends('layouts.app-user', ['title' => 'Checkout History'])
 @section('main-content')
-    @php
-        $type = 2;
-    @endphp
     <section class="section">
         <div class="row tw-flex tw-justify-center">
             <div class="col-md-5 col-lg-4 mt-2">
                 @include('layouts.partials.sidebar-user')
             </div>
             <div class="col-md-7 col-lg-8 mt-2">
-                {{-- @if ($orders->count() > 0)
-                    @foreach ($orders as $index => $order) --}}
-                <div class="card">
-                    <div class="card-header mb-2">
-                        @if ($type == 1)
-                            <h3 class="!tw-text-3xl tw-font-semibold">Your order is being prepared</h3>
-                            <div class="tw-w-full tw-flex tw-justify-center tw-items-center mt-3">
-                                <div class="d-flex justify-content-end align-items-center !tw-bg-slate-500 tw-w-full  lg:tw-w-3/5 rounded-3"
-                                    id="bg-load">
-                                    <img src="{{ asset('static/images/resto/cooking2.gif') }}" alt=""
-                                        class="!tw-h-48 !tw-w-48 ">
-                                </div>
+                @if ($orders->count() > 0)
+                    @foreach ($orders as $index => $order)
+                        <div class="card">
+                            <div class="card-header mb-2">
+                                @if ($order->status == 'prepare')
+                                    <h3 class="!tw-text-3xl tw-font-semibold judul">Preparing your order</h3>
+                                    <div class="tw-w-full tw-flex tw-justify-center tw-items-center mt-3">
+                                        <div class="d-flex justify-content-end align-items-center !tw-bg-slate-500 tw-w-full  lg:tw-w-3/5 rounded-3"
+                                            id="bg-load2">
+                                            <img src="{{ asset('static/images/resto/cooking2.gif') }}" alt=""
+                                                class="!tw-h-48 !tw-w-48 ">
+                                        </div>
+                                    </div>
+                                @elseif ($order->status == 'deliver')
+                                    <h3 class="!tw-text-3xl tw-font-semibold judul">Your order is being delivered</h3>
+                                    <div class="tw-w-full tw-flex tw-justify-center tw-items-center mt-3">
+                                        <div class="d-flex justify-content-center align-items-end !tw-bg-slate-500 tw-w-full lg:tw-w-3/5 rounded-3"
+                                            id="bg-load1">
+                                            <img src="{{ asset('static/images/resto/delivery.gif') }}" alt=""
+                                                class="!tw-h-48 !tw-w-48 -tw-mb-6">
+                                        </div>
+                                    </div>
+                                @endif
                             </div>
-                        @else
-                            <h3 class="!tw-text-3xl tw-font-semibold">Your order is being delivered</h3>
-                            <div class="tw-w-full tw-flex tw-justify-center tw-items-center mt-3">
-                                <div class="d-flex justify-content-center align-items-end !tw-bg-slate-500 tw-w-full lg:tw-w-3/5 rounded-3"
-                                    id="bg-load">
-                                    <img src="{{ asset('static/images/resto/delivery.gif') }}" alt=""
-                                        class="!tw-h-48 !tw-w-48 -tw-mb-6">
-                                </div>
-                            </div>
-                        @endif
-                    </div>
-                    <div class="card-body">
-                        <div class="tw-mx-auto tw-mt-2 tw-max-w-2xl md:tw-mt-2" id="count">
-                            <div class="tw-bg-white dark:tw-bg-gray-800 tw-shadow rounded-3">
-                                <div class="tw-px-4 tw-py-6 sm:tw-px-8 sm:tw-py-10">
-                                    <div class="tw-flow-root mb-3">
-                                        <ul class="tw--my-8">
-                                            <div id="index">
-                                                <li
-                                                    class="tw-flex tw-flex-col tw-space-y-3 tw-py-6 tw-text-left lg:tw-flex-row lg:tw-space-x-5 lg:tw-space-y-0">
-                                                    <div class="tw-shrink-0">
-                                                        <img class="tw-h-24 tw-w-24 tw-max-w-full tw-rounded-lg tw-object-cover"
-                                                            alt=""
-                                                            src="{{ asset('/static/images/samples/1.png') }}" />
-                                                    </div>
-
-                                                    <div
-                                                        class="tw-relative tw-flex tw-flex-1 tw-flex-col tw-justify-between">
-                                                        <div class="sm:tw-col-gap-5 sm:tw-grid sm:tw-grid-cols-2">
-                                                            <div class="tw-pr-8 sm:tw-pr-5">
-                                                                <p
-                                                                    class="tw-text-base tw-font-semibold tw-text-gray-900 dark:tw-text-white">
-                                                                    Nama produk
-                                                                </p>
-                                                                <p
-                                                                    class="tw-mx-0 tw-mt-1 tw-mb-0 tw-text-sm tw-text-gray-400">
-                                                                    &#64;Rp400.000
-                                                                </p>
-                                                                <div class="sm:tw-order-1 mt-2">
-                                                                    <div class="tw-mx-auto tw-flex tw-h-8 tw-text-gray-600">
-
-                                                                        <div
-                                                                            class="tw-flex tw-w-10 tw-items-center tw-justify-center tw-text-xs tw-uppercase tw-transition dark:tw-text-white">
-                                                                            x1
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
+                            <div class="card-body">
+                                <div class="tw-mx-auto tw-mt-2 tw-max-w-2xl md:tw-mt-2" id="count">
+                                    <div class="tw-bg-white dark:tw-bg-gray-800 tw-shadow rounded-3">
+                                        <div class="tw-px-4 tw-py-6 sm:tw-px-8 sm:tw-py-10">
+                                            <div class="tw-flow-root mb-3">
+                                                <ul class="tw--my-8">
+                                                    <div id="index">
+                                                        <li
+                                                            class="tw-flex tw-flex-col tw-space-y-3 tw-py-6 tw-text-left lg:tw-flex-row lg:tw-space-x-5 lg:tw-space-y-0">
+                                                            <div class="tw-shrink-0">
+                                                                <img class="tw-h-24 tw-w-24 tw-max-w-full tw-rounded-lg tw-object-cover"
+                                                                    alt=""
+                                                                    src="{{ asset('/static/images/samples/1.png') }}" />
                                                             </div>
 
                                                             <div
-                                                                class="tw-mt-4 tw-flex tw-items-end tw-justify-between sm:tw-mt-0 sm:tw-items-start sm:tw-justify-end">
-                                                                <p
-                                                                    class="tw-shrink-0 tw-w-20 tw-text-base tw-font-semibold tw-text-gray-900 dark:tw-text-gray-200 sm:tw-order-2 sm:tw-ml-8 sm:tw-text-right tw-text-nowrap tw-mr-4">
+                                                                class="tw-relative tw-flex tw-flex-1 tw-flex-col tw-justify-between">
+                                                                <div class="sm:tw-col-gap-5 sm:tw-grid sm:tw-grid-cols-2">
+                                                                    <div class="tw-pr-8 sm:tw-pr-5">
+                                                                        <p
+                                                                            class="tw-text-base tw-font-semibold tw-text-gray-900 dark:tw-text-white">
+                                                                            Nama produk
+                                                                        </p>
+                                                                        <p
+                                                                            class="tw-mx-0 tw-mt-1 tw-mb-0 tw-text-sm tw-text-gray-400">
+                                                                            &#64;Rp400.000
+                                                                        </p>
+                                                                        <div class="sm:tw-order-1 mt-2">
+                                                                            <div
+                                                                                class="tw-mx-auto tw-flex tw-h-8 tw-text-gray-600">
 
-                                                                    Rp. 400.000
-                                                                </p>
+                                                                                <div
+                                                                                    class="tw-flex tw-w-10 tw-items-center tw-justify-center tw-text-xs tw-uppercase tw-transition dark:tw-text-white">
+                                                                                    x1
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div
+                                                                        class="tw-mt-4 tw-flex tw-items-end tw-justify-between sm:tw-mt-0 sm:tw-items-start sm:tw-justify-end">
+                                                                        <p
+                                                                            class="tw-shrink-0 tw-w-20 tw-text-base tw-font-semibold tw-text-gray-900 dark:tw-text-gray-200 sm:tw-order-2 sm:tw-ml-8 sm:tw-text-right tw-text-nowrap tw-mr-4">
+
+                                                                            Rp. 400.000
+                                                                        </p>
 
 
+                                                                    </div>
+                                                                </div>
                                                             </div>
-                                                        </div>
+                                                        </li>
                                                     </div>
-                                                </li>
+                                                </ul>
                                             </div>
-                                        </ul>
-                                    </div>
-                                    <div class="!tw-mt-16">
-                                        <p class="!tw-text-sm">Note:</p>
-                                        <p class="!tw-text-xs mt-2">
-                                            Notenyaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-                                        </p>
-                                    </div>
+                                            <div class="!tw-mt-16">
+                                                <p class="!tw-text-sm">Note:</p>
+                                                <p class="!tw-text-xs mt-2">
+                                                    Notenyaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+                                                </p>
+                                            </div>
 
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-footer">
+                                <div class="tw-mt-3 tw-flex tw-items-center tw-justify-between py-2">
+                                    <p class="tw-text-sm tw-font-medium tw-text-gray-400">Total</p>
+                                    <p class="tw-text-2xl tw-font-semibold tw-text-gray-900 dark:tw-text-gray-200">
+                                        Rp.
+                                        400.000
+                                    </p>
                                 </div>
                             </div>
                         </div>
+                    @endforeach
+                @else
+                    <div class="alert alert-info">
+                        <p class="text-center">Nothing to show</p>
                     </div>
-                    <div class="card-footer">
-                        <div class="tw-mt-3 tw-flex tw-items-center tw-justify-between py-2">
-                            <p class="tw-text-sm tw-font-medium tw-text-gray-400">Total</p>
-                            <p class="tw-text-2xl tw-font-semibold tw-text-gray-900 dark:tw-text-gray-200">
-                                Rp.
-                                400.000
-                            </p>
-                        </div>
-                    </div>
-                </div>
-                {{-- @endforeach
-                @endif --}}
+                @endif
 
             </div>
         </div>
@@ -122,30 +124,22 @@
     @include('layouts.modal.modal-user')
 @endSection
 @section('css')
-    @if ($type == 2)
-        <style>
-            .ps--active-x>.ps__rail-x {
-                display: none;
-            }
+    <style>
+        .ps--active-x>.ps__rail-x {
+            display: none;
+        }
 
-            #bg-load {
-                background-repeat: repeat-x;
-                background-image: url('{{ asset('static/images/resto/jalan.svg') }}');
-            }
-        </style>
-    @else
-        <style>
-            .ps--active-x>.ps__rail-x {
-                display: none;
-            }
+        #bg-load1 {
+            background-repeat: repeat-x;
+            background-image: url('{{ asset('static/images/resto/jalan.svg') }}');
+        }
 
-            #bg-load {
-                background-size: contain;
-                background-repeat: no-repeat;
-                background-image: url('{{ asset('static/images/resto/cooking-chef.gif') }}');
-            }
-        </style>
-    @endif
+        #bg-load2 {
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-image: url('{{ asset('static/images/resto/cooking-chef.gif') }}');
+        }
+    </style>
 @endSection
 
 @section('js')

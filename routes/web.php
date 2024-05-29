@@ -6,6 +6,7 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\OAuthController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\ReservationController;
 use App\Livewire\RealtimeMessage;
 use App\Models\Order;
 use Illuminate\Support\Facades\Route;
@@ -19,6 +20,7 @@ Route::get('/menu', [CustomerController::class, 'menu'])->name('menu');
 Route::get('/reservation', [CustomerController::class, 'reservation'])->name('reservation');
 Route::get('/about', [CustomerController::class, 'about'])->name('about');
 Route::get('/blog', [CustomerController::class, 'blog'])->name('blog');
+Route::post('/reservation', [ReservationController::class, 'store'])->name('reservation.store');
 
 
 Route::get('/dashboard', function () {
@@ -40,11 +42,10 @@ Route::middleware(['guest'])->group(function () {
 });
 
 
-Route::middleware(['auth', 'auth.session'])->group(function () {
+Route::middleware(['auth', 'auth.session', 'verified'])->group(function () {
     Route::get('/admin-dashboard', [AdminController::class, 'index'])->name('dashboard.admin');
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-    Route::post('/add-to-cart', [CartController::class, 'addToCart'])->name('add-to-cart');
     Route::get('/cart', [CartController::class, 'index'])->name('cart');
     Route::post('/checkout', [OrderController::class, 'checkOut'])->name('checkout');
     Route::get('/checkout', [OrderController::class, 'checkoutIndex'])->name('checkout-index');
@@ -64,4 +65,19 @@ Route::middleware(['auth', 'auth.session'])->group(function () {
     Route::put('/profile/update', [CustomerController::class, 'profileUpdate'])->name('profile-update');
     Route::put('/security/update', [CustomerController::class, 'securityUpdate'])->name('security-update');
     Route::post('/image/update', [CustomerController::class, 'imageUpdate'])->name('image-update');
+});
+
+
+Route::middleware('auth')->group(function () {
+    Route::post('/add-to-cart', [CartController::class, 'addToCart'])->name('add-to-cart');
+
+    Route::get('/verify-email', [AuthController::class, 'notice'])
+        ->name('verification.notice');
+
+    Route::get('/verify-email/{id}/{token}', [AuthController::class, 'verifyEmail'])
+        ->name('verification.verify');
+
+    Route::post('/email/verification-notification', [AuthController::class, 'resendVerificationEmail'])
+        ->middleware('throttle:6,1')
+        ->name('verification.send');
 });

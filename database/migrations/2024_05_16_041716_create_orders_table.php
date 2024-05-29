@@ -21,7 +21,6 @@ return new class extends Migration
             $table->string('status')->nullable();
             $table->string('snap_token')->nullable();
             $table->timestamps();
-            $table->softDeletes();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }

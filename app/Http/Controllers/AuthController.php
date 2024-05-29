@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Mail\ResetPassword;
+use App\Mail\VerifyEmail;
 use App\Models\User;
 use App\Models\Customer;
 use Illuminate\Support\Str;
@@ -129,7 +130,6 @@ class AuthController extends Controller
                 'password' => bcrypt($request->password),
                 'phone' => $request->phone,
                 'remember_token' => Str::random(10),
-                'email_verified_at' => now(),
             ]);
             Auth::login($user);
             return response()->json([
@@ -175,5 +175,33 @@ class AuthController extends Controller
         $request->session()->regenerateToken();
 
         return redirect('/');
+    }
+
+    public function notice()
+    {
+        Mail::to(auth()->user()->email)->send(new VerifyEmail(auth()->user()->remember_token, auth()->user()->id, auth()->user()->name));
+
+        return view('auth.verify');
+    }
+
+    public function verifyEmail($id, $token)
+    {
+        $user = User::find($id);
+        if ($user->remember_token == $token) {
+            $user->email_verified_at = now();
+            $user->remember_token = Str::random(10);
+            $user->save();
+            return redirect('/')->with('success', 'Email verified successfully');
+        } else {
+            return redirect('/')->with('error', 'Invalid token');
+        }
+    }
+    public function resendVerificationEmail()
+    {
+        Mail::to(auth()->user()->email)->send(new VerifyEmail(auth()->user()->remember_token, auth()->user()->id, auth()->user()->name));
+        return response()->json([
+            'success' => true,
+            'message' => 'Email verification link has been sent to your email!'
+        ]);
     }
 }

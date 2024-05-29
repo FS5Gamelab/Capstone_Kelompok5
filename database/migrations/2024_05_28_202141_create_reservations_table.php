@@ -11,14 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('categories', function (Blueprint $table) {
-            $table->uuid('id')->primary();
-            $table->unsignedBigInteger('user_id');
-            $table->string('category_name');
+        Schema::create('reservations', function (Blueprint $table) {
+            $table->id();
+            $table->string('name');
+            $table->string('phone');
+            $table->tinyInteger('people');
+            $table->date('date');
+            $table->time('time');
             $table->timestamps();
-
-
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 
@@ -27,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('categories');
+        Schema::dropIfExists('reservations');
     }
 };

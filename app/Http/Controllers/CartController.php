@@ -21,6 +21,12 @@ class CartController extends Controller
     }
     public function addToCart(Request $request)
     {
+        if (auth()->user()->email_verified_at == null) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Please verify your email first',
+            ]);
+        }
         $message = 'Product added to cart';
         $quantity = 1;
         $product = Product::find($request->product_id);

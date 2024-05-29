@@ -38,8 +38,6 @@
             </div>
         </div>
 
-        {{-- @vite(['resources/js/pages/dashboard.js'])
-        <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script> --}}
         <script>
             let triggerBurger = document.getElementById('trigger-burger');
             let mainNavbar = document.getElementById('main-navbar');
@@ -64,6 +62,7 @@
                 }
             })
         </script>
+
         @yield('js')
 
     </body>

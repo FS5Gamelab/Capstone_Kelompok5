@@ -281,13 +281,27 @@
                         },
                         success: function(response) {
                             $("#loader").hide();
-                            $("#cartCount").text(response.cartCount);
-                            Swal.fire({
-                                icon: 'success',
-                                title: `${response.message}`,
-                                showConfirmButton: false,
-                                timer: 3000
-                            });
+                            if (response.success) {
+                                $("#cartCount").text(response.cartCount);
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: `${response.message}`,
+                                    showConfirmButton: false,
+                                    timer: 3000
+                                });
+                            } else {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Oops...',
+                                    text: `${response.message}`,
+                                    showConfirmButton: true,
+                                    confirmButtonText: 'OK',
+                                }).then((result) => {
+                                    if (result.isConfirmed) {
+                                        window.location.href = '/profile';
+                                    }
+                                });
+                            }
                         },
 
                     })
@@ -295,13 +309,10 @@
                     $("#loader").hide();
                     Swal.fire({
                         icon: 'error',
-                        title: 'Oops... You are not logged in!',
-                        text: 'Please login to continue',
+                        title: 'Oops...',
+                        text: `${response.message}`,
                         showConfirmButton: true,
-                        confirmButtonText: 'Login',
-                        showCancelButton: true,
-                        cancelButtonText: 'Cancel',
-
+                        confirmButtonText: 'OK',
                     }).then((result) => {
                         if (result.isConfirmed) {
                             window.location.href = '/login';

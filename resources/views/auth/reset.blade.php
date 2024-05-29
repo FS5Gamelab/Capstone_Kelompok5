@@ -47,6 +47,11 @@
             <div class=" py-3 sm:tw-max-w-xl sm:tw-mx-auto tw-w-full">
                 <div
                     class=" px-4 py-10 dark:tw-bg-gray-800 tw-bg-gray-50 tw-mx-8 md:tw-mx-0 tw-shadow tw-rounded-3xl sm:tw-p-10">
+                    <div class="tw-flex tw-justify-start">
+                        <a href="/">
+                            <i class="bi bi-arrow-left"></i>
+                        </a>
+                    </div>
                     <div class="tw-max-w-md tw-mx-auto tw-text-white">
                         <div class="tw-flex tw-items-center tw-space-x-5 tw-justify-center">
                             <img src="{{ asset('/static/images/logo/logo.svg') }}" alt="" class="img-fluid">

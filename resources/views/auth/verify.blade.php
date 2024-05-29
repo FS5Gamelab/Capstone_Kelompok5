@@ -5,11 +5,13 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
-        <title>Forgot Password</title>
+        <title>Verify Email</title>
         @vite(['resources/scss/app.scss', 'resources/scss/themes/dark/app-dark.scss', 'resources/js/initTheme.js', 'resources/js/app.js', 'resources/js/components/dark.js', 'resources/css/app.css'])
         <link rel="shortcut icon" href="{{ asset('/static/images/logo/favicon.svg') }}" type="image/x-icon">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+
     </head>
 
     <body>
@@ -41,7 +43,7 @@
                 </path>
             </svg>
         </div>
-        <form id="forgot-form">
+        <form id="verify-form">
             @csrf
             <div class=" py-3 sm:tw-max-w-xl sm:tw-mx-auto tw-w-full">
                 <div
@@ -58,18 +60,16 @@
                         </div>
                         <div class="tw-mt-5">
                             <div class="form-group mb-3">
-                                <label for="email"
-                                    class="tw-font-semibold tw-text-sm tw-text-gray-400 tw-pb-1 tw-block">E-mail</label>
-                                <input id="email" type="email" name="email"
-                                    class="tw-border tw-rounded-lg tw-px-3 py-2 mt-1 tw-text-sm tw-w-full dark:tw-bg-gray-700 tw-text-black dark:tw-text-white focus:tw-border-blue-500 focus:tw-ring-4 focus:tw-ring-blue-500" />
-                                <span class="tw-text-red-500 tw-text-xs mt-1 " id="email-error"></span>
+                                <p class="text-center">Your verification link has been sent to
+                                    <strong>{{ auth()->user()->email }}</strong>
+                                </p>
                             </div>
 
                         </div>
                         <div class="mb-4">
                             <button type="submit" id="login-btn"
                                 class="py-2 px-4 tw-bg-blue-600 hover:tw-bg-blue-700 focus:tw-ring-blue-500 focus:tw-ring-offset-blue-200 tw-text-white tw-w-full tw-transition tw-ease-in tw-duration-200 tw-text-center tw-text-base tw-font-semibold tw-shadow-md focus:tw-outline-none focus:tw-ring-2 focus:tw-ring-offset-2 rounded">
-                                Send Reset Password Link
+                                Resend Verification Link
                             </button>
                         </div>
                     </div>
@@ -81,22 +81,17 @@
 
         <script>
             $("#loader").hide();
-            $('#forgot-form').submit(function(e) {
+            $('#verify-form').submit(function(e) {
                 e.preventDefault();
                 $("#loader").show();
 
-                //define variable
-                let email = $('#email').val();
-                let token = '{{ csrf_token() }}';
-
                 //ajax
                 $.ajax({
-                    url: `/forgot`,
+                    url: `/email/verification-notification`,
                     type: "POST",
                     cache: false,
                     data: {
-                        "email": email,
-                        "_token": token
+                        _token: '{{ csrf_token() }}'
                     },
                     success: function(response) {
                         $("#loader").hide();
@@ -129,7 +124,6 @@
                     }
 
                 });
-                $('#forgot-form')[0].reset();
             });
         </script>
     </body>
