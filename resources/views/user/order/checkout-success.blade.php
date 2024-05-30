@@ -65,11 +65,70 @@
 
                                                                         </div>
                                                                     </div>
-                                                                    <a href="javascript:void(0)"
-                                                                        data-id="{{ $cart->id }}" id="btn-comment"
-                                                                        class="btn btn-primary btn-sm !tw-mr-3 mt-2">
-                                                                        Rating and review
-                                                                    </a>
+                                                                    <div id="cart_{{ $cart->id }}">
+
+                                                                        @if ($cart->review == null)
+                                                                            <a href="javascript:void(0)"
+                                                                                data-id="{{ $cart->product->id }}"
+                                                                                id="btn-comment"
+                                                                                data-order="{{ $order->id }}"
+                                                                                data-cart="{{ $cart->id }}"
+                                                                                class="btn btn-primary btn-sm !tw-mr-3 mt-2">
+                                                                                Rating and review
+                                                                            </a>
+                                                                        @else
+                                                                            <div
+                                                                                class="row tw-mb-3 tw-flex tw-justify-between tw-items-center">
+                                                                                <div class="col-8">
+                                                                                    @for ($i = 1; $i <= $cart->review->rating; $i++)
+                                                                                        <div class="tw-mt-2 tw-inline-flex">
+                                                                                            <img src="{{ asset('static/images/review/star-symbol-icon.svg') }}"
+                                                                                                alt=""
+                                                                                                class="tw-h-5 tw-w-5">
+                                                                                        </div>
+                                                                                    @endfor
+                                                                                    @if ($cart->review->rating < 5)
+                                                                                        @for ($i = 1; $i <= 5 - $cart->review->rating; $i++)
+                                                                                            <div
+                                                                                                class="tw-mt-2 tw-inline-flex">
+                                                                                                <img src="{{ asset('static/images/review/star-full-icon.svg') }}"
+                                                                                                    alt=""
+                                                                                                    class="tw-h-5 tw-w-5">
+                                                                                            </div>
+                                                                                        @endfor
+                                                                                    @endif
+                                                                                </div>
+                                                                                <div class="col-4 text-end">
+                                                                                    <a href="javascript:void(0)"
+                                                                                        data-id="{{ $cart->review->id }}"
+                                                                                        data-cart="{{ $cart->id }}"
+                                                                                        data-order="{{ $order->id }}"
+                                                                                        data-product="{{ $cart->product->id }}"
+                                                                                        id="btn-edit"
+                                                                                        class="!tw-mr-3 mt-2 !tw-text-xs">
+                                                                                        Edit
+                                                                                    </a>
+                                                                                    <a href="javascript:void(0)"
+                                                                                        data-id="{{ $cart->review->id }}"
+                                                                                        data-cart="{{ $cart->id }}"
+                                                                                        data-order="{{ $order->id }}"
+                                                                                        data-product="{{ $cart->product->id }}"
+                                                                                        id="btn-delete"
+                                                                                        class="!tw-mr-3 mt-2 !tw-text-red-500 hover:!tw-text-red-700 !tw-text-xs">
+                                                                                        Delete
+                                                                                    </a>
+                                                                                </div>
+                                                                            </div>
+
+                                                                            @if ($cart->review->comment)
+                                                                                <p
+                                                                                    class="!tw-text-xs tw-mt-1 tw-text-gray-400">
+                                                                                    {{ $cart->review->comment }}
+                                                                                </p>
+                                                                            @endif
+                                                                        @endif
+                                                                    </div>
+
                                                                 </div>
                                                             </li>
                                                         @endforeach
@@ -114,6 +173,7 @@
 
     @include('layouts.loader')
     @include('layouts.modal.modal-comment')
+    @include('layouts.modal.modal-comment-edit')
 @endSection
 @section('css')
     <style>
@@ -121,68 +181,70 @@
             display: none;
         }
     </style>
+    @vite(['resources/js/pages/rater-js.js'])
 @endSection
 
 @section('js')
     <script>
         $('#loader').hide();
-        $(document).on('click', '#btn-comment', function() {
+        $(document).on('click', '#btn-delete', function() {
             let id = $(this).data('id');
-            $("#modal-comment").modal('show');
+            let cart = $(this).data('cart');
+            let order = $(this).data('order');
+            let product = $(this).data('product');
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $('#loader').show();
+                    $.ajax({
+                        url: `/review/delete/${id}`,
+                        type: 'DELETE',
+                        data: {
+                            "_token": "{{ csrf_token() }}"
+                        },
+                        success: function(response) {
+                            $('#loader').hide();
+                            if (response.success) {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Success',
+                                    text: response.message,
+                                })
+                                $(`#cart_${cart}`).empty();
+                                let reviewContent = `
+                                <a href="javascript:void(0)"
+                                data-id="${product}"
+                                id="btn-comment"
+                                data-order="${order}"
+                                data-cart="${cart}"
+                                class="btn btn-primary btn-sm !tw-mr-3 mt-2">
+                                Rating and review
+                                </a>
+                                `
+                                $(`#cart_${cart}`).html(reviewContent);
+
+                            }
+                        },
+                        error: function(response) {
+                            $('#loader').hide();
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Oops...',
+                                text: "Something went wrong!",
+                                showConfirmButton: true,
+                            })
+                        }
+                    })
+                }
+            })
+
         })
-        // $(document).ready(function() {
-        //     $(document).on('click', '#btn-comment', function() {
-        //         let id = $(this).data('id');
-        //         $('#loader').show();
-        //         $.ajax({
-        //             url: `/comment/${id}`,
-        //             type: 'GET',
-        //             success: function(response) {
-        //                 $('#loader').hide();
-
-        //                 // Clear previous content
-        //                 $('#cart-items').empty();
-        //                 $('#note').text('');
-        //                 $('#total-price').text('');
-
-        //                 // Insert new content
-        //                 response.carts.forEach(cart => {
-        //                     $('#cart-items').append(`
-    //                 <div class="col-md-6">
-    //                     <div class="row">
-    //                         <div class="col-md-2 tw-font-bold">
-    //                             ${cart.quantity}
-    //                         </div>
-    //                         <div class="col-md-10">
-    //                             ${cart.product.product_name}
-    //                         </div>
-    //                     </div>
-    //                 </div>
-    //                 <div class="col-md-6">
-    //                     <div class="row">
-    //                         <div class="col-md-6 !tw-text-xs">
-    //                             &#64;Rp${cart.product.price.toLocaleString('id-ID')}
-    //                         </div>
-    //                         <div class="col-md-6 tw-font-bold">
-    //                             Rp${cart.cart_total.toLocaleString('id-ID')}
-    //                         </div>
-    //                     </div>
-    //                 </div>
-    //             `);
-        //                 });
-
-        //                 $('#note').text(response.order.note);
-        //                 $('#total-price').text(
-        //                     `Rp${response.order.total_price.toLocaleString('id-ID')}`);
-
-        //                 $('#modal-order').modal('show');
-        //             },
-        //             error: function(xhr, status, error) {
-        //                 $('#loader').hide();
-        //                 console.error('AJAX Error:', error);
-        //             }
-        //         });
-        //     })
-        // });
     </script>
 @endSection

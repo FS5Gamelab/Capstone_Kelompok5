@@ -110,7 +110,7 @@ class OrderController extends Controller
     }
     public function checkoutPrepare()
     {
-        $orders = Order::where('user_id', auth()->user()->id)->where('status', 'prepare')->get();
+        $orders = Order::where('user_id', auth()->user()->id)->where('status', 'prepare')->orWhere('status', 'deliver')->get();
 
         $carts = [];
         foreach ($orders as $order) {

@@ -6,7 +6,6 @@ use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-
 class Cart extends Model
 {
     use HasFactory;
@@ -32,6 +31,11 @@ class Cart extends Model
     public function product()
     {
         return $this->belongsTo(Product::class);
+    }
+
+    public function review()
+    {
+        return $this->belongsTo(Review::class);
     }
 
     public static function boot()

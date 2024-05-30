@@ -36,61 +36,68 @@
                                         <div class="tw-px-4 tw-py-6 sm:tw-px-8 sm:tw-py-10">
                                             <div class="tw-flow-root mb-3">
                                                 <ul class="tw--my-8">
-                                                    <div id="index">
-                                                        <li
-                                                            class="tw-flex tw-flex-col tw-space-y-3 tw-py-6 tw-text-left lg:tw-flex-row lg:tw-space-x-5 lg:tw-space-y-0">
-                                                            <div class="tw-shrink-0">
-                                                                <img class="tw-h-24 tw-w-24 tw-max-w-full tw-rounded-lg tw-object-cover"
-                                                                    alt=""
-                                                                    src="{{ asset('/static/images/samples/1.png') }}" />
-                                                            </div>
+                                                    <div id="index_{{ $order->id }}">
+                                                        <p>{{ $carts[$index]->count() }} item(s)</p>
+                                                        @foreach ($carts[$index] as $cart)
+                                                            <li
+                                                                class="tw-flex tw-flex-col tw-space-y-3 tw-py-6 tw-text-left lg:tw-flex-row lg:tw-space-x-5 lg:tw-space-y-0">
+                                                                <div class="tw-shrink-0">
+                                                                    <img class="tw-h-24 tw-w-24 tw-max-w-full tw-rounded-lg tw-object-cover"
+                                                                        alt=""
+                                                                        src="{{ asset('/static/images/samples/1.png') }}" />
+                                                                </div>
 
-                                                            <div
-                                                                class="tw-relative tw-flex tw-flex-1 tw-flex-col tw-justify-between">
-                                                                <div class="sm:tw-col-gap-5 sm:tw-grid sm:tw-grid-cols-2">
-                                                                    <div class="tw-pr-8 sm:tw-pr-5">
-                                                                        <p
-                                                                            class="tw-text-base tw-font-semibold tw-text-gray-900 dark:tw-text-white">
-                                                                            Nama produk
-                                                                        </p>
-                                                                        <p
-                                                                            class="tw-mx-0 tw-mt-1 tw-mb-0 tw-text-sm tw-text-gray-400">
-                                                                            &#64;Rp400.000
-                                                                        </p>
-                                                                        <div class="sm:tw-order-1 mt-2">
-                                                                            <div
-                                                                                class="tw-mx-auto tw-flex tw-h-8 tw-text-gray-600">
-
+                                                                <div
+                                                                    class="tw-relative tw-flex tw-flex-1 tw-flex-col tw-justify-between">
+                                                                    <div
+                                                                        class="sm:tw-col-gap-5 sm:tw-grid sm:tw-grid-cols-2">
+                                                                        <div class="tw-pr-8 sm:tw-pr-5">
+                                                                            <p
+                                                                                class="tw-text-base tw-font-semibold tw-text-gray-900 dark:tw-text-white">
+                                                                                {{ $cart->product->product_name }}
+                                                                            </p>
+                                                                            <p
+                                                                                class="tw-mx-0 tw-mt-1 tw-mb-0 tw-text-sm tw-text-gray-400">
+                                                                                &#64;Rp{{ number_format($cart->product->price, 0, ',', '.') }}
+                                                                            </p>
+                                                                            <div class="sm:tw-order-1 mt-2">
                                                                                 <div
-                                                                                    class="tw-flex tw-w-10 tw-items-center tw-justify-center tw-text-xs tw-uppercase tw-transition dark:tw-text-white">
-                                                                                    x1
+                                                                                    class="tw-mx-auto tw-flex tw-h-8 tw-text-gray-600">
+
+                                                                                    <div
+                                                                                        class="tw-flex tw-w-10 tw-items-center tw-justify-center tw-text-xs tw-uppercase tw-transition dark:tw-text-white">
+                                                                                        x{{ $cart->quantity }}
+                                                                                    </div>
                                                                                 </div>
                                                                             </div>
                                                                         </div>
+
+                                                                        <div
+                                                                            class="tw-mt-4 tw-flex tw-items-end tw-justify-between sm:tw-mt-0 sm:tw-items-start sm:tw-justify-end">
+                                                                            <p
+                                                                                class="tw-shrink-0 tw-w-20 tw-text-base tw-font-semibold tw-text-gray-900 dark:tw-text-gray-200 sm:tw-order-2 sm:tw-ml-8 sm:tw-text-right tw-text-nowrap tw-mr-4">
+
+                                                                                Rp{{ number_format($cart->cart_total, 0, ',', '.') }}
+                                                                            </p>
+
+
+                                                                        </div>
                                                                     </div>
 
-                                                                    <div
-                                                                        class="tw-mt-4 tw-flex tw-items-end tw-justify-between sm:tw-mt-0 sm:tw-items-start sm:tw-justify-end">
-                                                                        <p
-                                                                            class="tw-shrink-0 tw-w-20 tw-text-base tw-font-semibold tw-text-gray-900 dark:tw-text-gray-200 sm:tw-order-2 sm:tw-ml-8 sm:tw-text-right tw-text-nowrap tw-mr-4">
-
-                                                                            Rp. 400.000
-                                                                        </p>
-
-
-                                                                    </div>
                                                                 </div>
-                                                            </div>
-                                                        </li>
+                                                            </li>
+                                                        @endforeach
                                                     </div>
                                                 </ul>
                                             </div>
-                                            <div class="!tw-mt-16">
-                                                <p class="!tw-text-sm">Note:</p>
-                                                <p class="!tw-text-xs mt-2">
-                                                    Notenyaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-                                                </p>
-                                            </div>
+                                            @if ($order->note)
+                                                <div class="!tw-mt-16">
+                                                    <p class="!tw-text-sm">Note:</p>
+                                                    <p class="!tw-text-xs mt-2">
+                                                        {{ $order->note }}
+                                                    </p>
+                                                </div>
+                                            @endif
 
                                         </div>
                                     </div>
@@ -100,8 +107,7 @@
                                 <div class="tw-mt-3 tw-flex tw-items-center tw-justify-between py-2">
                                     <p class="tw-text-sm tw-font-medium tw-text-gray-400">Total</p>
                                     <p class="tw-text-2xl tw-font-semibold tw-text-gray-900 dark:tw-text-gray-200">
-                                        Rp.
-                                        400.000
+                                        Rp{{ number_format($order->total_price, 0, ',', '.') }}
                                     </p>
                                 </div>
                             </div>

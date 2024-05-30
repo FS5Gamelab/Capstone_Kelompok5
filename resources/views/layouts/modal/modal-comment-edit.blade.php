@@ -1,8 +1,9 @@
-<div class="modal fade" id="modal-comment" tabindex="-1" role="dialog" aria-labelledby="modalOrderLabel" aria-hidden="true">
+<div class="modal fade" id="modal-comment-edit" tabindex="-1" role="dialog" aria-labelledby="modalOrderLabel"
+    aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="modalOrderLabel">Product Comment</h5>
+                <h5 class="modal-title" id="modalOrderLabel">Edit Comment</h5>
 
             </div>
             <div class="modal-body tw-text-sm">
@@ -11,18 +12,19 @@
                         <div class="tw-w-full">
                             <div class="row">
                                 <div class="col-12">
-                                    <div id="basic">
+                                    <div id="basic-edit">
                                     </div>
                                 </div>
                                 <div class="row tw-flex tw-items-center mt-3">
                                     <div class="col-12">
-                                        <textarea name="comment" id="comment" placeholder="comment"
+                                        <textarea name="comment" id="comment-edit" placeholder="comment"
                                             class="tw-border tw-rounded-lg tw-px-3 py-2 mt-1 text-start tw-text-sm tw-w-full dark:tw-bg-gray-700 tw-text-black dark:tw-text-white focus:tw-border-blue-500 focus:tw-ring-4 focus:tw-ring-blue-500"></textarea>
                                     </div>
-                                    <input type="hidden" name="product_id" id="product_id">
+                                    <input type="hidden" name="rating" id="rating-edit">
+                                    <input type="hidden" name="review_id" id="review_id">
                                     <input type="hidden" name="cart_id" id="cart_id">
                                     <input type="hidden" name="order_id" id="order_id">
-                                    <input type="hidden" name="rating" id="rating">
+                                    <input type="hidden" name="product_id" id="product_id">
                                 </div>
                             </div>
                         </div>
@@ -35,7 +37,7 @@
                     <i class="bx bx-x d-block d-sm-none"></i>
                     <span class="d-none d-sm-block">Close</span>
                 </button>
-                <button id="btn-submit" class="btn btn-primary !tw-mr-3">
+                <button id="btn-submit-edit" class="btn btn-primary !tw-mr-3">
                     Submit
                 </button>
             </div>
@@ -43,30 +45,28 @@
     </div>
 </div>
 
-@vite(['resources/js/pages/rater-js.js'])
 
 <script>
-    $("#btn-submit").click(function() {
-        let id = $("#product_id").val();
-        let order = $("#order_id").val();
-        let rating = $("#rating").val();
-        let comment = $("#comment").val();
+    $("#btn-submit-edit").click(function() {
+        let id = $("#review_id").val();
         let cart = $("#cart_id").val();
+        let product = $("#product_id").val();
+        let order = $("#order_id").val();
+        let rating = $("#rating-edit").val();
+        let comment = $("#comment-edit").val();
         let token = $("meta[name='csrf-token']").attr("content");
-        $("#modal-comment").modal("hide");
+        $("#modal-comment-edit").modal("hide");
         $("#loader").show();
-
         $.ajax({
-            url: `/review`,
-            type: "POST",
+            url: `/review/update/${id}`,
+            type: "PUT",
             data: {
-                "product_id": id,
-                "order_id": order,
                 "rating": rating,
                 "comment": comment,
                 "_token": token
             },
             success: function(response) {
+
                 $("#loader").hide();
                 if (response.success) {
                     Swal.fire({
@@ -75,7 +75,7 @@
                         text: response.message,
                         timer: 2000,
                     })
-                    // Update the HTML content dynamically
+
                     let stars = '';
                     for (let i = 1; i <= rating; i++) {
                         stars += `<div class="tw-mt-2 tw-inline-flex">
@@ -96,8 +96,8 @@
                             ${stars}
                         </div>
                         <div class="col-4 text-end">
-                            <a href="javascript:void(0)" data-id="${response.review.id}" data-cart="${cart}" data-order="${order}" data-product="${id}" id="btn-edit" class="!tw-mr-3 mt-2 !tw-text-xs">Edit</a>
-                            <a href="javascript:void(0)" data-id="${response.review.id}" data-cart="${cart}" data-order="${order}" data-product="${id}" id="btn-delete" class="!tw-mr-3 mt-2 !tw-text-red-500 hover:!tw-text-red-700 !tw-text-xs">Delete</a>
+                            <a href="javascript:void(0)" data-id="${response.review.id}" data-cart="${cart}" data-order="${order}" data-product="${product}" id="btn-edit" class="!tw-mr-3 mt-2 !tw-text-xs">Edit</a>
+                            <a href="javascript:void(0)" data-id="${response.review.id}" data-cart="${cart}" data-order="${order}" data-product="${product}" id="btn-delete" class="!tw-mr-3 mt-2 !tw-text-red-500 hover:!tw-text-red-700 !tw-text-xs">Delete</a>
                         </div>
                     </div>
                     <p class="!tw-text-xs tw-mt-1 tw-text-gray-400">
@@ -108,6 +108,7 @@
                     $(`#cart_${cart}`).html(reviewContent);
 
                 } else {
+                    $("#loader").hide();
                     Swal.fire({
                         icon: 'error',
                         title: 'Error',
@@ -127,5 +128,5 @@
                 })
             }
         });
-    });
+    })
 </script>

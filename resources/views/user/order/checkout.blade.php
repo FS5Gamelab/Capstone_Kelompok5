@@ -175,11 +175,7 @@
             })
         });
     </script>
-@endSection
-
-@section('js')
     <script>
-        $('#loader').hide();
         $(document).ready(function() {
             $(document).on('click', '#btn-detail', function() {
                 let id = $(this).data('id');
@@ -235,4 +231,4 @@
             })
         });
     </script>
-@endsection
+@endSection

@@ -7,6 +7,7 @@ use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\OAuthController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ReservationController;
+use App\Http\Controllers\ReviewController;
 use App\Livewire\RealtimeMessage;
 use App\Models\Order;
 use Illuminate\Support\Facades\Route;
@@ -65,6 +66,12 @@ Route::middleware(['auth', 'auth.session', 'verified'])->group(function () {
     Route::put('/profile/update', [CustomerController::class, 'profileUpdate'])->name('profile-update');
     Route::put('/security/update', [CustomerController::class, 'securityUpdate'])->name('security-update');
     Route::post('/image/update', [CustomerController::class, 'imageUpdate'])->name('image-update');
+
+    Route::get('/review', [ReviewController::class, 'create'])->name('review.create');
+    Route::post('/review', [ReviewController::class, 'store'])->name('review.store');
+    Route::get('/review/edit/{id}', [ReviewController::class, 'edit'])->name('review.edit');
+    Route::put('/review/update/{id}', [ReviewController::class, 'update'])->name('review.update');
+    Route::delete('/review/delete/{id}', [ReviewController::class, 'destroy'])->name('review.delete');
 });
 
 

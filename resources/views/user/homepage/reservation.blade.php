@@ -29,7 +29,7 @@
                             </div>
                             <div class="col-12">
                                 <div class="form-group mandatory">
-                                    <label for="people" class="form-label">People</label>
+                                    <label for="people" class="form-label">People (max:10)</label>
                                     <input type="number" id="people" class="form-control" name="people"
                                         placeholder="Number of people" min="1" max="10">
                                     <span class="tw-text-red-500 tw-text-xs mt-1 " id="people-error"></span>
@@ -93,6 +93,26 @@
         });
     </script>
     <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const peopleInput = document.getElementById('people');
+
+            peopleInput.addEventListener('input', function(event) {
+                let value = this.value;
+
+                // Pastikan hanya angka yang diizinkan
+                value = value.replace(/[^0-9]/g, '');
+
+                // Jika nilai lebih dari 10, setel menjadi 10
+                if (value > 10) {
+                    value = 10;
+                }
+
+                // Setel nilai input dengan nilai yang divalidasi
+                this.value = value;
+            });
+        });
+    </script>
+    <script>
         flatpickr(".flatpickr-no-config", {
             dateFormat: "d-M-Y",
             minDate: "today",
@@ -134,7 +154,7 @@
                 data: formData,
                 success: function(response) {
                     $("#loader").hide();
-                    if (response.success) {
+                    if (response.success == true) {
                         Swal.fire({
                             icon: 'success',
                             title: `${response.message}`,
@@ -143,7 +163,7 @@
                         });
                         //empty
                         $('#reservation-form')[0].reset();
-                    } else {
+                    } else if (response.success == false) {
                         Swal.fire({
                             icon: 'error',
                             title: `${response.message}`,
@@ -157,6 +177,13 @@
                         $('#date-error').text(errors.date ? errors
                             .date[0] : '');
                         $('#time-error').text(errors.time ? errors.time[0] : '');
+                    } else if (response.success == "same") {
+                        Swal.fire({
+                            icon: 'error',
+                            title: `${response.message}`,
+                            showConfirmButton: false,
+                            timer: 2000
+                        })
                     }
 
                 },
