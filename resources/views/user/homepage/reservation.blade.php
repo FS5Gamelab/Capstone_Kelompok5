@@ -115,7 +115,8 @@
     <script>
         flatpickr(".flatpickr-no-config", {
             dateFormat: "d-M-Y",
-            minDate: "today",
+            minDate: new Date().fp_incr(1),
+            maxDate: new Date().fp_incr(30),
             disableMobile: "true"
 
         });

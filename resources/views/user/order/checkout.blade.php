@@ -8,6 +8,7 @@
             <div class="col-md-7 col-lg-8 mt-2">
                 <div class="card">
                     <div class="card-body">
+
                         <table class="table table-striped table-hover" id="table1">
                             <thead>
                                 <tr>
@@ -53,6 +54,8 @@
                                                 @elseif ($order->status == 'deliver')
                                                     <span class="badge bg-primary">{{ $order->status }}</span>
                                                 @elseif ($order->status == 'failed')
+                                                    <span class="badge bg-danger">{{ $order->status }}</span>
+                                                @elseif ($order->status == 'cancelled')
                                                     <span class="badge bg-danger">{{ $order->status }}</span>
                                                 @elseif ($order->status == 'success')
                                                     <span class="badge bg-success">{{ $order->status }}</span>
@@ -216,7 +219,10 @@
                     </div>
                 `);
                         });
-
+                        if (response.order.status == 'cancel') {
+                            $("#cancel").show();
+                            $("#reason").text(response.order.cancel_reason);
+                        }
                         $('#note').text(response.order.note);
                         $('#total-price').text(
                             `Rp${response.order.total_price.toLocaleString('id-ID')}`);

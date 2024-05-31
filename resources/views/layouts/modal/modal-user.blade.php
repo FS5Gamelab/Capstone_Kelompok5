@@ -36,6 +36,14 @@
                             <div class="col-md-4 text-muted">Note</div>
                             <div class="col-md-8 text-end" id="note"></div>
                         </div>
+
+                        <div class="!tw-mt-5" id="cancel" style="display: none;">
+                            <div class="row d-flex align-items-center tw-justify-between">
+                                <div class="col-md-4 text-muted">Cancel Reason</div>
+                                <div class="col-md-8 text-end" id="reason"></div>
+                            </div>
+                        </div>
+
                         <div
                             class="row d-flex align-items-center tw-justify-between mb-2 !tw-mt-10 tw-border-t tw-border-b py-2">
                             <div class="col-md-4">Total</div>

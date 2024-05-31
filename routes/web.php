@@ -3,11 +3,14 @@
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\OAuthController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ReservationController;
 use App\Http\Controllers\ReviewController;
+use App\Http\Controllers\UserController;
 use App\Livewire\RealtimeMessage;
 use App\Models\Order;
 use Illuminate\Support\Facades\Route;
@@ -45,7 +48,17 @@ Route::middleware(['guest'])->group(function () {
 
 Route::middleware(['auth', 'auth.session', 'verified'])->group(function () {
     Route::get('/admin-dashboard', [AdminController::class, 'index'])->name('dashboard.admin');
-    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
+    Route::get('/users', [UserController::class, 'index'])->name('users');
+
+    Route::get('/categories', [CategoryController::class, 'index'])->name('categories');
+
+    Route::get('/products', [ProductController::class, 'index'])->name('products');
+
+    Route::get('/orders', [OrderController::class, 'index'])->name('orders');
+    Route::put('/orders/{id}/update', [OrderController::class, 'update'])->name('orders.update');
+
+    Route::get('/reservations', [ReservationController::class, 'index'])->name('reservations');
 
     Route::get('/cart', [CartController::class, 'index'])->name('cart');
     Route::post('/checkout', [OrderController::class, 'checkOut'])->name('checkout');
@@ -54,9 +67,9 @@ Route::middleware(['auth', 'auth.session', 'verified'])->group(function () {
     Route::get('/checkout/prepare', [OrderController::class, 'checkoutPrepare'])->name('checkout-prepare');
     Route::get('/checkout/success', [OrderController::class, 'checkoutSuccess'])->name('checkout-success');
     Route::get('/checkout/failed', [OrderController::class, 'checkoutFailed'])->name('checkout-failed');
+    Route::get('/checkout/cancel', [OrderController::class, 'checkoutCancel'])->name('checkout-cancel');
     Route::post('/pay/{id}', [OrderController::class, 'pay'])->name('pay');
     Route::post('/success/{id}', [OrderController::class, 'success'])->name('success');
-    Route::get('/history', [OrderController::class, 'history'])->name('history');
     Route::delete('/cart/{cartId}', [CartController::class, 'delete'])->name('cart.delete');
 
     Route::get('/order/{id}', [OrderController::class, 'detail'])->name('order.detail');
@@ -72,6 +85,8 @@ Route::middleware(['auth', 'auth.session', 'verified'])->group(function () {
     Route::get('/review/edit/{id}', [ReviewController::class, 'edit'])->name('review.edit');
     Route::put('/review/update/{id}', [ReviewController::class, 'update'])->name('review.update');
     Route::delete('/review/delete/{id}', [ReviewController::class, 'destroy'])->name('review.delete');
+
+    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 });
 
 

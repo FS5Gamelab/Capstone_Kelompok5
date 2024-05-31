@@ -138,6 +138,21 @@ class OrderController extends Controller
             'cartCount' => Cart::where('user_id', auth()->user()->id)->where('checked_out', 0)->count()
         ]);
     }
+    public function checkoutCancel()
+    {
+        $orders = Order::where('user_id', auth()->user()->id)->where('status', 'cancelled')->get();
+
+        $carts = [];
+        foreach ($orders as $order) {
+            $cartIds = json_decode($order->cart_id, true);
+            $carts[] = Cart::whereIn('id', $cartIds)->get();
+        }
+        return view('user.order.checkout', [
+            "orders" => $orders,
+            'carts' => $carts,
+            'cartCount' => Cart::where('user_id', auth()->user()->id)->where('checked_out', 0)->count()
+        ]);
+    }
 
     public function detail($id)
     {
@@ -151,7 +166,6 @@ class OrderController extends Controller
                 'id' => $cart->id,
                 'quantity' => $cart->quantity,
                 'cart_total' => $cart->cart_total,
-                'note' => $cart->note,
                 'product' => [
                     'product_name' => $cart->product->product_name,
                     'price' => $cart->product->price
@@ -194,25 +208,31 @@ class OrderController extends Controller
         ]);
     }
 
-    public function history()
+
+    public function index()
     {
-        if (auth()->user()->role == 'admin') {
-            $carts = Cart::where('is_paid', 1)->get();
-        } else {
-            $carts = Cart::where('customer_id', auth()->user()->customer->id)->where('is_paid', 1)->get();
-        }
-        $orders = [];
-        foreach ($carts as $cart) {
-            $orderIds = json_decode($cart->order_id, true);
-            $orders[] = Order::whereIn('id', $orderIds)->get();
-        }
+        $orders = Order::where('status', '!=', null)->where('status', '!=', 'pending')->get();
 
-        // dd($orders);
-        // $orders = Order::where('customer_id', auth()->user()->customer->id)->where('cart_id', '!=', null)->where('checked_out', 1)->get();
-        return view('user.order.history', [
+        $carts = [];
+        foreach ($orders as $order) {
+            $cartIds = json_decode($order->cart_id, true);
+            $carts[] = Cart::whereIn('id', $cartIds)->get();
+        }
+        return view('admin.order.index', [
+            "orders" => $orders,
             'carts' => $carts,
-            "orders" => $orders
+        ]);
+    }
 
+    public function update(Request $request, $id)
+    {
+        $order = Order::findOrFail($id);
+        $order->update([
+            "status" => $request->status,
+            "cancel_reason" => $request->cancel_reason
+        ]);
+        return response()->json([
+            'success' => true,
         ]);
     }
 }

@@ -17,6 +17,7 @@ return new class extends Migration
             $table->json('cart_id');
             $table->boolean('is_paid')->default(false);
             $table->integer('total_price');
+            $table->string('cancel_reason')->nullable();
             $table->string('note')->nullable();
             $table->string('status')->nullable();
             $table->string('snap_token')->nullable();

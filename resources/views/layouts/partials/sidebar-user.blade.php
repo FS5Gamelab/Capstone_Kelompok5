@@ -47,6 +47,13 @@
                         <span>Failed</span>
                     </a>
                 </li>
+                <li
+                    class="sidebar-item !tw-text-nowrap {{ Route::currentRouteName() == 'checkout-cancel' ? 'active' : '' }}">
+                    <a href="/checkout/cancel" class='sidebar-link'>
+                        <i class="bi bi-cart-x-fill"></i>
+                        <span>Cancelled</span>
+                    </a>
+                </li>
             </ul>
         </div>
     </div>

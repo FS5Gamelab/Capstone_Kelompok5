@@ -102,7 +102,7 @@ class CustomerController extends Controller
             $originalName = pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME);
             $imageName = now()->format('YmdHis') . '-' . $originalName . '.' . $extension;
             // $image->move(public_path('user/profile-image'), $imageName);
-            $profileImage = $image->storeAs('user/profile-image', $imageName, 'public');
+            $profileImage = $image->storeAs('uploads/profile-image', $imageName, 'public');
             User::where('id', auth()->user()->id)->update(['profile_image' => $profileImage]);
             return response()->json([
                 'success' => true,

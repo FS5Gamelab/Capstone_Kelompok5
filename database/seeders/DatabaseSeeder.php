@@ -41,7 +41,6 @@ class DatabaseSeeder extends Seeder
             "product_image" => "test.png",
             "in_stock" => true,
             "user_id" => $user2->id,
-            "quantity" => 5
         ]);
 
         $product2 = Product::create([
@@ -53,7 +52,6 @@ class DatabaseSeeder extends Seeder
             "product_image" => "test.png",
             "in_stock" => true,
             "user_id" => $user2->id,
-            "quantity" => 3
         ]);
     }
 }

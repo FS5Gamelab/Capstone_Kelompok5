@@ -42,16 +42,41 @@
         <div class="sidebar-menu">
             <ul class="menu">
                 <li class="sidebar-title">Menu</li>
-                <li class="sidebar-item">
+                <li class="sidebar-item {{ Route::currentRouteName() == 'dashboard.admin' ? 'active' : '' }}">
                     <a href="/admin-dashboard" class='sidebar-link'>
                         <i class="bi bi-grid-fill"></i>
                         <span>Dashboard</span>
                     </a>
-                    <ul class="submenu">
-                        <li class="submenu-item">
-                            <a href="#" class="submenu-link">sub</a>
-                        </li>
-                    </ul>
+                </li>
+                <li class="sidebar-item {{ Route::currentRouteName() == 'users' ? 'active' : '' }}">
+                    <a href="/users" class='sidebar-link'>
+                        <i class="bi bi-person-fill"></i>
+                        <span>Users</span>
+                    </a>
+                </li>
+                <li class="sidebar-item {{ Route::currentRouteName() == 'categories' ? 'active' : '' }}">
+                    <a href="/categories" class='sidebar-link'>
+                        <i class="bi bi-card-list"></i>
+                        <span>Categories</span>
+                    </a>
+                </li>
+                <li class="sidebar-item {{ Route::currentRouteName() == 'products' ? 'active' : '' }}">
+                    <a href="/products" class='sidebar-link'>
+                        <i class="bi bi-shop"></i>
+                        <span>Products</span>
+                    </a>
+                </li>
+                <li class="sidebar-item {{ Route::currentRouteName() == 'orders' ? 'active' : '' }}">
+                    <a href="/orders" class='sidebar-link'>
+                        <i class="bi bi-cart-fill"></i>
+                        <span>Orders</span>
+                    </a>
+                </li>
+                <li class="sidebar-item {{ Route::currentRouteName() == 'reservations' ? 'active' : '' }}">
+                    <a href="/reservations" class='sidebar-link'>
+                        <i class="bi bi-calendar-event"></i>
+                        <span>Reservations</span>
+                    </a>
                 </li>
             </ul>
         </div>
