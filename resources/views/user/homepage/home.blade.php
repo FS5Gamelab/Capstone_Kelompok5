@@ -35,6 +35,32 @@
                 <div class="col-md-6">
                     <img class="img-fluid rounded" src="{{ asset('static/images/samples/sate.png') }}" alt="" id="gambar">
                 </div>
+                <div class="col-md-12">
+                    <h2 class="h2 text-center mb-4">Layanan Kami</h2>
+                    <div class="row justify-content-center">
+                        <div class="col-md-3">
+                            <img src="{{ asset('static/images/illustration/4.svg')}}" alt="">
+                            <h4 class="h4 text-center mt-3">Pelayanan Berkualitas</h4>
+                            <p class="text-center">Nikmati layanan terbaik dari staf kami yang ramah dan profesional.</p>
+                        </div>
+                        <div class="col-md-3">
+                            <img src="{{ asset('static/images/illustration/1.svg')}}" alt="">
+                            <h4 class="h4 text-center mt-3">Pesan Kapanpun</h4>
+                            <p class="text-center">Dengan layanan online, Anda bisa memesan makanan favorit kapan saja dan di mana saja.</p>
+                        </div>
+                        <div class="col-md-3">
+                            <img src="{{ asset('static/images/illustration/2.svg')}}" alt="">
+                            <h4 class="h4 text-center mt-3">Lacak Pesanan Anda</h4>
+                            <p class="text-center">Pantau status pesanan Anda secara real-time dan ketahui waktu kedatangan.</p>
+                        </div>
+                        <div class="col-md-3">
+                            <img src="{{ asset('static/images/illustration/3.svg')}}" alt="">
+                            <h4 class="h4 text-center mt-3">Booking Tempat</h4>
+                            <p class="text-center">Reservasi tempat online untuk memastikan meja terbaik di restoran kami.</p>
+                        </div>
+                        
+                    </div>
+                </div>
             </div>
         </div>
     </div>
