@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->unsignedBigInteger('user_id');
-            $table->json('cart_id');
+            $table->unsignedBigInteger('user_id')->nullable();
+            $table->json('cart_id')->nullable();
             $table->boolean('is_paid')->default(false);
             $table->integer('total_price');
             $table->string('cancel_reason')->nullable();
@@ -22,7 +22,7 @@ return new class extends Migration
             $table->string('status')->nullable();
             $table->string('snap_token')->nullable();
             $table->timestamps();
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete(null);
         });
     }
 

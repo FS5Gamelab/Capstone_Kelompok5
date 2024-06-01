@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('carts', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->uuid('product_id');
-            $table->unsignedBigInteger('user_id');
+            $table->uuid('product_id')->nullable();
+            $table->unsignedBigInteger('user_id')->nullable();
             $table->uuid('order_id')->nullable();
             $table->uuid('review_id')->nullable();
             $table->integer('quantity')->default(1);
@@ -23,8 +23,8 @@ return new class extends Migration
             $table->timestamps();
 
 
-            $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('product_id')->references('id')->on('products')->onDelete(null);
+            $table->foreign('user_id')->references('id')->on('users')->onDelete(null);
             $table->foreign('review_id')->references('id')->on('reviews');
         });
     }

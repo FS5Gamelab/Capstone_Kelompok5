@@ -26,6 +26,10 @@ class DatabaseSeeder extends Seeder
             'email' => 'admin@gmail.com',
             "role" => "admin",
         ]);
+        $user3 = User::factory()->create([
+            'email' => 'superadmin@gmail.com',
+            "role" => "super admin",
+        ]);
 
         $category = Category::create([
             "category_name" => "Test Category",
@@ -38,7 +42,6 @@ class DatabaseSeeder extends Seeder
             "type" => "Test Type",
             "description" => "Test Description",
             "price" => rand(100000, 999999),
-            "product_image" => "test.png",
             "in_stock" => true,
             "user_id" => $user2->id,
         ]);
@@ -49,7 +52,6 @@ class DatabaseSeeder extends Seeder
             "type" => "Test Type 2",
             "description" => "Test Description 2",
             "price" => rand(100000, 999999),
-            "product_image" => "test.png",
             "in_stock" => true,
             "user_id" => $user2->id,
         ]);

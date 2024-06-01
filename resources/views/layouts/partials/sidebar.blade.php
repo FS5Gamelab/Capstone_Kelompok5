@@ -48,31 +48,33 @@
                         <span>Dashboard</span>
                     </a>
                 </li>
-                <li class="sidebar-item {{ Route::currentRouteName() == 'users' ? 'active' : '' }}">
-                    <a href="/users" class='sidebar-link'>
-                        <i class="bi bi-person-fill"></i>
-                        <span>Users</span>
-                    </a>
-                </li>
-                <li class="sidebar-item {{ Route::currentRouteName() == 'categories' ? 'active' : '' }}">
+                @if (Auth::user()->role == 'super admin')
+                    <li class="sidebar-item {{ Request::is('users*') ? 'active' : '' }}">
+                        <a href="/users" class='sidebar-link'>
+                            <i class="bi bi-person-fill"></i>
+                            <span>Users</span>
+                        </a>
+                    </li>
+                @endif
+                <li class="sidebar-item {{ Request::is('categories*') ? 'active' : '' }}">
                     <a href="/categories" class='sidebar-link'>
                         <i class="bi bi-card-list"></i>
                         <span>Categories</span>
                     </a>
                 </li>
-                <li class="sidebar-item {{ Route::currentRouteName() == 'products' ? 'active' : '' }}">
+                <li class="sidebar-item {{ Request::is('products*') ? 'active' : '' }}">
                     <a href="/products" class='sidebar-link'>
                         <i class="bi bi-shop"></i>
                         <span>Products</span>
                     </a>
                 </li>
-                <li class="sidebar-item {{ Route::currentRouteName() == 'orders' ? 'active' : '' }}">
+                <li class="sidebar-item {{ Request::is('orders*') ? 'active' : '' }}">
                     <a href="/orders" class='sidebar-link'>
                         <i class="bi bi-cart-fill"></i>
                         <span>Orders</span>
                     </a>
                 </li>
-                <li class="sidebar-item {{ Route::currentRouteName() == 'reservations' ? 'active' : '' }}">
+                <li class="sidebar-item {{ Request::is('reservations*') ? 'active' : '' }}">
                     <a href="/reservations" class='sidebar-link'>
                         <i class="bi bi-calendar-event"></i>
                         <span>Reservations</span>

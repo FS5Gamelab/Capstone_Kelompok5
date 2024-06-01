@@ -28,7 +28,7 @@ Route::post('/reservation', [ReservationController::class, 'store'])->name('rese
 
 
 Route::get('/dashboard', function () {
-    return !auth()->user() ? redirect('/homepage') : (auth()->user()->role == 'admin' ? redirect('/admin-dashboard') : redirect('/homepage'));
+    return !auth()->user() ? redirect('/homepage') : (auth()->user()->role == 'admin' || auth()->user()->role == 'super admin' ? redirect('/admin-dashboard') : redirect('/homepage'));
 });
 
 Route::middleware(['guest'])->group(function () {
@@ -50,10 +50,32 @@ Route::middleware(['auth', 'auth.session', 'verified'])->group(function () {
     Route::get('/admin-dashboard', [AdminController::class, 'index'])->name('dashboard.admin');
 
     Route::get('/users', [UserController::class, 'index'])->name('users');
+    Route::post('/users/create', [UserController::class, 'store'])->name('users.store');
+    Route::delete('/users/{id}', [UserController::class, 'destroy'])->name('users.delete');
+
+    Route::get('/users/deleted', [UserController::class, 'deleted'])->name('users.deleted');
+    Route::post('/users/restore/{id}', [UserController::class, 'restore'])->name('users.restore');
+    Route::delete('/users/force-delete/{id}', [UserController::class, 'forceDelete'])->name('users.force-delete');
 
     Route::get('/categories', [CategoryController::class, 'index'])->name('categories');
+    Route::post('/categories/create', [CategoryController::class, 'store'])->name('categories.store');
+    Route::get('/categories/edit/{id}', [CategoryController::class, 'edit'])->name('categories.edit');
+    Route::put('/categories/update/{id}', [CategoryController::class, 'update'])->name('categories.update');
+    Route::delete('/categories/{id}', [CategoryController::class, 'destroy'])->name('categories.delete');
+    Route::get('/categories/deleted', [CategoryController::class, 'deleted'])->name('categories.deleted');
+    Route::post('/categories/restore/{id}', [CategoryController::class, 'restore'])->name('categories.restore');
+    Route::delete('/categories/force-delete/{id}', [CategoryController::class, 'forceDelete'])->name('categories.force-delete');
 
     Route::get('/products', [ProductController::class, 'index'])->name('products');
+    Route::post('/products/create', [ProductController::class, 'store'])->name('products.store');
+    Route::get('/products/{id}', [ProductController::class, 'show'])->name('products.show');
+    Route::get('products/edit/{id}', [ProductController::class, 'edit'])->name('products.edit');
+    Route::put('/products/{id}/update', [ProductController::class, 'update'])->name('products.update');
+    Route::delete('/products/delete/{id}', [ProductController::class, 'destroy'])->name('products.delete');
+
+    Route::get('/products/trash/deleted', [ProductController::class, 'trash'])->name('products.deleted');
+    Route::post('/products/restore/{id}', [ProductController::class, 'restore'])->name('products.restore');
+    Route::delete('/products/force-delete/{id}', [ProductController::class, 'forceDelete'])->name('products.force-delete');
 
     Route::get('/orders', [OrderController::class, 'index'])->name('orders');
     Route::put('/orders/{id}/update', [OrderController::class, 'update'])->name('orders.update');
@@ -85,13 +107,13 @@ Route::middleware(['auth', 'auth.session', 'verified'])->group(function () {
     Route::get('/review/edit/{id}', [ReviewController::class, 'edit'])->name('review.edit');
     Route::put('/review/update/{id}', [ReviewController::class, 'update'])->name('review.update');
     Route::delete('/review/delete/{id}', [ReviewController::class, 'destroy'])->name('review.delete');
-
-    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 });
 
 
 Route::middleware('auth')->group(function () {
     Route::post('/add-to-cart', [CartController::class, 'addToCart'])->name('add-to-cart');
+    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
 
     Route::get('/verify-email', [AuthController::class, 'notice'])
         ->name('verification.notice');

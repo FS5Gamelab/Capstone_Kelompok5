@@ -130,6 +130,7 @@ class AuthController extends Controller
                 'password' => bcrypt($request->password),
                 'phone' => $request->phone,
                 'remember_token' => Str::random(10),
+                "last_login" => now()
             ]);
             Auth::login($user);
             return response()->json([
@@ -146,6 +147,9 @@ class AuthController extends Controller
         ]);
 
         if (Auth::attempt($credentials)) {
+            User::where('email', $request->email)->update([
+                "last_login" => now()
+            ]);
             $request->session()->regenerate();
             Auth::logoutOtherDevices($request->password);
             // if (Auth::user()->role == 'admin') {

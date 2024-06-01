@@ -24,30 +24,47 @@ class OAuthController extends Controller
         }
         $google_user = Socialite::driver('google')->user();
         $registeredUser = User::where('google_id', $google_user->id)->first();
+        $registeredEmail = User::where('email', $google_user->email)->first();
         // dd($registeredUser);
 
         if (!$registeredUser) {
-            $user = User::updateOrCreate([
-                'google_id' => $google_user->id,
-            ], [
-                'email' => $google_user->email,
-                'name' => $google_user->name,
-                'remember_token' => Str::random(10),
-                'email_verified_at' => now(),
-            ]);
+            if ($registeredEmail) {
+                $user = User::where('email', $google_user->email)->update([
+                    "email_verified_at" => now(),
+                    "google_id" => $google_user->id,
+                    "last_login" => now()
+                ]);
 
-            Auth::login($user);
-            if (Auth::user()->role == 'admin') {
+                $user = User::where('email', $google_user->email)->first();
+
+                Auth::login($user);
+            } else {
+                $user = User::create([
+                    "email" => $google_user->email,
+                    "name" => $google_user->name,
+                    "remember_token" => Str::random(10),
+                    "email_verified_at" => now(),
+                    "google_id" => $google_user->id,
+                    "last_login" => now()
+                ]);
+
+                Auth::login($user);
+            }
+
+            if (Auth::user()->role == 'admin' || Auth::user()->role == 'super admin') {
                 return to_route('dashboard.admin');
             } else {
-                return to_route('dashboard.user');
+                return to_route('homepage');
             }
         } else {
+            $registeredUser->update([
+                "last_login" => now()
+            ]);
             Auth::login($registeredUser);
-            if (Auth::user()->role == 'admin') {
+            if (Auth::user()->role == 'admin' || Auth::user()->role == 'super admin') {
                 return to_route('dashboard.admin');
             } else {
-                return to_route('dashboard.user');
+                return to_route('homepage');
             }
         }
     }

@@ -11,9 +11,15 @@
                             <div class="card hover:tw-scale-105 tw-transition-all tw-delay-100">
                                 <div class="card-content">
                                     <div class="card-body">
-                                        <h4 class="card-title !tw-text-lg">{{ $product->category->category_name }}</h4>
+                                        <h4 class="card-title !tw-text-lg">
+                                            @if ($product->category)
+                                                {{ $product->category->category_name }}
+                                            @else
+                                                {{ $product->product_name }}
+                                            @endif
+                                        </h4>
                                     </div>
-                                    <img class="img-fluid w-100" src="{{ asset('/static/images/samples/banana.jpg') }}"
+                                    <img class="img-fluid tw-w-full" src="{{ asset('/static/images/samples/1.png') }}"
                                         alt="Card image cap">
                                 </div>
                         </a>

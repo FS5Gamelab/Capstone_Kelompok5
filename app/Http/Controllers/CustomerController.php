@@ -71,7 +71,7 @@ class CustomerController extends Controller
 
     public function profile()
     {
-        if (auth()->user()->role != "admin") {
+        if (auth()->user()->role == "user") {
             return view('user.account.profile', [
                 'cartCount' => Cart::where('user_id', auth()->user()->id)->where('checked_out', 0)->count(),
             ]);

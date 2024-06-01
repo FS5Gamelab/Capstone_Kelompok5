@@ -25,8 +25,11 @@
         </div>
         <section class="section">
             <div class="page-content">
-                <div class="d-flex mt-4 justify-content-end">
-                    <a href="/product/create" class="btn btn-primary mb-3"><i class="bi bi-plus-lg"></i>
+                <div class="d-flex mt-4 justify-content-between">
+                    <a href="{{ route('products.deleted') }}" class="btn btn-danger mb-3"><i class="bi bi-trash"></i>
+                        Deleted Product
+                    </a>
+                    <a href="javascript:void(0)" id="btn-add" class="btn btn-primary mb-3"><i class="bi bi-plus-lg"></i>
                         Add New Product
                     </a>
                 </div>
@@ -35,24 +38,24 @@
                         <table class="table table-striped table-hover" id="table1">
                             <thead>
                                 <tr>
-                                    <th>#</th>
                                     <th>Product Image</th>
                                     <th>Product Name</th>
                                     <th>Category</th>
                                     <th>Type</th>
                                     <th>Price</th>
+                                    <th>Total Review</th>
+                                    <th>Rating</th>
                                     <th>Status</th>
                                     <th data-sortable="false">Action</th>
                                 </tr>
                             </thead>
                             <tbody class="tw-text-sm">
                                 @foreach ($products as $product)
-                                    <tr>
-                                        <td>{{ $loop->iteration }}</td>
+                                    <tr id="index_{{ $product->id }}">
                                         @if ($product->product_image)
                                             <td>
                                                 <img src="{{ asset('storage/' . $product->product_image) }}"
-                                                    alt="{{ $product->product_name }}" class="w-16 h-16">
+                                                    alt="{{ $product->product_name }}" class="tw-w-16 tw-h-16">
                                             </td>
                                         @else
                                             <td>
@@ -60,9 +63,28 @@
                                             </td>
                                         @endif
                                         <td>{{ $product->product_name }}</td>
-                                        <td>{{ $product->category->category_name }}</td>
-                                        <td>{{ $product->type }}</td>
-                                        <td>{{ $product->price }}</td>
+                                        <td>
+                                            @if ($product->category)
+                                                {{ $product->category->category_name }}
+                                            @else
+                                                <i class="tw-text-xs">Category Deleted</i>
+                                            @endif
+                                        </td>
+                                        <td class="text-capitalize">{{ $product->type }}</td>
+                                        <td class="text-end">Rp{{ number_format($product->price, 0, ',', '.') }}</td>
+                                        <td>{{ $product->reviews_count }}</td>
+                                        <td class="tw-text-sm tw-text-nowrap">
+                                            @if ($product->average_rating == 0)
+                                                0
+                                            @else
+                                                {{ $product->average_rating }}
+                                            @endif
+                                            / 5
+                                            <span class="tw-ml-1">
+                                                <i class="bi bi-star-fill tw-text-yellow-200"></i>
+                                            </span>
+
+                                        </td>
                                         <td class="text-center">
                                             @if ($product->in_stock)
                                                 <i class="bi bi-check text-success"></i>
@@ -70,21 +92,19 @@
                                                 <i class="bi bi-x text-danger"></i>
                                             @endif
                                         </td>
-                                        <td>
+                                        <td class="tw-text-nowrap">
                                             <a href="/products/{{ $product->id }}" class="btn btn-sm btn-info me-2">
                                                 <i class="bi bi-eye"></i>
                                             </a>
-                                            <a href="/products/{{ $product->id }}/edit"
+                                            <a href="javascript:void(0)" data-id="{{ $product->id }}" id="btn-edit"
                                                 class="btn btn-sm btn-primary me-2">
                                                 <i class="bi bi-pencil"></i>
                                             </a>
-                                            <form action="/products/{{ $product->id }}" method="POST" class="d-inline">
-                                                @method('delete')
-                                                @csrf
-                                                <button type="submit" class="btn btn-sm btn-danger">
-                                                    <i class="bi bi-trash"></i>
-                                                </button>
-                                            </form>
+
+                                            <a href="javascript:void(0)" data-id="{{ $product->id }}" id="btn-delete"
+                                                class="btn btn-sm btn-danger">
+                                                <i class="bi bi-trash"></i>
+                                            </a>
                                         </td>
                                     </tr>
                                 @endforeach
@@ -96,7 +116,318 @@
             </div>
         </section>
     </div>
+
+    @include('layouts.loader')
+    @include('layouts.modal.modal-product')
 @endsection
 @section('css')
     @vite(['resources/scss/pages/simple-datatables.scss', 'resources/js/pages/simple-datatables.js'])
+@endsection
+@section('js')
+    <script>
+        $("#loader").hide();
+        $("#btn-add").click(function() {
+            $("#n-product_name").val("");
+            $("#n-category_id").val("");
+            $("#n-type").val("");
+            $("#n-description").val("");
+            $("#n-price").val("");
+            $("#n-product_image").val("");
+            $("#preview").hide();
+            $("preview").attr("src", "");
+
+            $("#tambahModal").modal("show");
+
+        });
+    </script>
+
+    <script>
+        $("#add-product").on('submit', function(e) {
+            e.preventDefault();
+            $("#tambahModal").modal("hide");
+            $("#loader").show();
+            $.ajax({
+                url: "/products/create",
+                type: "POST",
+                data: new FormData(this),
+                contentType: false,
+                processData: false,
+                success: function(response) {
+                    $("#loader").hide();
+                    if (response.success) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Success',
+                            text: response.message,
+                        })
+                        let newRow = `
+                    <tr id="index_${response.product.id}">
+                        <td><img src="storage/${response.product.product_image}" alt="" class="tw-w-16 tw-h-16"></td>
+                        <td>${response.product.product_name}</td>
+                        <td>${response.category.category_name}</td>
+                        <td>${response.product.type}</td>
+                        <td class="text-end">Rp${parseInt(response.product.price.toLocaleString('id_ID'))}</td>
+                        <td>0</td>
+                        <td class="tw-text-sm tw-text-nowrap">
+                            0 / 5
+                            <span class="tw-ml-1">
+                                <i class="bi bi-star-fill tw-text-yellow-200"></i>
+                            </span>    
+                        </td>
+                        <td class="text-center">
+                            @if ($product->in_stock)
+                                <i class="bi bi-check text-success"></i>
+                            @else
+                                <i class="bi bi-x text-danger"></i>
+                            @endif
+                        </td>
+                        <td class="tw-text-nowrap">
+                            <a href="/products/${response.product.id}" class="btn btn-sm btn-info me-2">
+                                <i class="bi bi-eye"></i>
+                            </a>
+                            <a href="javascript:void(0)" data-id="${response.product.id}" id="btn-edit"
+                                class="btn btn-sm btn-primary me-2">
+                                <i class="bi bi-pencil"></i>
+                            </a>
+
+                            <a href="javascript:void(0)" data-id="${response.product.id}" id="btn-delete"
+                                class="btn btn-sm btn-danger">
+                                <i class="bi bi-trash"></i>
+                            </a>
+                        </td>
+                    </tr>
+                `;
+
+                        $("tbody").append(newRow);
+
+
+                    } else {
+                        let errors = response.errors;
+                        let errorMessages = '';
+                        for (let field in errors) {
+                            if (errors.hasOwnProperty(field)) {
+                                errorMessages += `${errors[field]}<br>`;
+                            }
+                        }
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            html: errorMessages,
+                            showConfirmButton: true,
+                        });
+                    }
+                },
+                error: function(xhr, status, error) {
+                    $("#loader").hide();
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'Failed to create product.',
+                        showConfirmButton: true,
+                    });
+                }
+            });
+        });
+    </script>
+
+    <script>
+        $(document).on("click", "#btn-delete", function() {
+            let id = $(this).data('id');
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $("#loader").show();
+                    $.ajax({
+                        url: `/products/delete/${id}`,
+                        type: "DELETE",
+                        data: {
+                            _token: "{{ csrf_token() }}"
+                        },
+                        success: function(response) {
+                            $("#loader").hide();
+                            if (response.success) {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Success',
+                                    text: response.message,
+                                })
+
+                                $(`#index_${id}`).remove();
+
+                            } else {
+
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Oops...',
+                                    text: response.message,
+                                    showConfirmButton: true,
+                                })
+
+                            }
+
+                        },
+                        error: function(xhr, status, error) {
+                            $("#loader").hide();
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error',
+                                text: 'Failed to delete product.',
+                                showConfirmButton: true,
+                            });
+                        }
+                    });
+                }
+            })
+        })
+    </script>
+
+    <script>
+        $(document).on("click", "#btn-edit", function() {
+            let id = $(this).data("id");
+            let token = $("meta[name='csrf-token']").attr("content");
+            $("#loader").show();
+            $.ajax({
+                url: `products/edit/${id}`,
+                type: "GET",
+                success: function(response) {
+                    $("#loader").hide();
+                    $("#id").val(response.product.id);
+                    $("#product_name").val(response.product.product_name);
+                    $("#category_id").val(response.product.category_id);
+                    $("#type").val(response.product.type);
+                    $("#description").val(response.product.description);
+                    $("#price").val(response.product.price);
+                    $("#preview2").attr("src", "storage/" + response.product.product_image);
+                    $("#preview2").show();
+                    $("#in_stock").val(response.product.in_stock);
+                    $("#update-product").attr("action", `products/${id}/update`);
+                    $("#ubahModal").modal("show");
+                },
+                error: function(xhr, status, error) {
+                    $("#loader").hide();
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'Failed to get category.',
+                        showConfirmButton: true,
+                    });
+                }
+            });
+        });
+    </script>
+
+
+    {{-- <script>
+        $("#update-product").submit(function(e) {
+            e.preventDefault();
+            let id = $("#id").val();
+            $("#ubahModal").modal("hide");
+            $("#loader").show();
+            $.ajax({
+                url: `products/${id}/update`,
+                type: "PUT",
+                data: {
+                    product_name: $("#product_name").val(),
+                    category_id: $("#category_id").val(),
+                    type: $("#type").val(),
+                    description: $("#description").val(),
+                    price: $("#price").val(),
+                    in_stock: $("#in_stock").val(),
+                    _token: "{{ csrf_token() }}"
+                },
+                success: function(response) {
+                    $("#loader").hide();
+                    if (response.success) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Success',
+                            text: response.message,
+                            showConfirmButton: true,
+                        });
+                        let img;
+                        let stk;
+                        if (response.product.product_image) {
+                            img = ` 
+                        <td><img src="storage/${response.product.product_image}" alt="" class="tw-w-16 tw-h-16"></td>
+                        
+                        `
+                        } else {
+                            img = `<td>No Image</td>`
+                        }
+
+                        if (response.product.in_stock) {
+                            stk =
+                                `<td class="text-center"><i class="bi bi-check text-success"></i></td>`
+                        } else {
+                            stk = `<td class="text-center"><i class="bi bi-x text-danger"></i></td>`
+                        }
+                        $("#index_" + id).html(
+                            `
+                    ${img}
+                    <td>${response.product.product_name}</td>
+                    <td>${response.category.category_name}</td>
+                    <td>${response.product.type}</td>
+                    <td class="text-end">Rp${parseInt(response.product.price.toLocaleString('id_ID'))}</td>
+                    <td>0</td>
+                    <td class="tw-text-sm tw-text-nowrap">
+                        0 / 5
+                        <span class="tw-ml-1">
+                            <i class="bi bi-star-fill tw-text-yellow-200"></i>
+                        </span>    
+                    </td>
+                    <td class="text-center">
+                        ${stk}
+                    </td>
+                    <td class="tw-text-nowrap">
+                        <a href="/products/${response.product.id}" class="btn btn-sm btn-info me-2">
+                            <i class="bi bi-eye"></i>
+                        </a>
+                        <a href="javascript:void(0)" data-id="${response.product.id}" id="btn-edit"
+                            class="btn btn-sm btn-primary me-2">
+                            <i class="bi bi-pencil"></i>
+                        </a>
+
+                        <a href="javascript:void(0)" data-id="${response.product.id}" id="btn-delete"
+                            class="btn btn-sm btn-danger">
+                            <i class="bi bi-trash"></i>
+                        </a>
+                    </td>
+                        `
+                        );
+                    } else {
+                        let errors = response.errors;
+                        let errorMessages = '';
+                        for (let field in errors) {
+                            if (errors.hasOwnProperty(field)) {
+                                errorMessages += `${errors[field]}<br>`;
+                            }
+                        }
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            html: errorMessages,
+                            showConfirmButton: true,
+                        });
+                    }
+
+                },
+                error: function(xhr, status, error) {
+                    $("#loader").hide();
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'Failed to update product.',
+                        showConfirmButton: true,
+                    });
+                }
+            });
+        });
+    </script> --}}
 @endsection

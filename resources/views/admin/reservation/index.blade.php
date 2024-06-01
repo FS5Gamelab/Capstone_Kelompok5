@@ -30,7 +30,6 @@
                         <table class="table table-striped table-hover" id="table1">
                             <thead>
                                 <tr>
-                                    <th>#</th>
                                     <th>Name</th>
                                     <th>Phone</th>
                                     <th>People</th>
@@ -42,7 +41,6 @@
                             <tbody class="tw-text-sm">
                                 @foreach ($reservations as $reservation)
                                     <tr>
-                                        <td>{{ $loop->iteration }}</td>
                                         <td>{{ $reservation->name }}</td>
                                         <td>{{ $reservation->phone }}</td>
                                         <td>{{ $reservation->people }}</td>

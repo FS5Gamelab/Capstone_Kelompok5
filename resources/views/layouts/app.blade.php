@@ -24,7 +24,7 @@
                 <div id="main-content">
                     @yield('content')
                 </div>
-                @include('layouts.partials.footer')
+                @include('layouts.partials.footer-admin')
             </div>
         </div>
 
