@@ -37,31 +37,75 @@
                 </div>
                 <div class="col-md-12">
                     <h2 class="h2 text-center mb-4">Layanan Kami</h2>
-                    <div class="row justify-content-center">
+                    <div class="row justify-content-center g-3">
                         <div class="col-md-3">
-                            <img src="{{ asset('static/images/illustration/4.svg')}}" alt="">
-                            <h4 class="h4 text-center mt-3">Pelayanan Berkualitas</h4>
-                            <p class="text-center">Nikmati layanan terbaik dari staf kami yang ramah dan profesional.</p>
+                            <div class="card px-3 pt-3 hover:tw-scale-105" style="height:100%">
+                                <img src="{{ asset('static/images/illustration/4.svg')}}" alt="">
+                                <h4 class="h4 text-center mt-3">Pelayanan Berkualitas</h4>
+                                <p class="text-center">Nikmati layanan terbaik dari staf kami yang ramah dan profesional.</p>
+                            </div>
                         </div>
                         <div class="col-md-3">
-                            <img src="{{ asset('static/images/illustration/1.svg')}}" alt="">
-                            <h4 class="h4 text-center mt-3">Pesan Kapanpun</h4>
-                            <p class="text-center">Dengan layanan online, Anda bisa memesan makanan favorit kapan saja dan di mana saja.</p>
+                            <div class="card px-3 pt-3 hover:tw-scale-105" style="height:100%">
+                                <img src="{{ asset('static/images/illustration/1.svg')}}" alt="">
+                                <h4 class="h4 text-center mt-3">Pesan Kapanpun</h4>
+                                <p class="text-center">Dengan layanan online, Anda bisa memesan makanan favorit kapan saja dan di mana saja.</p>
+                            </div>
                         </div>
                         <div class="col-md-3">
-                            <img src="{{ asset('static/images/illustration/2.svg')}}" alt="">
-                            <h4 class="h4 text-center mt-3">Lacak Pesanan Anda</h4>
-                            <p class="text-center">Pantau status pesanan Anda secara real-time dan ketahui waktu kedatangan.</p>
+                            <div class="card px-3 pt-3 hover:tw-scale-105" style="height:100%">
+                                <img src="{{ asset('static/images/illustration/2.svg')}}" alt="">
+                                <h4 class="h4 text-center mt-3">Lacak Pesanan Anda</h4>
+                                <p class="text-center">Pantau status pesanan Anda secara real-time dan ketahui waktu kedatangan.</p>
+                            </div>
                         </div>
                         <div class="col-md-3">
-                            <img src="{{ asset('static/images/illustration/3.svg')}}" alt="">
-                            <h4 class="h4 text-center mt-3">Booking Tempat</h4>
-                            <p class="text-center">Reservasi tempat online untuk memastikan meja terbaik di restoran kami.</p>
+                            <div class="card px-3 pt-3 hover:tw-scale-105" style="height:100%">
+                                <img src="{{ asset('static/images/illustration/3.svg')}}" alt="">
+                                <h4 class="h4 text-center mt-3">Booking Tempat</h4>
+                                <p class="text-center">Reservasi tempat online untuk memastikan meja terbaik di restoran kami.</p>
+                            </div>
                         </div>
-                        
                     </div>
                 </div>
+                <div class="promotions col-md-12 ">
+                    <h2 class="h2 text-center mb-4">Promo Spesial</h2>
+                    <div class="row ">
+                        <div class="col-md-12">
+                            <div class="bg-primary rounded p-4 px-5">
+                                <div class="row">
+                                <div class="col-8 d-flex flex-column justify-content-center text-white">
+                                    <h2 class="h2 text-white">Diskon 20% untuk Pelanggan Baru</h2>
+                                    <p>Dapatkan diskon 20% untuk kunjungan pertama Anda ke restoran kami. Berlaku hingga akhir bulan ini.</p>
+                                </div>
+                                <div class="col-4">
+                                    <img src="{{ asset('static/images/illustration/6.svg') }}" class="img-fluid rounded mb-3" alt="Gallery Image" >
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="gallery mt-5 col-md-12">
+                    <h2 class="h2 text-center mb-4">Galeri Foto</h2>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <img src="{{ asset('static/images/samples/1.png') }}" class="img-fluid rounded mb-3" alt="Gallery Image">
+                        </div>
+                        <div class="col-md-3">
+                            <img src="{{ asset('static/images/samples/2.png') }}" class="img-fluid rounded mb-3" alt="Gallery Image">
+                        </div>
+                        <div class="col-md-3">
+                            <img src="{{ asset('static/images/samples/3.png') }}" class="img-fluid rounded mb-3" alt="Gallery Image">
+                        </div>
+                        <div class="col-md-3">
+                            <img src="{{ asset('static/images/samples/4.png') }}" class="img-fluid rounded mb-3" alt="Gallery Image">
+                        </div>
+                    </div>
+                </div>
+                
             </div>
         </div>
     </div>
+    
 @endsection
