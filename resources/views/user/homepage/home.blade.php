@@ -74,11 +74,11 @@
                         <div class="col-md-12">
                             <div class="bg-primary rounded p-4 px-5">
                                 <div class="row">
-                                <div class="col-8 d-flex flex-column justify-content-center text-white">
+                                <div class="col-sm-8 d-flex flex-column justify-content-center text-white">
                                     <h2 class="h2 text-white">Diskon 20% untuk Pelanggan Baru</h2>
                                     <p>Dapatkan diskon 20% untuk kunjungan pertama Anda ke restoran kami. Berlaku hingga akhir bulan ini.</p>
                                 </div>
-                                <div class="col-4">
+                                <div class="col-sm-4">
                                     <img src="{{ asset('static/images/illustration/6.svg') }}" class="img-fluid rounded mb-3" alt="Gallery Image" >
                                 </div>
                             </div>
