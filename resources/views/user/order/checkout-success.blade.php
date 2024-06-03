@@ -24,9 +24,20 @@
                                                             <li
                                                                 class="tw-flex tw-flex-col tw-space-y-3 tw-py-6 tw-text-left lg:tw-flex-row lg:tw-space-x-5 lg:tw-space-y-0">
                                                                 <div class="tw-shrink-0">
-                                                                    <img class="tw-h-24 tw-w-24 tw-max-w-full tw-rounded-lg tw-object-cover"
-                                                                        alt=""
-                                                                        src="{{ asset('/static/images/samples/1.png') }}" />
+                                                                    @if ($cart->product)
+                                                                        @if ($cart->product->product_image)
+                                                                            <img class="tw-h-24 tw-w-24 tw-max-w-full tw-rounded-lg tw-object-cover"
+                                                                                alt=""
+                                                                                src="{{ asset('storage/' . $cart->product->product_image) }}" />
+                                                                        @else
+                                                                            <img class="tw-h-24 tw-w-24 tw-max-w-full tw-rounded-lg tw-object-cover"
+                                                                                alt=""
+                                                                                src="{{ asset('/static/images/samples/1.png') }}" />
+                                                                        @endif
+                                                                    @else
+                                                                        Product Deleted
+                                                                    @endif
+
                                                                 </div>
 
                                                                 <div
@@ -36,11 +47,11 @@
                                                                         <div class="tw-pr-8 sm:tw-pr-5">
                                                                             <p
                                                                                 class="tw-text-base tw-font-semibold tw-text-gray-900 dark:tw-text-white">
-                                                                                {{ $cart->product->product_name }}
+                                                                                {{ $cart->product->product_name ?? 'Product Deleted' }}
                                                                             </p>
                                                                             <p
                                                                                 class="tw-mx-0 tw-mt-1 tw-mb-0 tw-text-sm tw-text-gray-400">
-                                                                                &#64;Rp{{ number_format($cart->product->price, 0, ',', '.') }}
+                                                                                &#64;Rp{{ number_format($cart->product->price ?? 0, 0, ',', '.') }}
                                                                             </p>
                                                                             <div class="sm:tw-order-1 mt-2">
                                                                                 <div
@@ -99,30 +110,34 @@
                                                                                     @endif
                                                                                 </div>
                                                                                 <div class="col-4 text-end">
-                                                                                    <a href="javascript:void(0)"
-                                                                                        data-id="{{ $cart->review->id }}"
-                                                                                        data-cart="{{ $cart->id }}"
-                                                                                        data-order="{{ $order->id }}"
-                                                                                        data-product="{{ $cart->product->id }}"
-                                                                                        id="btn-edit"
-                                                                                        class="!tw-mr-3 mt-2 !tw-text-xs">
-                                                                                        Edit
-                                                                                    </a>
-                                                                                    <a href="javascript:void(0)"
-                                                                                        data-id="{{ $cart->review->id }}"
-                                                                                        data-cart="{{ $cart->id }}"
-                                                                                        data-order="{{ $order->id }}"
-                                                                                        data-product="{{ $cart->product->id }}"
-                                                                                        id="btn-delete"
-                                                                                        class="!tw-mr-3 mt-2 !tw-text-red-500 hover:!tw-text-red-700 !tw-text-xs">
-                                                                                        Delete
-                                                                                    </a>
+                                                                                    @if ($cart->product)
+                                                                                        <a href="javascript:void(0)"
+                                                                                            data-id="{{ $cart->review->id }}"
+                                                                                            data-cart="{{ $cart->id }}"
+                                                                                            data-order="{{ $order->id }}"
+                                                                                            data-product="{{ $cart->product->id }}"
+                                                                                            id="btn-edit"
+                                                                                            class="!tw-mr-3 mt-2 !tw-text-xs">
+                                                                                            Edit
+                                                                                        </a>
+                                                                                        <a href="javascript:void(0)"
+                                                                                            data-id="{{ $cart->review->id }}"
+                                                                                            data-cart="{{ $cart->id }}"
+                                                                                            data-order="{{ $order->id }}"
+                                                                                            data-product="{{ $cart->product->id }}"
+                                                                                            id="btn-delete"
+                                                                                            class="!tw-mr-3 mt-2 !tw-text-red-500 hover:!tw-text-red-700 !tw-text-xs">
+                                                                                            Delete
+                                                                                        </a>
+                                                                                    @else
+                                                                                        <i>Product Deleted</i>
+                                                                                    @endif
                                                                                 </div>
                                                                             </div>
 
                                                                             @if ($cart->review->comment)
-                                                                                <p
-                                                                                    class="!tw-text-xs tw-mt-1 tw-text-gray-400">
+                                                                                <p class="!tw-text-xs tw-mt-1 tw-text-gray-400"
+                                                                                    style="max-width: 300px; word-wrap: break-word;">
                                                                                     {{ $cart->review->comment }}
                                                                                 </p>
                                                                             @endif

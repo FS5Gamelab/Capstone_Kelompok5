@@ -14,7 +14,7 @@ class ReservationController extends Controller
     public function index()
     {
         return view('admin.reservation.index', [
-            'reservations' => Reservation::all()
+            'reservations' => Reservation::latest()->get(),
         ]);
     }
 
@@ -61,32 +61,32 @@ class ReservationController extends Controller
                     'date' => $date,
                     'time' => $time
                 ]);
-                $phone_number = $request->input('phone');
+                // $phone_number = $request->input('phone');
 
-                $curl = curl_init();
+                // $curl = curl_init();
 
-                curl_setopt_array($curl, array(
-                    CURLOPT_URL => 'https://api.fonnte.com/send',
-                    CURLOPT_RETURNTRANSFER => true,
-                    CURLOPT_ENCODING => '',
-                    CURLOPT_MAXREDIRS => 10,
-                    CURLOPT_TIMEOUT => 0,
-                    CURLOPT_FOLLOWLOCATION => true,
-                    CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-                    CURLOPT_CUSTOMREQUEST => 'POST',
-                    CURLOPT_POSTFIELDS => array(
-                        'target' => $phone_number,
-                        'message' => "Hello, $request->name. \nYour reservation has been created successfully\nFor : $request->people People\nDate: $request->date\nTime: $time",
-                        'countryCode' => '62', //optional
-                    ),
-                    CURLOPT_HTTPHEADER => array(
-                        'Authorization: xNs9nSws9bqjaBxD04WQ' //change TOKEN to your actual token
-                    ),
-                ));
+                // curl_setopt_array($curl, array(
+                //     CURLOPT_URL => 'https://api.fonnte.com/send',
+                //     CURLOPT_RETURNTRANSFER => true,
+                //     CURLOPT_ENCODING => '',
+                //     CURLOPT_MAXREDIRS => 10,
+                //     CURLOPT_TIMEOUT => 0,
+                //     CURLOPT_FOLLOWLOCATION => true,
+                //     CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                //     CURLOPT_CUSTOMREQUEST => 'POST',
+                //     CURLOPT_POSTFIELDS => array(
+                //         'target' => $phone_number,
+                //         'message' => "Hello, $request->name. \nYour reservation has been created successfully\nFor : $request->people People\nDate: $request->date\nTime: $time",
+                //         'countryCode' => '62', //optional
+                //     ),
+                //     CURLOPT_HTTPHEADER => array(
+                //         'Authorization: xNs9nSws9bqjaBxD04WQ' //change TOKEN to your actual token
+                //     ),
+                // ));
 
-                $response = curl_exec($curl);
+                // $response = curl_exec($curl);
 
-                curl_close($curl);
+                // curl_close($curl);
                 return response()->json([
                     'success' => true,
                     'message' => 'Reservation created successfully',
@@ -106,24 +106,57 @@ class ReservationController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Reservation $reservation)
+    public function edit($id)
     {
-        //
+        $reservation = Reservation::find($id);
+        $reservation->date = \Carbon\Carbon::parse($reservation->date)->format('d-M-Y');
+        $reservation->time = \Carbon\Carbon::parse($reservation->time)->format('H:i');
+        return response()->json(
+            [
+                'success' => true,
+                'reservation' => $reservation
+            ]
+        );
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Reservation $reservation)
+    public function update(Request $request, $id)
     {
-        //
+        $reservation = Reservation::find($id);
+        $date = \Carbon\Carbon::createFromFormat('d-M-Y', $request->input('date'))->format('Y-m-d');
+        $time = $request->input('time');
+        $reservation->update([
+            "name" => $request->name,
+            "phone" => $request->phone,
+            "people" => $request->people,
+            "date" => $date,
+            "time" => $time
+        ]);
+        $reservation->date = \Carbon\Carbon::parse($reservation->date)->format('d M Y');
+        $reservation->time = \Carbon\Carbon::parse($reservation->time)->format('H:i');
+        return response()->json(
+            [
+                'success' => true,
+                'message' => 'Reservation updated successfully',
+                'reservation' => $reservation
+            ]
+        );
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Reservation $reservation)
+    public function destroy($id)
     {
-        //
+        $reservation = Reservation::find($id);
+        $reservation->delete();
+        return response()->json(
+            [
+                'success' => true,
+                'message' => 'Reservation deleted successfully'
+            ]
+        );
     }
 }

@@ -1,102 +1,148 @@
-@extends('layouts.app-user', ['title' => 'Menu'])
+@extends('layouts.app-user', ['title' => $product->product_name])
 
 @section('main-content')
-    <section id="content-types">
-        <div class="page-content">
-            <h3 class="tw-text-3xl tw-font-semibold tw-text-center tw-py-4">Our Products</h3>
-            <div class="row">
-                @foreach ($products as $product)
-                    <div class="col-xl-4 col-md-6 col-sm-12">
-                        <a href="/product/{{ $product->id }}">
-                            <div class="card hover:tw-scale-105 tw-transition-all tw-delay-100">
-                                <div class="card-content">
-                                    <div class="card-body">
-                                        <h4 class="card-title !tw-text-lg">
-                                            @if ($product->category)
-                                                {{ $product->category->category_name }}
-                                            @else
-                                                {{ $product->product_name }}
-                                            @endif
-                                        </h4>
-                                    </div>
-                                    @if ($product->product_image)
-                                        <img class="img-fluid tw-w-full !tw-h-60"
-                                            src="{{ asset('storage/' . $product->product_image) }}" alt="Card image cap">
-                                    @else
-                                        <img class="img-fluid tw-w-full !tw-h-60"
-                                            src="{{ asset('/static/images/samples/1.png') }}" alt="Card image cap">
-                                    @endif
-                                </div>
-                        </a>
-                        <div class="card-footer">
-                            <div class="row mb-2">
-                                <div class=" col-md-12 ">
-                                    <span class="!tw-text-xs !tw-bg-gray-400 !tw-bg-opacity-80 badge">
-                                        @if ($product->rating == 0)
-                                            0
-                                        @elseif ($product->rating == 5)
-                                            5
-                                        @else
-                                            {{ $product->rating }}
-                                        @endif
-                                        / 5
-                                        <i class="bi bi-star-fill tw-text-yellow-500"></i>
-                                    </span>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-8">
-                                    <a href="/product/{{ $product->id }}" class="text-decoration-none ">
-                                        <p class="tw-text-sm">{{ $product->product_name }}</p>
-                                    </a>
-                                </div>
-                                <div class="col-md-4">
-                                    <p class="tw-text-sm">Rp. {{ number_format($product->price, 0, ',', '.') }}</p>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-12">
-                                    @auth
-                                        <button class="button tw-w-full rounded mt-2" data-user="true"
-                                            data-product="{{ $product->id }}">
-                                            <span>Add to cart</span>
-                                            <div class="cart">
-                                                <svg viewBox="0 0 36 26">
-                                                    <polyline points="1 2.5 6 2.5 10 18.5 25.5 18.5 28.5 7.5 7.5 7.5">
-                                                    </polyline>
-                                                    <polyline points="15 13.5 17 15.5 22 10.5"></polyline>
-                                                </svg>
-                                            </div>
-                                        </button>
-                                    @else
-                                        <button class="button tw-w-full rounded mt-2" data-user="false"
-                                            data-product="{{ $product->id }}">
-                                            <span>Add to cart</span>
-                                            <div class="cart">
-                                                <svg viewBox="0 0 36 26">
-                                                    <polyline points="1 2.5 6 2.5 10 18.5 25.5 18.5 28.5 7.5 7.5 7.5">
-                                                    </polyline>
-                                                    <polyline points="15 13.5 17 15.5 22 10.5"></polyline>
-                                                </svg>
-                                            </div>
-                                        </button>
-                                    @endauth
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
+    <section class="section">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="card-title">{{ $product->product_name }}</h4>
             </div>
-            @endforeach
-        </div>
+            <div class="card-body">
+                <div class="tw-w-full">
+                    <img src="{{ asset('storage/' . $product->product_image) }}" alt="{{ $product->product_name }}">
+                </div>
+                <div class="tw-flex tw-justify-between tw-mt-4">
+                    <div class="tw-w-1/3">
+                        <label class="form-label">Category</label>
+                        <p class="tw-text-gray-700 dark:tw-text-gray-200 text-capitalize">
+                            {{ $product->category->category_name }}</p>
+                    </div>
+                    <div class="tw-w-1/3">
+                        <label class="form-label">Type</label>
+                        <p class="tw-text-gray-700 dark:tw-text-gray-200 text-capitalize">{{ $product->type }}</p>
+                    </div>
+                    <div class="tw-w-1/3">
+                        <label class="form-label">Rating</label>
+                        <p class="tw-text-gray-700 dark:tw-text-gray-200">
+                            @if ($product->rating == 0)
+                                0
+                            @elseif ($product->rating == 5)
+                                5
+                            @else
+                                {{ $product->rating }}
+                            @endif
+                            / 5
 
+                            <i class="bi bi-star-fill !tw-text-yellow-500" style="color: yellow;"></i>
+                        </p>
+                    </div>
+                </div>
+                <div class="tw-flex tw-mt-4">
+                    <div class="tw-w-full">
+                        <label class="form-label">Description</label>
+                        <p class="tw-text-gray-700 dark:tw-text-gray-200">{{ $product->description }}</p>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
 
-    @include('layouts.loader')
+    <section class="review-section">
+
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Reviews</h4>
+                <div class="table-responsive">
+                    <table class="table table-borderless" id="table1">
+                        <thead>
+                            <tr>
+                                <th data-sortable="false">Use</th>
+                                <th data-sortable="false">Comment</th>
+                                <th>Rating</th>
+                                <th>Created At</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($product->reviews as $review)
+                                <tr>
+                                    <td>{{ $review->user->name }}</td>
+
+                                    <td class="comment-column">
+                                        <p>
+                                            {{ $review->comment }}
+                                        </p>
+                                    </td>
+                                    <td>
+                                        @for ($i = 0; $i < $review->rating; $i++)
+                                            <i class="bi bi-star-fill tw-text-yellow-500"></i>
+                                        @endfor
+                                        @if ($review->rating < 5)
+                                            @for ($i = 0; $i < 5 - $review->rating; $i++)
+                                                <i class="bi bi-star tw-text-gray-800"></i>
+                                            @endfor
+                                        @endif
+                                    </td>
+                                    <td>{{ $review->created_at->format('d M Y') }}</td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-4">
+        <hr>
+    </section>
+
+    <section class="add-to-cart section tw-fixed tw-bottom-0 tw-left-0 tw-right-0 tw-z-50">
+        <div class="row tw-flex tw-items-center md:tw-px-0 !tw-pl-4 !tw-pr-4 md:!tw-pl-16 md:!tw-pr-11 py-3 tw-bg-gray-800">
+            <div class="col-8 !tw-text-sm md:!tw-text-2xl tw-font-bold tw-text-start">
+                Price :
+                Rp{{ number_format($product->price, 0, ',', '.') }}
+            </div>
+            <div class="col-4">
+                @auth
+                    <button class="button tw-w-full rounded mt-2" data-user="true" data-product="{{ $product->id }}">
+                        <span>
+                            Cart
+                        </span>
+                        <div class="cart">
+                            <svg viewBox="0 0 36 26">
+                                <polyline points="1 2.5 6 2.5 10 18.5 25.5 18.5 28.5 7.5 7.5 7.5">
+                                </polyline>
+                                <polyline points="15 13.5 17 15.5 22 10.5"></polyline>
+                            </svg>
+                        </div>
+                    </button>
+                @else
+                    <button class="button tw-w-full rounded mt-2" data-user="false" data-product="{{ $product->id }}">
+                        <span>Cart</span>
+                        <div class="cart">
+                            <svg viewBox="0 0 36 26">
+                                <polyline points="1 2.5 6 2.5 10 18.5 25.5 18.5 28.5 7.5 7.5 7.5">
+                                </polyline>
+                                <polyline points="15 13.5 17 15.5 22 10.5"></polyline>
+                            </svg>
+                        </div>
+                    </button>
+                @endauth
+            </div>
+        </div>
+    </section>
 @endsection
 @section('css')
+    @vite(['resources/scss/pages/simple-datatables.scss', 'resources/js/pages/simple-datatables.js'])
     <style>
+        .comment-column p {
+            max-width: 300px;
+            /* Tentukan lebar maksimum yang sesuai */
+            word-wrap: break-word;
+            /* Untuk IE */
+            word-break: break-word;
+            /* Untuk browser modern */
+        }
+
         .button {
             --background: #362A89;
             --text: #fff;
@@ -113,7 +159,6 @@
             overflow: hidden;
             cursor: pointer;
             text-align: center;
-            min-width: 144px;
             color: var(--text);
             background: var(--background);
             transform: scale(var(--scale, 1));
@@ -279,7 +324,12 @@
         }
     </style>
 @endsection
+
 @section('js')
+    <script>
+        $("#footer").hide();
+    </script>
+
     <script>
         $("#loader").hide();
         buttons = document.querySelectorAll('.button');
@@ -352,4 +402,4 @@
             e.preventDefault();
         }));
     </script>
-@endsection
+@endSection

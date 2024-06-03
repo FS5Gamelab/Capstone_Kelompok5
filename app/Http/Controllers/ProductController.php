@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Cart;
 use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\Request;
@@ -85,7 +86,13 @@ class ProductController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $product = Product::find($id);
+        $product->total_review = $product->reviews()->count();
+        $product->rating = number_format($product->reviews()->avg('rating'), 1, '.', '');
+        $product->reviews = $product->reviews()->get();
+        return view('admin.product.show', [
+            'product' => $product
+        ]);
     }
 
     /**
@@ -107,7 +114,6 @@ class ProductController extends Controller
     {
         // dd($request->all());
         $validation = Validator::make($request->all(), [
-            'product_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'product_name' => 'required|string|max:255',
             'category_id' => 'required|exists:categories,id',
             'type' => 'required|string|in:foods,drinks',
@@ -124,8 +130,8 @@ class ProductController extends Controller
             $product = Product::find($id);
             $image = $request->file('product_image');
             $product_image = $product->product_image;
-            if ($product->product_image != null) {
-                if ($image) {
+            if ($image) {
+                if ($product->product_image != null) {
                     Storage::disk('public')->delete($product->product_image);
                     $extension = $image->getClientOriginalExtension();
                     $originalName = pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME);
@@ -144,6 +150,8 @@ class ProductController extends Controller
                 'category_id' => $request->category_id,
             ]);
             $category = Category::find($request->category_id);
+            $product->reviews_count = $product->reviews()->count();
+            $product->average_rating = number_format($product->reviews()->avg('rating'), 1, '.', '');
             return response()->json([
                 'success' => true,
                 'message' => 'Product updated successfully',
@@ -187,6 +195,10 @@ class ProductController extends Controller
     public function destroy(string $id)
     {
         $product = Product::find($id);
+        $carts = Cart::where('product_id', $product->id)->where('checked_out', 0)->with('product')->get();
+        $carts->each(function ($cart) {
+            $cart->delete();
+        });
         $product->delete();
         return response()->json([
             'success' => true,

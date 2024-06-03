@@ -34,7 +34,11 @@
                                                             </span>
                                                             <span
                                                                 class="badge bg-primary-subtle tw-text-gray-700 dark:tw-text-white">
-                                                                {{ $cart->product->product_name }}
+                                                                @if ($cart->product)
+                                                                    {{ $cart->product->product_name }}
+                                                                @else
+                                                                    Product Deleted
+                                                                @endif
                                                             </span>
 
                                                         </li>
@@ -46,7 +50,7 @@
                                             <td class="tw-text-nowrap">Rp.
                                                 {{ number_format($order->total_price, 0, ',', '.') }}
                                             </td>
-                                            <td>
+                                            <td id="status_{{ $order->id }}">
                                                 @if ($order->status == 'pending')
                                                     <span class="badge bg-warning">{{ $order->status }}</span>
                                                 @elseif ($order->status == 'prepare')
@@ -130,7 +134,12 @@
                                         },
                                         success: function(response) {
                                             $("#loader").hide();
-                                            $(`#index_${id}`).remove();
+                                            $(`#status_${id}`).html(
+                                                `
+                                                <span class="badge bg-info">prepare</span>
+                                                `
+                                            );
+                                            $('#pay-button').hide();
                                             Swal.fire({
                                                 icon: 'success',
                                                 title: `${response.message}`,
@@ -193,7 +202,6 @@
                         $('#cart-items').empty();
                         $('#note').text('');
                         $('#total-price').text('');
-
                         // Insert new content
                         response.carts.forEach(cart => {
                             $('#cart-items').append(`
@@ -219,7 +227,7 @@
                     </div>
                 `);
                         });
-                        if (response.order.status == 'cancel') {
+                        if (response.order.status == 'cancelled') {
                             $("#cancel").show();
                             $("#reason").text(response.order.cancel_reason);
                         }

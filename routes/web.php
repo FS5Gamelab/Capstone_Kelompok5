@@ -26,6 +26,8 @@ Route::get('/about', [CustomerController::class, 'about'])->name('about');
 Route::get('/blog', [CustomerController::class, 'blog'])->name('blog');
 Route::post('/reservation', [ReservationController::class, 'store'])->name('reservation.store');
 
+Route::get('/product/{id}', [CustomerController::class, 'menuDetail'])->name('menu-detail');
+
 
 Route::get('/dashboard', function () {
     return !auth()->user() ? redirect('/homepage') : (auth()->user()->role == 'admin' || auth()->user()->role == 'super admin' ? redirect('/admin-dashboard') : redirect('/homepage'));
@@ -48,6 +50,10 @@ Route::middleware(['guest'])->group(function () {
 
 Route::middleware(['auth', 'auth.session', 'verified'])->group(function () {
     Route::get('/admin-dashboard', [AdminController::class, 'index'])->name('dashboard.admin');
+    Route::get('/api/orders-data', [AdminController::class, 'getOrderData']);
+    Route::get('/api/product-type-data', [AdminController::class, 'getProductTypeData']);
+    Route::get('/api/reservations', [AdminController::class, 'getReservationsByDate']);
+
 
     Route::get('/users', [UserController::class, 'index'])->name('users');
     Route::post('/users/create', [UserController::class, 'store'])->name('users.store');
@@ -81,6 +87,9 @@ Route::middleware(['auth', 'auth.session', 'verified'])->group(function () {
     Route::put('/orders/{id}/update', [OrderController::class, 'update'])->name('orders.update');
 
     Route::get('/reservations', [ReservationController::class, 'index'])->name('reservations');
+    Route::get('/reservations/{id}/edit', [ReservationController::class, 'edit'])->name('reservations.edit');
+    Route::put('/reservations/{id}/update', [ReservationController::class, 'update'])->name('reservations.update');
+    Route::delete('/reservations/{id}/delete', [ReservationController::class, 'destroy'])->name('reservations.delete');
 
     Route::get('/cart', [CartController::class, 'index'])->name('cart');
     Route::post('/checkout', [OrderController::class, 'checkOut'])->name('checkout');

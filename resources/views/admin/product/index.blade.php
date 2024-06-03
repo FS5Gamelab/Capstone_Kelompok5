@@ -76,6 +76,8 @@
                                         <td class="tw-text-sm tw-text-nowrap">
                                             @if ($product->average_rating == 0)
                                                 0
+                                            @elseif ($product->average_rating == 5)
+                                                5
                                             @else
                                                 {{ $product->average_rating }}
                                             @endif
@@ -324,23 +326,29 @@
     </script>
 
 
-    {{-- <script>
-        $("#update-product").submit(function(e) {
+    <script>
+        $(document).on('click', '#btn-update', function(e) {
             e.preventDefault();
             let id = $("#id").val();
             $("#ubahModal").modal("hide");
             $("#loader").show();
             $.ajax({
                 url: `products/${id}/update`,
-                type: "PUT",
-                data: {
-                    product_name: $("#product_name").val(),
-                    category_id: $("#category_id").val(),
-                    type: $("#type").val(),
-                    description: $("#description").val(),
-                    price: $("#price").val(),
-                    in_stock: $("#in_stock").val(),
-                    _token: "{{ csrf_token() }}"
+                type: "POST",
+                // data: {
+                //     product_name: $("#product_name").val(),
+                //     category_id: $("#category_id").val(),
+                //     type: $("#type").val(),
+                //     description: $("#description").val(),
+                //     price: $("#price").val(),
+                //     in_stock: $("#in_stock").val(),
+                //     _token: "{{ csrf_token() }}"
+                // },
+                data: new FormData($("#update-product")[0]),
+                contentType: false,
+                processData: false,
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
                 success: function(response) {
                     $("#loader").hide();
@@ -353,6 +361,7 @@
                         });
                         let img;
                         let stk;
+                        let rating;
                         if (response.product.product_image) {
                             img = ` 
                         <td><img src="storage/${response.product.product_image}" alt="" class="tw-w-16 tw-h-16"></td>
@@ -362,29 +371,37 @@
                             img = `<td>No Image</td>`
                         }
 
-                        if (response.product.in_stock) {
+                        if (response.product.in_stock == 1) {
                             stk =
                                 `<td class="text-center"><i class="bi bi-check text-success"></i></td>`
                         } else {
                             stk = `<td class="text-center"><i class="bi bi-x text-danger"></i></td>`
+                        }
+
+                        if (response.product.average_rating == 0) {
+                            rating = 0;
+                        } else if (response.product.average_rating == 5) {
+                            rating = 5;
+                        } else {
+                            rating = response.product.average_rating;
                         }
                         $("#index_" + id).html(
                             `
                     ${img}
                     <td>${response.product.product_name}</td>
                     <td>${response.category.category_name}</td>
-                    <td>${response.product.type}</td>
+                    <td class="text-capitalize">${response.product.type}</td>
                     <td class="text-end">Rp${parseInt(response.product.price.toLocaleString('id_ID'))}</td>
-                    <td>0</td>
+                    <td>${response.product.reviews_count}</td>
                     <td class="tw-text-sm tw-text-nowrap">
-                        0 / 5
+                        ${rating} / 5
                         <span class="tw-ml-1">
                             <i class="bi bi-star-fill tw-text-yellow-200"></i>
                         </span>    
                     </td>
-                    <td class="text-center">
+                    
                         ${stk}
-                    </td>
+                   
                     <td class="tw-text-nowrap">
                         <a href="/products/${response.product.id}" class="btn btn-sm btn-info me-2">
                             <i class="bi bi-eye"></i>
@@ -429,5 +446,5 @@
                 }
             });
         });
-    </script> --}}
+    </script>
 @endsection

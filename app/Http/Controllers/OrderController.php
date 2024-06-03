@@ -65,7 +65,7 @@ class OrderController extends Controller
 
     public function checkoutIndex()
     {
-        $orders = Order::where('user_id', auth()->user()->id)->where('status', '!=', null)->get();
+        $orders = Order::where('user_id', auth()->user()->id)->where('status', '!=', null)->latest()->get();
 
         $carts = [];
         foreach ($orders as $order) {
@@ -80,7 +80,7 @@ class OrderController extends Controller
     }
     public function checkoutSuccess()
     {
-        $orders = Order::where('user_id', auth()->user()->id)->where('status', 'success')->get();
+        $orders = Order::where('user_id', auth()->user()->id)->where('status', 'success')->latest()->get();
 
         $carts = [];
         foreach ($orders as $order) {
@@ -95,7 +95,7 @@ class OrderController extends Controller
     }
     public function checkoutPending()
     {
-        $orders = Order::where('user_id', auth()->user()->id)->where('status', 'pending')->get();
+        $orders = Order::where('user_id', auth()->user()->id)->where('status', 'pending')->latest()->get();
 
         $carts = [];
         foreach ($orders as $order) {
@@ -110,7 +110,7 @@ class OrderController extends Controller
     }
     public function checkoutPrepare()
     {
-        $orders = Order::where('user_id', auth()->user()->id)->where('status', 'prepare')->orWhere('status', 'deliver')->get();
+        $orders = Order::where('user_id', auth()->user()->id)->where('status', 'prepare')->orWhere('status', 'deliver')->latest()->get();
 
         $carts = [];
         foreach ($orders as $order) {
@@ -125,7 +125,7 @@ class OrderController extends Controller
     }
     public function checkoutFailed()
     {
-        $orders = Order::where('user_id', auth()->user()->id)->where('status', 'failed')->get();
+        $orders = Order::where('user_id', auth()->user()->id)->where('status', 'failed')->latest()->get();
 
         $carts = [];
         foreach ($orders as $order) {
@@ -140,7 +140,7 @@ class OrderController extends Controller
     }
     public function checkoutCancel()
     {
-        $orders = Order::where('user_id', auth()->user()->id)->where('status', 'cancelled')->get();
+        $orders = Order::where('user_id', auth()->user()->id)->where('status', 'cancelled')->latest()->get();
 
         $carts = [];
         foreach ($orders as $order) {
@@ -167,8 +167,8 @@ class OrderController extends Controller
                 'quantity' => $cart->quantity,
                 'cart_total' => $cart->cart_total,
                 'product' => [
-                    'product_name' => $cart->product->product_name,
-                    'price' => $cart->product->price
+                    'product_name' => $cart->product->product_name ?? 'Product Deleted',
+                    'price' => $cart->product->price ?? 0
                 ]
             ];
         });
@@ -211,7 +211,7 @@ class OrderController extends Controller
 
     public function index()
     {
-        $orders = Order::where('status', '!=', null)->where('status', '!=', 'pending')->get();
+        $orders = Order::where('status', '!=', null)->where('status', '!=', 'pending')->latest()->get();
 
         $carts = [];
         foreach ($orders as $order) {

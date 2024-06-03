@@ -64,12 +64,14 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form action="" method="post" enctype="multipart/form-data" id="update-product">
+            <form method="post" id="update-product" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
                 <div class="modal-body">
                     <input type="hidden" name="id" id="id">
                     <div class="form-group">
+                        <label for="product_image" class="form-label">Product Image</label>
+                        <input type="file" name="product_image" id="product_image" class="form-control" />
                         <img style="display: none;" class="img-preview2 tw-mt-2 tw-h-52" id="preview2">
                     </div>
                     <div class="form-group mandatory">
@@ -117,7 +119,7 @@
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Close</button>
-                    <button type="submit" id="btn-update" class="btn btn-primary">Submit</button>
+                    <button type="button" id="btn-update" class="btn btn-primary">Submit</button>
                 </div>
             </form>
         </div>

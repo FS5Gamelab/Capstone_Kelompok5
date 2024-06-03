@@ -102,7 +102,7 @@
                                                     </span>
                                                 @endif
                                             </td>
-                                            <td class="!tw-text-nowrap">
+                                            <td class="!tw-text-nowrap" id="action_{{ $order->id }}">
                                                 <a href="javascript:void(0)" data-id="{{ $order->id }}" id="btn-detail"
                                                     class="btn btn-primary btn-sm !tw-mr-3">
                                                     Detail
@@ -162,7 +162,14 @@
                             <span class="badge bg-success">success</span>
                             `
                         )
-                        $("#btn-cancel").remove();
+                        $("#action_" + id).html(
+                            `
+                                <a href="javascript:void(0)" data-id="${id}" id="btn-detail"
+                                                    class="btn btn-primary btn-sm !tw-mr-3">
+                                                    Detail
+                                </a>
+                                `
+                        );
 
                     }
                 },
@@ -218,7 +225,7 @@
                 </div>
             `);
                         });
-                        if (response.order.status == 'cancel') {
+                        if (response.order.status == 'cancelled') {
                             $("#cancel").show();
                             $("#reason").text(response.order.cancel_reason);
                         }
@@ -284,7 +291,14 @@
                             <span class="badge bg-danger">cancelled</span>
                             `
                             )
-                            $("#btn-cancel").remove();
+                            $("#action_" + id).html(
+                                `
+                                <a href="javascript:void(0)" data-id="${id}" id="btn-detail"
+                                                    class="btn btn-primary btn-sm !tw-mr-3">
+                                                    Detail
+                                </a>
+                                `
+                            );
                         },
                         error: function(xhr, status, error) {
                             Swal.fire({

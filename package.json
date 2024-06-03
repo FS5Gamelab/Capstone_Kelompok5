@@ -51,6 +51,7 @@
     "bestzip": "^2.2.1",
     "browser-sync": "^2.27.11",
     "browser-sync-webpack-plugin": "^2.3.0",
+    "daisyui": "^4.11.1",
     "laravel-echo": "^1.16.1",
     "laravel-vite-plugin": "^0.8.0",
     "postcss": "^8.4.38",

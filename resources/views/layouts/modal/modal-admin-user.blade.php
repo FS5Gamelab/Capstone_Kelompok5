@@ -50,5 +50,7 @@
 <script>
     $('button').attr('data-dismiss', 'modal').click(function() {
         $("#tambahModal").modal("hide");
+        $("#ubahModal").modal("hide");
+
     });
 </script>

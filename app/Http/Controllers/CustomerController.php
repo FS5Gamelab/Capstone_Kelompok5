@@ -30,11 +30,31 @@ class CustomerController extends Controller
         } else {
             $cartCount = 0;
         }
+        $products = Product::where('in_stock', 1)->get();
+        foreach ($products as $product) {
+            $product->rating = number_format($product->reviews()->avg('rating'), 1, '.', '');
+        }
         return view('user.homepage.menu', [
-            'products' => Product::all(),
+            'products' => $products,
             'cartCount' => $cartCount,
         ]);
     }
+
+    public function menuDetail($id)
+    {
+        if (auth()->user()) {
+            $cartCount = Cart::where('user_id', auth()->user()->id)->where('checked_out', 0)->count();
+        } else {
+            $cartCount = 0;
+        }
+        $product = Product::find($id);
+        $product->rating = number_format($product->reviews()->avg('rating'), 1, '.', '');
+        return view('user.homepage.detail-menu', [
+            'product' => $product,
+            'cartCount' => $cartCount,
+        ]);
+    }
+
     public function about()
     {
         if (auth()->user()) {

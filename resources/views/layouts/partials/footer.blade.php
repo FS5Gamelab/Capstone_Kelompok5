@@ -1,4 +1,4 @@
-<div class="container-fluid text-white overflow-hidden mt-2" style="background: #22223c">
+<div class="container-fluid text-white overflow-hidden mt-2" style="background: #22223c" id="footer">
     <footer class="row row-cols-1 row-cols-sm-2 row-cols-md-5 py-2 my-3 justify-content-center g-5">
         <div class="col-mb-3 col-6">
             <a href="/" class="d-flex align-items-center mb-3 link-dark text-decoration-none">

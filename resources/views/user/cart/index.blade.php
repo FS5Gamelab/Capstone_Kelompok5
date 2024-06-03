@@ -26,8 +26,15 @@
                                             <li
                                                 class="tw-flex tw-flex-col tw-space-y-3 tw-py-6 tw-text-left sm:tw-flex-row sm:tw-space-x-5 sm:tw-space-y-0">
                                                 <div class="tw-shrink-0">
-                                                    <img class="tw-h-24 tw-w-24 tw-max-w-full tw-rounded-lg tw-object-cover"
-                                                        alt="" src="{{ asset('/static/images/samples/1.png') }}" />
+                                                    @if ($cart->product->product_image)
+                                                        <img class="tw-h-24 tw-w-24 tw-max-w-full tw-rounded-lg tw-object-cover"
+                                                            alt=""
+                                                            src="{{ asset('storage/' . $cart->product->product_image) }}" />
+                                                    @else
+                                                        <img class="tw-h-24 tw-w-24 tw-max-w-full tw-rounded-lg tw-object-cover"
+                                                            alt=""
+                                                            src="{{ asset('/static/images/samples/1.png') }}" />
+                                                    @endif
                                                 </div>
 
                                                 <div class="tw-relative tw-flex tw-flex-1 tw-flex-col tw-justify-between">
