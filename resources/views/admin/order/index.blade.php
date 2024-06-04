@@ -67,7 +67,7 @@
                                                             </span>
                                                             <span
                                                                 class="badge bg-primary-subtle tw-text-gray-700 dark:tw-text-white">
-                                                                {{ $cart->product->product_name }}
+                                                                {{ $cart->product->product_name ?? 'Product Deleted' }}
                                                             </span>
 
                                                         </li>
