@@ -2,7 +2,7 @@
     <div class="header-top">
         <div class="container">
             <div class="logo tw-hidden xl:tw-block">
-                <a href="/"><img src="{{ asset('/static/images/logo/logo.svg') }}" alt="Logo"></a>
+                <a href="/"><img src="{{ asset('/static/images/logo/logo.svg') }}" alt="Logo" style="height: 32px"></a>
             </div>
             <div class="header-top-right">
                 <div class="me-2">

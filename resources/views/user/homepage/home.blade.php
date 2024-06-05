@@ -77,6 +77,7 @@
                                 <div class="col-sm-8 d-flex flex-column justify-content-center text-white">
                                     <h2 class="h2 text-white">Diskon 20% untuk Pelanggan Baru</h2>
                                     <p>Dapatkan diskon 20% untuk kunjungan pertama Anda ke restoran kami. Berlaku hingga akhir bulan ini.</p>
+                                    <a href="/menu" class="btn bg-white text-primary fw-medium mt-4 px-5" style="width: fit-content">Lihat Menu</a>
                                 </div>
                                 <div class="col-sm-4">
                                     <img src="{{ asset('static/images/illustration/6.svg') }}" class="img-fluid rounded mb-3" alt="Gallery Image" >
@@ -86,20 +87,37 @@
                         </div>
                     </div>
                 </div>
-                <div class="gallery mt-5 col-md-12">
-                    <h2 class="h2 text-center mb-4">Galeri Foto</h2>
-                    <div class="row">
-                        <div class="col-md-3">
-                            <img src="{{ asset('static/images/samples/1.png') }}" class="img-fluid rounded mb-3" alt="Gallery Image">
-                        </div>
-                        <div class="col-md-3">
-                            <img src="{{ asset('static/images/samples/2.png') }}" class="img-fluid rounded mb-3" alt="Gallery Image">
-                        </div>
-                        <div class="col-md-3">
-                            <img src="{{ asset('static/images/samples/3.png') }}" class="img-fluid rounded mb-3" alt="Gallery Image">
-                        </div>
-                        <div class="col-md-3">
-                            <img src="{{ asset('static/images/samples/4.png') }}" class="img-fluid rounded mb-3" alt="Gallery Image">
+                <div class="col-md-12">
+                    <div class="card p-2 py-4 p-sm-5">
+                        <h2 class="h2 text-center mb-3">Customer Review</h2>
+                        <div class="row g-2">
+                            <div class="col-md-4">
+                                <div class="p-2 border rounded">
+                                    <img class="rounded" src="{{ asset('static/images/samples/sate.png') }}" alt="">
+                                </div>
+                            </div>
+                            <div class="col-md-8 d-flex">
+                                <div class="border p-3 rounded">
+                                    <div class="d-flex align-items-center mb-3">
+                                    <div class="avatar avatar-lg me-3">
+                                        <img src="{{ asset('/static/images/faces/1.jpg') }}" alt="" srcset="">
+                                    </div>
+                                    <div>
+                                        <h5 class="h5 mb-0">Lorem, ipsum dolor.</h5>
+                                        <div>
+                                        <i class="bi bi-star-fill text-warning"></i>
+                                        <i class="bi bi-star-fill text-warning"></i>
+                                        <i class="bi bi-star-fill text-warning"></i>
+                                        <i class="bi bi-star-fill text-warning"></i>
+                                        <i class="bi bi-star-fill text-warning"></i>
+                                        </div>
+                                    </div>
+                                    </div>
+                                    <p class="border-top pt-2">
+                                    "Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquid, asperiores modi. Quia placeat, eum odit doloribus libero delectus nobis dolorum minus, aliquam illo error molestias?"
+                                    </p>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

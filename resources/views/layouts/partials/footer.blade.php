@@ -2,7 +2,7 @@
     <footer class="row row-cols-1 row-cols-sm-2 row-cols-md-5 py-2 my-3 justify-content-center g-5">
         <div class="col-mb-3 col-6">
             <a href="/" class="d-flex align-items-center mb-3 link-dark text-decoration-none">
-                <img src="{{ asset('/static/images/logo/logo.svg') }}" width="100" alt="Logo">
+                <img src="{{ asset('/static/images/logo/logo.svg') }}" style="height: 32px" alt="Logo">
             </a>
             <p class="text-muted">&copy; 2024</p>
             <p class="text-secondary d-flex gap-2 mt-4">
