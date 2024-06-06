@@ -80,6 +80,12 @@
                         <span>Reservations</span>
                     </a>
                 </li>
+                <li class="sidebar-item {{ Request::is('blogs*') ? 'active' : '' }}">
+                    <a href="/blogs" class='sidebar-link'>
+                        <i class="bi bi-file-earmark"></i>
+                        <span>Blogs</span>
+                    </a>
+                </li>
             </ul>
         </div>
     </div>

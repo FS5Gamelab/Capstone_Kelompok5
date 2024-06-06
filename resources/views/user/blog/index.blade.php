@@ -1,22 +1,54 @@
 @extends('layouts.app-user', ['title' => 'Blog'])
 
 @section('main-content')
-<div class="card mb-3">
-  <img src="" class="card-img-top" alt="gambar">
-  <div class="card-body">
-    <h5 class="card-title">Restoran sushi terbaik</h5>
-    <p class="card-text">Restoran sushi kami, masuk kedalam kategori restoran sushi terbaik yang ada di tokyo</p>
-    <button type="button" onclick="window.location.href='https://www.byfood.com/blog/tokyo/best-sushi-in-tokyo'">Selengkapnya</button>
-  </div>
-</div>
+    <div class="row">
+        @foreach ($blogs as $blog)
+            <div class="col-md-12">
+                <div style="max-height: 15rem;" class="card mb-3 overflow-hidden">
+                    <div class="row g-0">
+                        @if ($blog->blog_image != null)
+                            <div class="col-md-4">
+                                <img src="{{ asset('storage/' . $blog->blog_image) }}"
+                                    class="img-fluid rounded-start !tw-h-60 !tw-w-full" alt="{{ $blog->title }}">
+                            </div>
+                            <div class="col-md-8">
+                            @else
+                                <div class="col-md-12">
+                        @endif
+                        <div class="card-body">
+                            <a href="/blog/{{ $blog->slug }}">
+                                <h5 class="card-title !tw-text-lg">{{ $blog->title }}</h5>
+                            </a>
+                            <span class="card-text mb-3 d-flex justify-content-between">
+                                <small class="text-body-secondary">{{ $blog->created_at->diffForHumans() }}</small>
+                                <small class="text-body-secondary">
+                                    <a href="/blog/{{ $blog->slug }}">
+                                        Read more...
+                                    </a>
+                                </small>
+                            </span>
+                            <div class="card-text mb-3 ellipsis">
+                                {!! $blog->description !!}
+                            </div>
+                        </div>
 
-<div class="card mb-3">
-    <img src="..." class="card-img-top" alt="...">
-    <div class="card-body">
-      <h5 class="card-title">masuk restoran 10 terbaik</h5>
-      <p class="card-text">restoran kami juga pernah mendapatkan penghargaan sebagai salah satu restoran terbaik menurut data michelin guide tahun 2021</p>
-      <button type="button" onclick="window.location.href='https://www.kompas.com/food/read/2021/12/26/194619575/10-restoran-masakan-indonesia-terbaik-di-dunia-menurut-michelin-guide'">Selengkapnya</button>
+                    </div>
+                </div>
+            </div>
     </div>
-  </div>
+    @endforeach
+    </div>
+@endsection
 
+@section('css')
+    <style>
+        .ellipsis {
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            height: 4.5rem;
+        }
+    </style>
 @endsection

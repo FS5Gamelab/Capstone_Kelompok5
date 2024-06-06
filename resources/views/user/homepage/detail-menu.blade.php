@@ -8,7 +8,8 @@
             </div>
             <div class="card-body">
                 <div class="tw-w-full">
-                    <img src="{{ asset('storage/' . $product->product_image) }}" alt="{{ $product->product_name }}">
+                    <img src="{{ asset('storage/' . $product->product_image) }}" alt="{{ $product->product_name }}"
+                        class="tw-w-full img-fluid rounded">
                 </div>
                 <div class="tw-flex tw-justify-between tw-mt-4">
                     <div class="tw-w-1/3">
@@ -55,7 +56,7 @@
                     <table class="table table-borderless" id="table1">
                         <thead>
                             <tr>
-                                <th data-sortable="false">Use</th>
+                                <th data-sortable="false">User</th>
                                 <th data-sortable="false">Comment</th>
                                 <th>Rating</th>
                                 <th>Created At</th>

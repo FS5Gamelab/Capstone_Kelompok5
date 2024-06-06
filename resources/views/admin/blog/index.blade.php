@@ -1,4 +1,4 @@
-@extends('layouts.app', ['title' => 'Product'])
+@extends('layouts.app', ['title' => 'Blog'])
 @section('sidebar')
     @include('layouts.partials.sidebar')
 @endsection
@@ -7,7 +7,7 @@
         <div class="page-title">
             <div class="row">
                 <div class="col-12 col-md-6 order-md-1 order-last">
-                    <h3 class="!tw-text-3xl tw-font-semibold">Product</h3>
+                    <h3 class="!tw-text-3xl tw-font-semibold">Blog</h3>
                 </div>
                 <div class="col-12 col-md-6 order-md-2 order-first">
                     <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
@@ -16,7 +16,7 @@
                                 <a href="/admin-dashboard">Dashboard</a>
                             </li>
                             <li class="breadcrumb-item active" aria-current="page">
-                                Product
+                                Blog
                             </li>
                         </ol>
                     </nav>
@@ -26,11 +26,8 @@
         <section class="section">
             <div class="page-content">
                 <div class="d-flex mt-4 justify-content-between">
-                    <a href="{{ route('products.deleted') }}" class="btn btn-danger mb-3"><i class="bi bi-trash"></i>
-                        Deleted Product
-                    </a>
                     <a href="javascript:void(0)" id="btn-add" class="btn btn-primary mb-3"><i class="bi bi-plus-lg"></i>
-                        Add New Product
+                        Add New Blog
                     </a>
                 </div>
                 <div class="card">
@@ -38,79 +35,35 @@
                         <table class="table table-striped table-hover" id="table1">
                             <thead>
                                 <tr>
-                                    <th>Product Image</th>
-                                    <th>Product Name</th>
-                                    <th>Category</th>
-                                    <th>Type</th>
-                                    <th>Price</th>
-                                    <th>Total Review</th>
-                                    <th>Rating</th>
-                                    <th>Status</th>
+                                    <th>Blog Image</th>
+                                    <th>Title</th>
                                     <th data-sortable="false">Action</th>
                                 </tr>
                             </thead>
                             <tbody class="tw-text-sm">
-                                @foreach ($products as $product)
-                                    <tr id="index_{{ $product->id }}">
-                                        @if ($product->product_image)
-                                            <td>
-                                                <img src="{{ asset('storage/' . $product->product_image) }}"
-                                                    alt="{{ $product->product_name }}" class="tw-w-16 tw-h-16">
-                                            </td>
-                                        @else
-                                            <td>
-                                                No Image
-                                            </td>
-                                        @endif
-                                        <td>{{ $product->product_name }}</td>
+                                @foreach ($blogs as $blog)
+                                    <tr id="index_{{ $blog->id }}">
                                         <td>
-                                            @if ($product->category)
-                                                {{ $product->category->category_name }}
+                                            @if ($blog->blog_image == null)
+                                                No Image
                                             @else
-                                                <i class="tw-text-xs">Category Deleted</i>
+                                                <img src="storage/{{ $blog->blog_image }}" alt=""
+                                                    class="tw-w-16 tw-h-16">
                                             @endif
                                         </td>
-                                        <td class="text-capitalize">{{ $product->type }}</td>
-                                        <td class="text-end">Rp{{ number_format($product->price, 0, ',', '.') }}</td>
-                                        <td>{{ $product->reviews_count }}</td>
-                                        <td class="tw-text-sm tw-text-nowrap">
-                                            @if ($product->average_rating == 0)
-                                                0
-                                            @elseif ($product->average_rating == 5)
-                                                5
-                                            @else
-                                                {{ $product->average_rating }}
-                                            @endif
-                                            / 5
-                                            <span class="tw-ml-1">
-                                                <i class="bi bi-star-fill tw-text-yellow-200"></i>
-                                            </span>
-
-                                        </td>
-                                        <td class="text-center">
-                                            @if ($product->in_stock)
-                                                <i class="bi bi-check text-success"></i>
-                                            @else
-                                                <i class="bi bi-x text-danger"></i>
-                                            @endif
-                                        </td>
-                                        <td class="tw-text-nowrap">
-                                            <a href="/products/{{ $product->slug }}" class="btn btn-sm btn-info me-2">
+                                        <td>{{ $blog->title }}</td>
+                                        <td>
+                                            <a href="/blogs/{{ $blog->slug }}" class="btn btn-sm btn-info me-2">
                                                 <i class="bi bi-eye"></i>
                                             </a>
-                                            <a href="javascript:void(0)" data-id="{{ $product->id }}" id="btn-edit"
-                                                class="btn btn-sm btn-primary me-2">
-                                                <i class="bi bi-pencil"></i>
+                                            <a href="javascript:void(0)" id="btn-edit" data-id="{{ $blog->id }}"
+                                                class="btn btn-primary btn-sm"><i class="bi bi-pencil"></i>
                                             </a>
-
-                                            <a href="javascript:void(0)" data-id="{{ $product->id }}" id="btn-delete"
-                                                class="btn btn-sm btn-danger">
-                                                <i class="bi bi-trash"></i>
+                                            <a href="javascript:void(0)" id="btn-delete" data-id="{{ $blog->id }}"
+                                                class="btn btn-danger btn-sm"><i class="bi bi-trash"></i>
                                             </a>
-                                        </td>
                                     </tr>
                                 @endforeach
-
                             </tbody>
                         </table>
                     </div>
@@ -120,7 +73,7 @@
     </div>
 
     @include('layouts.loader')
-    @include('layouts.modal.modal-product')
+    @include('layouts.modal.modal-blog')
 @endsection
 @section('css')
     @vite(['resources/scss/pages/simple-datatables.scss', 'resources/js/pages/simple-datatables.js'])
@@ -129,15 +82,13 @@
     <script>
         $("#loader").hide();
         $("#btn-add").click(function() {
-            $("#n-product_name").val("");
+            $("#n-title").val("");
             $("#n-slug").val("");
-            $("#n-category_id").val("");
-            $("#n-type").val("");
             $("#n-description").val("");
-            $("#n-price").val("");
-            $("#n-product_image").val("");
+            $("#n-blog_image").val("");
             $("#preview").hide();
             $("preview").attr("src", "");
+            $("trix-editor").val('');
 
             $("#tambahModal").modal("show");
 
@@ -150,7 +101,7 @@
             $("#tambahModal").modal("hide");
             $("#loader").show();
             $.ajax({
-                url: "/products/create",
+                url: "/blogs/create",
                 type: "POST",
                 data: new FormData(this),
                 contentType: false,
@@ -163,39 +114,27 @@
                             title: 'Success',
                             text: response.message,
                         })
-                        if (response.product.in_stock == 1) {
-                            stk =
-                                `<td class="text-center"><i class="bi bi-check text-success"></i></td>`
+                        let img;
+                        if (response.blog.blog_image == null) {
+                            img = "No Image";
                         } else {
-                            stk = `<td class="text-center"><i class="bi bi-x text-danger"></i></td>`
+                            img =
+                                `<img src="storage/${response.blog.blog_image}" alt="" class="tw-w-16 tw-h-16">`;
                         }
                         let newRow = `
-                    <tr id="index_${response.product.id}">
-                        <td><img src="storage/${response.product.product_image}" alt="" class="tw-w-16 tw-h-16"></td>
-                        <td>${response.product.product_name}</td>
-                        <td>${response.category.category_name}</td>
-                        <td>${response.product.type}</td>
-                        <td class="text-end">Rp${parseInt(response.product.price.toLocaleString('id_ID'))}</td>
-                        <td>0</td>
-                        <td class="tw-text-sm tw-text-nowrap">
-                            0 / 5
-                            <span class="tw-ml-1">
-                                <i class="bi bi-star-fill tw-text-yellow-200"></i>
-                            </span>    
-                        </td>
-                        <td class="text-center">
-                            ${stk}
-                        </td>
+                    <tr id="index_${response.blog.id}">
+                        <td>${img}</td>
+                        <td>${response.blog.title}</td>
                         <td class="tw-text-nowrap">
-                            <a href="/products/${response.product.slug}" class="btn btn-sm btn-info me-2">
+                            <a href="/blogs/${response.blog.slug}" class="btn btn-sm btn-info me-2">
                                 <i class="bi bi-eye"></i>
                             </a>
-                            <a href="javascript:void(0)" data-id="${response.product.id}" id="btn-edit"
+                            <a href="javascript:void(0)" data-id="${response.blog.id}" id="btn-edit"
                                 class="btn btn-sm btn-primary me-2">
                                 <i class="bi bi-pencil"></i>
                             </a>
 
-                            <a href="javascript:void(0)" data-id="${response.product.id}" id="btn-delete"
+                            <a href="javascript:void(0)" data-id="${response.blog.id}" id="btn-delete"
                                 class="btn btn-sm btn-danger">
                                 <i class="bi bi-trash"></i>
                             </a>
@@ -250,7 +189,7 @@
                 if (result.isConfirmed) {
                     $("#loader").show();
                     $.ajax({
-                        url: `/products/delete/${id}`,
+                        url: `/blogs/delete/${id}`,
                         type: "DELETE",
                         data: {
                             _token: "{{ csrf_token() }}"
@@ -299,21 +238,18 @@
             let token = $("meta[name='csrf-token']").attr("content");
             $("#loader").show();
             $.ajax({
-                url: `products/edit/${id}`,
+                url: `blogs/edit/${id}`,
                 type: "GET",
                 success: function(response) {
                     $("#loader").hide();
-                    $("#id").val(response.product.id);
-                    $("#slug").val(response.product.slug);
-                    $("#product_name").val(response.product.product_name);
-                    $("#category_id").val(response.product.category_id);
-                    $("#type").val(response.product.type);
-                    $("#description").val(response.product.description);
-                    $("#price").val(response.product.price);
-                    $("#preview2").attr("src", "storage/" + response.product.product_image);
+                    $("#id").val(response.blog.id);
+                    $("#slug").val(response.blog.slug);
+                    $("#title").val(response.blog.title);
+                    $("#description").val(response.blog.description);
+                    $("trix-editor").val(response.blog.description);
+                    $("#preview2").attr("src", "storage/" + response.blog.blog_image);
                     $("#preview2").show();
-                    $("#in_stock").val(response.product.in_stock);
-                    $("#update-product").attr("action", `products/${id}/update`);
+                    $("#update-blog").attr("action", `blogs/${id}/update`);
                     $("#ubahModal").modal("show");
                 },
                 error: function(xhr, status, error) {
@@ -337,7 +273,7 @@
             $("#ubahModal").modal("hide");
             $("#loader").show();
             $.ajax({
-                url: `products/${id}/update`,
+                url: `blogs/${id}/update`,
                 type: "POST",
                 // data: {
                 //     product_name: $("#product_name").val(),
@@ -348,7 +284,7 @@
                 //     in_stock: $("#in_stock").val(),
                 //     _token: "{{ csrf_token() }}"
                 // },
-                data: new FormData($("#update-product")[0]),
+                data: new FormData($("#update-blog")[0]),
                 contentType: false,
                 processData: false,
                 headers: {
@@ -366,56 +302,30 @@
                         let img;
                         let stk;
                         let rating;
-                        if (response.product.product_image) {
+                        if (response.blog.blog_image) {
                             img = ` 
-                        <td><img src="storage/${response.product.product_image}" alt="" class="tw-w-16 tw-h-16"></td>
+                        <td><img src="storage/${response.blog.blog_image}" alt="" class="tw-w-16 tw-h-16"></td>
                         
                         `
                         } else {
                             img = `<td>No Image</td>`
                         }
 
-                        if (response.product.in_stock == 1) {
-                            stk =
-                                `<td class="text-center"><i class="bi bi-check text-success"></i></td>`
-                        } else {
-                            stk = `<td class="text-center"><i class="bi bi-x text-danger"></i></td>`
-                        }
-
-                        if (response.product.average_rating == 0) {
-                            rating = 0;
-                        } else if (response.product.average_rating == 5) {
-                            rating = 5;
-                        } else {
-                            rating = response.product.average_rating;
-                        }
                         $("#index_" + id).html(
                             `
                     ${img}
-                    <td>${response.product.product_name}</td>
-                    <td>${response.category.category_name}</td>
-                    <td class="text-capitalize">${response.product.type}</td>
-                    <td class="text-end">Rp${parseInt(response.product.price.toLocaleString('id_ID'))}</td>
-                    <td>${response.product.reviews_count}</td>
-                    <td class="tw-text-sm tw-text-nowrap">
-                        ${rating} / 5
-                        <span class="tw-ml-1">
-                            <i class="bi bi-star-fill tw-text-yellow-200"></i>
-                        </span>    
-                    </td>
-                    
-                        ${stk}
+                    <td>${response.blog.title}</td>
                    
                     <td class="tw-text-nowrap">
-                        <a href="/products/${response.product.slug}" class="btn btn-sm btn-info me-2">
+                        <a href="/blogs/${response.blog.slug}" class="btn btn-sm btn-info me-2">
                             <i class="bi bi-eye"></i>
                         </a>
-                        <a href="javascript:void(0)" data-id="${response.product.id}" id="btn-edit"
+                        <a href="javascript:void(0)" data-id="${response.blog.id}" id="btn-edit"
                             class="btn btn-sm btn-primary me-2">
                             <i class="bi bi-pencil"></i>
                         </a>
 
-                        <a href="javascript:void(0)" data-id="${response.product.id}" id="btn-delete"
+                        <a href="javascript:void(0)" data-id="${response.blog.id}" id="btn-delete"
                             class="btn btn-sm btn-danger">
                             <i class="bi bi-trash"></i>
                         </a>

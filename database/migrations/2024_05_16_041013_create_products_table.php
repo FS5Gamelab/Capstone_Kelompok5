@@ -22,7 +22,6 @@ return new class extends Migration
             $table->integer('price');
             $table->string('product_image')->nullable();
             $table->boolean('in_stock')->default(true);
-            $table->string('sku')->nullable();
             $table->timestamps();
             $table->softDeletes();
 

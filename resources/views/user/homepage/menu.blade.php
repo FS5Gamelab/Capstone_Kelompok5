@@ -7,7 +7,7 @@
             <div class="row">
                 @foreach ($products as $product)
                     <div class="col-xl-4 col-md-6 col-sm-12">
-                        <a href="/product/{{ $product->id }}">
+                        <a href="/product/{{ $product->slug }}">
                             <div class="card hover:tw-scale-105 tw-transition-all tw-delay-100">
                                 <div class="card-content">
                                     <div class="card-body">
@@ -46,7 +46,7 @@
                             </div>
                             <div class="row">
                                 <div class="col-md-8">
-                                    <a href="/product/{{ $product->id }}" class="text-decoration-none ">
+                                    <a href="/product/{{ $product->slug }}" class="text-decoration-none ">
                                         <p class="tw-text-sm">{{ $product->product_name }}</p>
                                     </a>
                                 </div>

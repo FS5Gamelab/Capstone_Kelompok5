@@ -25,7 +25,7 @@ return new class extends Migration
 
             $table->foreign('product_id')->references('id')->on('products')->onDelete(null);
             $table->foreign('user_id')->references('id')->on('users')->onDelete(null);
-            $table->foreign('review_id')->references('id')->on('reviews');
+            $table->foreign('review_id')->references('id')->on('reviews')->onDelete(null);
         });
     }
 

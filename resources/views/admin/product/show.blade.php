@@ -32,7 +32,11 @@
         <div class="card">
             <div class="card-body">
                 <div class="tw-w-full">
-                    <img src="{{ asset('storage/' . $product->product_image) }}" alt="{{ $product->product_name }}">
+                    @if ($product->product_image == null)
+                        No Image
+                    @else
+                        <img src="{{ asset('storage/' . $product->product_image) }}" alt="{{ $product->product_name }}">
+                    @endif
                 </div>
                 <div class="tw-flex tw-justify-between tw-mt-4">
                     <div class="tw-w-full">
@@ -101,7 +105,7 @@
                     <table class="table table-borderless" id="table1">
                         <thead>
                             <tr>
-                                <th data-sortable="false">Use</th>
+                                <th data-sortable="false">User</th>
                                 <th data-sortable="false">Comment</th>
                                 <th>Rating</th>
                                 <th>Created At</th>

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Cart;
 use App\Models\Category;
 use App\Models\Product;
+use Cviebrock\EloquentSluggable\Services\SlugService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
@@ -84,9 +85,9 @@ class ProductController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(string $slug)
     {
-        $product = Product::find($id);
+        $product = Product::where('slug', $slug)->first();
         $product->total_review = $product->reviews()->count();
         $product->rating = number_format($product->reviews()->avg('rating'), 1, '.', '');
         $product->reviews = $product->reviews()->get();
@@ -128,6 +129,10 @@ class ProductController extends Controller
             ]);
         } else {
             $product = Product::find($id);
+            if ($request->slug != $product->slug) {
+                $slug = SlugService::createSlug(Product::class, 'slug', $request->slug);
+                $product->slug = $slug;
+            }
             $image = $request->file('product_image');
             $product_image = $product->product_image;
             if ($image) {
@@ -181,7 +186,9 @@ class ProductController extends Controller
     public function forceDelete($id)
     {
         $product = Product::onlyTrashed()->find($id);
-
+        if ($product->product_image != null) {
+            Storage::disk('public')->delete($product->product_image);
+        }
         $product->forceDelete();
         return response()->json([
             'success' => true,
@@ -199,10 +206,17 @@ class ProductController extends Controller
         $carts->each(function ($cart) {
             $cart->delete();
         });
+
         $product->delete();
         return response()->json([
             'success' => true,
             'message' => 'Product deleted successfully',
         ]);
+    }
+
+    public function checkSlug(Request $request)
+    {
+        $slug = SlugService::createSlug(Product::class, 'slug', $request->product_name);
+        return response()->json(['slug' => $slug]);
     }
 }

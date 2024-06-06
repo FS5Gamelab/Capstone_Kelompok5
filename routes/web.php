@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\BlogController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CustomerController;
@@ -24,9 +25,10 @@ Route::get('/menu', [CustomerController::class, 'menu'])->name('menu');
 Route::get('/reservation', [CustomerController::class, 'reservation'])->name('reservation');
 Route::get('/about', [CustomerController::class, 'about'])->name('about');
 Route::get('/blog', [CustomerController::class, 'blog'])->name('blog');
+Route::get('/blog/{slug}', [CustomerController::class, 'blogDetail'])->name('blog-detail');
 Route::post('/reservation', [ReservationController::class, 'store'])->name('reservation.store');
 
-Route::get('/product/{id}', [CustomerController::class, 'menuDetail'])->name('menu-detail');
+Route::get('/product/{slug}', [CustomerController::class, 'menuDetail'])->name('menu-detail');
 
 
 Route::get('/dashboard', function () {
@@ -74,7 +76,8 @@ Route::middleware(['auth', 'auth.session', 'verified'])->group(function () {
 
     Route::get('/products', [ProductController::class, 'index'])->name('products');
     Route::post('/products/create', [ProductController::class, 'store'])->name('products.store');
-    Route::get('/products/{id}', [ProductController::class, 'show'])->name('products.show');
+    Route::get('/products/create/checkSlug', [ProductController::class, 'checkSlug'])->middleware('auth');
+    Route::get('/products/{slug}', [ProductController::class, 'show'])->name('products.show');
     Route::get('products/edit/{id}', [ProductController::class, 'edit'])->name('products.edit');
     Route::put('/products/{id}/update', [ProductController::class, 'update'])->name('products.update');
     Route::delete('/products/delete/{id}', [ProductController::class, 'destroy'])->name('products.delete');
@@ -90,6 +93,15 @@ Route::middleware(['auth', 'auth.session', 'verified'])->group(function () {
     Route::get('/reservations/{id}/edit', [ReservationController::class, 'edit'])->name('reservations.edit');
     Route::put('/reservations/{id}/update', [ReservationController::class, 'update'])->name('reservations.update');
     Route::delete('/reservations/{id}/delete', [ReservationController::class, 'destroy'])->name('reservations.delete');
+
+    Route::get('/blogs', [BlogController::class, 'index'])->name('blogs');
+    Route::get('/blogs/create/checkSlug', [BlogController::class, 'checkSlug']);
+    Route::post('/blogs/create', [BlogController::class, 'store'])->name('blogs.store');
+    Route::get('/blogs/{slug}', [BlogController::class, 'show'])->name('blogs.show');
+    Route::get('/blogs/edit/{id}', [BlogController::class, 'edit'])->name('blogs.edit');
+    Route::put('/blogs/{id}/update', [BlogController::class, 'update'])->name('blogs.update');
+    Route::delete('/blogs/delete/{id}', [BlogController::class, 'destroy'])->name('blogs.delete');
+
 
     Route::get('/cart', [CartController::class, 'index'])->name('cart');
     Route::post('/checkout', [OrderController::class, 'checkOut'])->name('checkout');

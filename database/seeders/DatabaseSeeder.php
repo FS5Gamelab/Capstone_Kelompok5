@@ -29,31 +29,6 @@ class DatabaseSeeder extends Seeder
         $user3 = User::factory()->create([
             'email' => 'superadmin@gmail.com',
             "role" => "super admin",
-        ]);
-
-        $category = Category::create([
-            "category_name" => "Test Category",
-            "user_id" => $user2->id
-        ]);
-
-        $product = Product::create([
-            "category_id" => $category->id,
-            "product_name" => "Test Product",
-            "type" => "Test Type",
-            "description" => "Test Description",
-            "price" => rand(100000, 999999),
-            "in_stock" => true,
-            "user_id" => $user2->id,
-        ]);
-
-        $product2 = Product::create([
-            "category_id" => $category->id,
-            "product_name" => "Test Product 2",
-            "type" => "Test Type 2",
-            "description" => "Test Description 2",
-            "price" => rand(100000, 999999),
-            "in_stock" => true,
-            "user_id" => $user2->id,
-        ]);
+        ]);;
     }
 }

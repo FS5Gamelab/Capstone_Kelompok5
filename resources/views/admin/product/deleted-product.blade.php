@@ -92,10 +92,10 @@
                                                 data-id="{{ $product->id }}" id="btn-restore">
                                                 <i class="bi bi-arrow-clockwise"></i>
                                             </a>
-                                            <a href="javascript:void(0)" class="btn btn-danger btn-sm"
+                                            {{-- <a href="javascript:void(0)" class="btn btn-danger btn-sm"
                                                 data-id="{{ $product->id }}" id="btn-delete">
                                                 <i class="bi bi-trash"></i>
-                                            </a>
+                                            </a> --}}
                                         </td>
                                     </tr>
                                 @endforeach
@@ -154,7 +154,7 @@
                                 })
                             }
                         },
-                        error: function(xhr, status, error) {
+                        error: function(error) {
                             console.log(error);
                             $("#loader").hide();
                         }

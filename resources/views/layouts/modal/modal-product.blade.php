@@ -21,6 +21,10 @@
                         <input type="text" name="product_name" id="n-product_name" class="form-control">
                     </div>
                     <div class="form-group mandatory">
+                        <label for="n-slug" class="form-label">Slug</label>
+                        <input type="text" name="slug" id="n-slug" class="form-control" readonly>
+                    </div>
+                    <div class="form-group mandatory">
                         <label for="n-category_id" class="form-label">Category</label>
                         <select name="category_id" id="n-category_id" class="form-control text-capitalize">
                             <option value="" hidden>Select Category</option>
@@ -77,6 +81,10 @@
                     <div class="form-group mandatory">
                         <label for="product_name" class="form-label">Product Name</label>
                         <input type="text" name="product_name" id="product_name" class="form-control">
+                    </div>
+                    <div class="form-group mandatory">
+                        <label for="slug" class="form-label">Slug</label>
+                        <input type="text" name="slug" id="slug" class="form-control" readonly>
                     </div>
                     <div class="form-group mandatory">
                         <label for="category_id" class="form-label">Category</label>
@@ -198,108 +206,25 @@
 
     })
 </script>
-{{-- <script>
-    $("#update-product").on("submit", function(e) {
-        e.preventDefault();
-        let id = $("#id").val();
-        $("#ubahModal").modal("hide");
-        $("#loader").show();
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-        });
-        $.ajax({
-            url: `products/update/${id}`,
-            type: "POST",
-            data: new FormData(this),
-            contentType: false,
-            processData: false,
-            success: function(response) {
-                $("#loader").hide();
-                if (response.success) {
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Success',
-                        text: response.message,
-                        showConfirmButton: true,
-                    });
-                    let img;
-                    let stk;
-                    if (response.product.product_image) {
-                        img = ` 
-                        <td><img src="storage/${response.product.product_image}" alt="" class="tw-w-16 tw-h-16"></td>
-                        
-                        `
-                    } else {
-                        img = `<td>No Image</td>`
-                    }
 
-                    if (response.product.in_stock) {
-                        stk =
-                            `<td class="text-center"><i class="bi bi-check text-success"></i></td>`
-                    } else {
-                        stk = `<td class="text-center"><i class="bi bi-x text-danger"></i></td>`
-                    }
-                    $("#index_" + id).html(
-                        `
-                    ${img}
-                    <td>${response.product.product_name}</td>
-                    <td>${response.category.category_name}</td>
-                    <td>${response.product.type}</td>
-                    <td class="text-end">Rp${parseInt(response.product.price.toLocaleString('id_ID'))}</td>
-                    <td>0</td>
-                    <td class="tw-text-sm tw-text-nowrap">
-                        0 / 5
-                        <span class="tw-ml-1">
-                            <i class="bi bi-star-fill tw-text-yellow-200"></i>
-                        </span>    
-                    </td>
-                    <td class="text-center">
-                        ${stk}
-                    </td>
-                    <td class="tw-text-nowrap">
-                        <a href="/products/${response.product.id}" class="btn btn-sm btn-info me-2">
-                            <i class="bi bi-eye"></i>
-                        </a>
-                        <a href="javascript:void(0)" data-id="${response.product.id}" id="btn-edit"
-                            class="btn btn-sm btn-primary me-2">
-                            <i class="bi bi-pencil"></i>
-                        </a>
+<script>
+    const product_name = document.querySelector("#n-product_name");
 
-                        <a href="javascript:void(0)" data-id="${response.product.id}" id="btn-delete"
-                            class="btn btn-sm btn-danger">
-                            <i class="bi bi-trash"></i>
-                        </a>
-                    </td>
-                        `
-                    );
-                } else {
-                    let errors = response.errors;
-                    let errorMessages = '';
-                    for (let field in errors) {
-                        if (errors.hasOwnProperty(field)) {
-                            errorMessages += `${errors[field]}<br>`;
-                        }
-                    }
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Oops...',
-                        html: errorMessages,
-                        showConfirmButton: true,
-                    });
-                }
-
-            },
-            error: function(xhr, status, error) {
-                $("#loader").hide();
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Error',
-                    text: 'Failed to update product.',
-                    showConfirmButton: true,
-                });
-            }
-        });
+    product_name.addEventListener("change", function() {
+        const slug = document.querySelector("#n-slug");
+        fetch("/products/create/checkSlug?product_name=" + product_name.value)
+            .then((response) => response.json())
+            .then((data) => (slug.value = data.slug));
     });
-</script> --}}
+</script>
+<script>
+    const product_name2 = document.querySelector("#product_name");
+
+    product_name2.addEventListener("keyup", function() {
+        console.log(product_name2.value);
+        const slug = document.querySelector("#slug");
+        fetch("/products/create/checkSlug?product_name=" + product_name2.value)
+            .then((response) => response.json())
+            .then((data) => (slug.value = data.slug));
+    });
+</script>

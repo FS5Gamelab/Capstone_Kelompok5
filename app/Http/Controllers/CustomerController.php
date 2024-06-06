@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Blog;
 use App\Models\Cart;
 use App\Models\Product;
 use App\Models\User;
@@ -40,14 +41,14 @@ class CustomerController extends Controller
         ]);
     }
 
-    public function menuDetail($id)
+    public function menuDetail($slug)
     {
         if (auth()->user()) {
             $cartCount = Cart::where('user_id', auth()->user()->id)->where('checked_out', 0)->count();
         } else {
             $cartCount = 0;
         }
-        $product = Product::find($id);
+        $product = Product::where('slug', $slug)->first();
         $product->rating = number_format($product->reviews()->avg('rating'), 1, '.', '');
         return view('user.homepage.detail-menu', [
             'product' => $product,
@@ -86,9 +87,23 @@ class CustomerController extends Controller
         }
         return view('user.blog.index', [
             'cartCount' => $cartCount,
+            'blogs' => Blog::all(),
         ]);
     }
 
+    public function blogDetail($slug)
+    {
+        if (auth()->user()) {
+            $cartCount = Cart::where('user_id', auth()->user()->id)->where('checked_out', 0)->count();
+        } else {
+            $cartCount = 0;
+        }
+        $blog = Blog::where('slug', $slug)->first();
+        return view('user.blog.detail-blog', [
+            'cartCount' => $cartCount,
+            'blog' => $blog
+        ]);
+    }
     public function profile()
     {
         if (auth()->user()->role == "user") {
