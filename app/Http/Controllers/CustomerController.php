@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Blog;
 use App\Models\Cart;
 use App\Models\Product;
+use App\Models\Review;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -20,10 +21,14 @@ class CustomerController extends Controller
         } else {
             $cartCount = 0;
         }
+        $review = Review::inRandomOrder()->first();
+
         return view('user.homepage.home', [
             'cartCount' => $cartCount,
+            'review' => $review,
         ]);
     }
+
     public function menu()
     {
         if (auth()->user()) {
