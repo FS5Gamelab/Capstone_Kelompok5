@@ -46,6 +46,11 @@
 @vite(['resources/js/pages/rater-js.js'])
 
 <script>
+    $(document).ready(function() {
+        $('#modal-comment').on('shown.bs.modal', function() {
+            $('#comment').trigger('focus');
+        });
+    });
     $("#btn-submit").click(function() {
         let id = $("#product_id").val();
         let order = $("#order_id").val();

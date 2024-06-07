@@ -35,8 +35,13 @@
                     @if ($blog->blog_image == null)
                         No Image
                     @else
-                        <img src="{{ asset('storage/' . $blog->blog_image) }}" alt="{{ $blog->title }}"
-                            class="img-fluid rounded tw-w-full" style="max-height: 30rem;">
+                        @if (Str::startsWith($blog->blog_image, 'uploads/'))
+                            <img src="{{ asset('storage/' . $blog->blog_image) }}"
+                                class="img-fluid rounded-start !tw-h-60 !tw-w-full" alt="{{ $blog->title }}">
+                        @else
+                            <img src="{{ asset($blog->blog_image) }}" class="img-fluid rounded-start !tw-h-60 !tw-w-full"
+                                alt="{{ $blog->title }}">
+                        @endif
                     @endif
                 </div>
                 <div class="tw-flex tw-mt-4">

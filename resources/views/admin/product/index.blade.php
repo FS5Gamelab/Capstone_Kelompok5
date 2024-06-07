@@ -54,8 +54,16 @@
                                     <tr id="index_{{ $product->id }}">
                                         @if ($product->product_image)
                                             <td>
-                                                <img src="{{ asset('storage/' . $product->product_image) }}"
-                                                    alt="{{ $product->product_name }}" class="tw-w-16 tw-h-16">
+
+                                                @if (Str::startsWith($product->product_image, 'uploads/'))
+                                                    <img src="{{ asset('storage/' . $product->product_image) }}"
+                                                        class="img-fluid rounded tw-w-16 !tw-h-16"
+                                                        alt="{{ $product->product_name }}">
+                                                @else
+                                                    <img src="{{ asset($product->product_image) }}"
+                                                        class="img-fluid rounded tw-w-16 !tw-h-16"
+                                                        alt="{{ $product->product_name }}">
+                                                @endif
                                             </td>
                                         @else
                                             <td>
@@ -163,6 +171,18 @@
                             title: 'Success',
                             text: response.message,
                         })
+                        let img;
+                        if (response.product.product_image == null) {
+                            img = "No Image";
+                        } else {
+                            if (response.product.product_image.startsWith('uploads')) {
+                                img =
+                                    `<img src="storage/${response.product.product_image}" alt="" class="tw-w-16 tw-h-16">`;
+                            } else {
+                                img =
+                                    `<img src="${response.product.product_image}" alt="" class="tw-w-16 tw-h-16">`;
+                            }
+                        }
                         if (response.product.in_stock == 1) {
                             stk =
                                 `<td class="text-center"><i class="bi bi-check text-success"></i></td>`
@@ -171,7 +191,7 @@
                         }
                         let newRow = `
                     <tr id="index_${response.product.id}">
-                        <td><img src="storage/${response.product.product_image}" alt="" class="tw-w-16 tw-h-16"></td>
+                        <td>${img}</td>
                         <td>${response.product.product_name}</td>
                         <td>${response.category.category_name}</td>
                         <td>${response.product.type}</td>
@@ -310,8 +330,19 @@
                     $("#type").val(response.product.type);
                     $("#description").val(response.product.description);
                     $("#price").val(response.product.price);
-                    $("#preview2").attr("src", "storage/" + response.product.product_image);
-                    $("#preview2").show();
+                    if (response.product.product_image == null) {
+                        $("#preview2").hide();
+                    } else {
+                        if (response.product.product_image.startsWith('uploads')) {
+                            $("#preview2").attr("src", "storage/" + response.product.product_image);
+                            $("#preview2").show();
+                        } else {
+                            $("#preview2").attr("src", response.product.product_image);
+                            $("#preview2").show();
+                        }
+                    }
+                    // $("#preview2").attr("src", "storage/" + response.product.product_image);
+                    // $("#preview2").show();
                     $("#in_stock").val(response.product.in_stock);
                     $("#update-product").attr("action", `products/${id}/update`);
                     $("#ubahModal").modal("show");
@@ -366,13 +397,16 @@
                         let img;
                         let stk;
                         let rating;
-                        if (response.product.product_image) {
-                            img = ` 
-                        <td><img src="storage/${response.product.product_image}" alt="" class="tw-w-16 tw-h-16"></td>
-                        
-                        `
+                        if (response.product.product_image == null) {
+                            img = "No Image";
                         } else {
-                            img = `<td>No Image</td>`
+                            if (response.product.product_image.startsWith('uploads')) {
+                                img =
+                                    `<img src="storage/${response.product.product_image}" alt="" class="tw-w-16 tw-h-16">`;
+                            } else {
+                                img =
+                                    `<img src="${response.product.product_image}" alt="" class="tw-w-16 tw-h-16">`;
+                            }
                         }
 
                         if (response.product.in_stock == 1) {
@@ -391,7 +425,9 @@
                         }
                         $("#index_" + id).html(
                             `
-                    ${img}
+                    <td>
+                        ${img}
+                    </td>
                     <td>${response.product.product_name}</td>
                     <td>${response.category.category_name}</td>
                     <td class="text-capitalize">${response.product.type}</td>

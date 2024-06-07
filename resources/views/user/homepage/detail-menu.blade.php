@@ -8,8 +8,13 @@
             </div>
             <div class="card-body">
                 <div class="tw-w-full">
-                    <img src="{{ asset('storage/' . $product->product_image) }}" alt="{{ $product->product_name }}"
-                        class="tw-w-full img-fluid rounded">
+                    @if (Str::startsWith($product->product_image, 'uploads/'))
+                        <img src="{{ asset('storage/' . $product->product_image) }}" class="img-fluid rounded !tw-w-full"
+                            alt="{{ $product->product_image }}">
+                    @else
+                        <img src="{{ asset($product->product_image) }}" class="img-fluid rounded !tw-w-full"
+                            alt="{{ $product->product_image }}">
+                    @endif
                 </div>
                 <div class="tw-flex tw-justify-between tw-mt-4">
                     <div class="tw-w-1/3">
@@ -92,45 +97,48 @@
         </div>
     </section>
 
-    <section class="py-4">
-        <hr>
-    </section>
+    @if (!Auth::user() || Auth::user()->role == 'user')
+        <section class="py-4">
+            <hr>
+        </section>
 
-    <section class="add-to-cart section tw-fixed tw-bottom-0 tw-left-0 tw-right-0 tw-z-50">
-        <div class="row tw-flex tw-items-center md:tw-px-0 !tw-pl-4 !tw-pr-4 md:!tw-pl-16 md:!tw-pr-11 py-3 tw-bg-gray-800">
-            <div class="col-8 !tw-text-sm md:!tw-text-2xl tw-font-bold tw-text-start">
-                Price :
-                Rp{{ number_format($product->price, 0, ',', '.') }}
+        <section class="add-to-cart section tw-fixed tw-bottom-0 tw-left-0 tw-right-0 tw-z-50">
+            <div
+                class="row tw-flex tw-items-center md:tw-px-0 !tw-pl-4 !tw-pr-4 md:!tw-pl-16 md:!tw-pr-11 py-3 tw-bg-gray-800">
+                <div class="col-8 !tw-text-sm md:!tw-text-2xl tw-font-bold tw-text-start">
+                    Price :
+                    Rp{{ number_format($product->price, 0, ',', '.') }}
+                </div>
+                <div class="col-4">
+                    @auth
+                        <button class="button tw-w-full rounded mt-2" data-user="true" data-product="{{ $product->id }}">
+                            <span>
+                                Cart
+                            </span>
+                            <div class="cart">
+                                <svg viewBox="0 0 36 26">
+                                    <polyline points="1 2.5 6 2.5 10 18.5 25.5 18.5 28.5 7.5 7.5 7.5">
+                                    </polyline>
+                                    <polyline points="15 13.5 17 15.5 22 10.5"></polyline>
+                                </svg>
+                            </div>
+                        </button>
+                    @else
+                        <button class="button tw-w-full rounded mt-2" data-user="false" data-product="{{ $product->id }}">
+                            <span>Cart</span>
+                            <div class="cart">
+                                <svg viewBox="0 0 36 26">
+                                    <polyline points="1 2.5 6 2.5 10 18.5 25.5 18.5 28.5 7.5 7.5 7.5">
+                                    </polyline>
+                                    <polyline points="15 13.5 17 15.5 22 10.5"></polyline>
+                                </svg>
+                            </div>
+                        </button>
+                    @endauth
+                </div>
             </div>
-            <div class="col-4">
-                @auth
-                    <button class="button tw-w-full rounded mt-2" data-user="true" data-product="{{ $product->id }}">
-                        <span>
-                            Cart
-                        </span>
-                        <div class="cart">
-                            <svg viewBox="0 0 36 26">
-                                <polyline points="1 2.5 6 2.5 10 18.5 25.5 18.5 28.5 7.5 7.5 7.5">
-                                </polyline>
-                                <polyline points="15 13.5 17 15.5 22 10.5"></polyline>
-                            </svg>
-                        </div>
-                    </button>
-                @else
-                    <button class="button tw-w-full rounded mt-2" data-user="false" data-product="{{ $product->id }}">
-                        <span>Cart</span>
-                        <div class="cart">
-                            <svg viewBox="0 0 36 26">
-                                <polyline points="1 2.5 6 2.5 10 18.5 25.5 18.5 28.5 7.5 7.5 7.5">
-                                </polyline>
-                                <polyline points="15 13.5 17 15.5 22 10.5"></polyline>
-                            </svg>
-                        </div>
-                    </button>
-                @endauth
-            </div>
-        </div>
-    </section>
+        </section>
+    @endif
 @endsection
 @section('css')
     @vite(['resources/scss/pages/simple-datatables.scss', 'resources/js/pages/simple-datatables.js'])
@@ -327,10 +335,11 @@
 @endsection
 
 @section('js')
-    <script>
-        $("#footer").hide();
-    </script>
-
+    @if (!Auth::user() || Auth::user()->role == 'user')
+        <script>
+            $("#footer").hide();
+        </script>
+    @endif
     <script>
         $("#loader").hide();
         buttons = document.querySelectorAll('.button');

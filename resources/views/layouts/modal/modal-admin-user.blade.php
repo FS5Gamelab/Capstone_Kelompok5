@@ -48,9 +48,15 @@
     </div>
 </div>
 <script>
-    $('button').attr('data-dismiss', 'modal').click(function() {
-        $("#tambahModal").modal("hide");
-        $("#ubahModal").modal("hide");
+    $(document).ready(function() {
+        $('#tambahModal').on('shown.bs.modal', function() {
+            $('#name').trigger('focus');
+        });
 
+        // Menyembunyikan modal lain jika tombol data-dismiss di klik
+        $('button[data-dismiss="modal"]').click(function() {
+            $("#tambahModal").modal("hide");
+            $("#ubahModal").modal("hide");
+        });
     });
 </script>

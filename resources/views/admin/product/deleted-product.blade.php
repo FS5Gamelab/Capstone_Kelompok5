@@ -48,10 +48,15 @@
                                 @foreach ($products as $product)
                                     <tr id="index_{{ $product->id }}">
                                         @if ($product->product_image)
-                                            <td>
+                                            @if (Str::startsWith($product->product_image, 'uploads/'))
                                                 <img src="{{ asset('storage/' . $product->product_image) }}"
-                                                    alt="{{ $product->product_name }}" class="tw-w-16 tw-h-16">
-                                            </td>
+                                                    class="img-fluid rounded tw-w-16 tw-h-16"
+                                                    alt="{{ $product->product_name }}">
+                                            @else
+                                                <img src="{{ asset($product->product_image) }}"
+                                                    class="img-fluid rounded tw-w-16 tw-h-16"
+                                                    alt="{{ $product->product_name }}">
+                                            @endif
                                         @else
                                             <td>
                                                 No Image

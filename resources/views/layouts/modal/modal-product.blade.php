@@ -14,7 +14,7 @@
                         <label for="n-product_image" class="form-label">Product Image</label>
                         <input type="file" name="product_image" id="n-product_image" class="form-control"
                             accept="image/*">
-                        <img style="display: none;" class="img-preview tw-mt-2 tw-h-52" id="preview">
+                        <img style="display: none;" class="img-preview tw-mt-2 tw-h-52 tw-w-full" id="preview">
                     </div>
                     <div class="form-group mandatory">
                         <label for="n-product_name" class="form-label">Product Name</label>
@@ -76,7 +76,7 @@
                     <div class="form-group">
                         <label for="product_image" class="form-label">Product Image</label>
                         <input type="file" name="product_image" id="product_image" class="form-control" />
-                        <img style="display: none;" class="img-preview2 tw-mt-2 tw-h-52" id="preview2">
+                        <img style="display: none;" class="img-preview2 tw-mt-2 tw-h-52 tw-w-full" id="preview2">
                     </div>
                     <div class="form-group mandatory">
                         <label for="product_name" class="form-label">Product Name</label>
@@ -136,9 +136,16 @@
 
 
 <script>
-    $('button').attr('data-dismiss', 'modal').click(function() {
-        $("#tambahModal").modal("hide");
-        $("#ubahModal").modal("hide");
+    $(document).ready(function() {
+        $('#tambahModal').on('shown.bs.modal', function() {
+            $('#n-product_name').trigger('focus');
+        });
+
+        // Menyembunyikan modal lain jika tombol data-dismiss di klik
+        $('button[data-dismiss="modal"]').click(function() {
+            $("#tambahModal").modal("hide");
+            $("#ubahModal").modal("hide");
+        });
     });
 
     $("#n-product_image").change(function() {

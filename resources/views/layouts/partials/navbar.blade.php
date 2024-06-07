@@ -33,15 +33,16 @@
                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton"
                     style="min-width: 11rem;">
                     <li>
-                        <h6 class="dropdown-header">Hello, {{ Auth::user()->name }}!</h6>
+                        <a class="dropdown-item" href="/homepage"><i class="icon-mid bi bi-house-fill me-2"></i>
+                            Homepage
+                        </a>
                     </li>
                     <li>
                         <a class="dropdown-item" href="/profile"><i class="icon-mid bi bi-person me-2"></i> My
                             Profile
                         </a>
                     </li>
-                    <li><a class="dropdown-item" href="#"><i class="icon-mid bi bi-gear me-2"></i>
-                            Settings</a></li>
+
                     <li>
                         <hr class="dropdown-divider">
                     </li>

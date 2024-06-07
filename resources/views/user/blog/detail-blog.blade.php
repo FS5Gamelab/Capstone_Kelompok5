@@ -3,11 +3,19 @@
 @section('main-content')
     <section class="section">
         <div class="card">
+            <div class="card-header">
+                <h5 class="card-title !tw-text-3xl !tw-font-semibold">{{ $blog->title }}</h5>
+            </div>
             <div class="card-body">
                 <div class="tw-w-full">
                     @if ($blog->blog_image != null)
-                        <img src="{{ asset('storage/' . $blog->blog_image) }}" alt="{{ $blog->title }}"
-                            class="img-fluid rounded tw-w-full" style="max-height: 30rem;">
+                        @if (Str::startsWith($blog->blog_image, 'uploads/'))
+                            <img src="{{ asset('storage/' . $blog->blog_image) }}" alt="{{ $blog->title }}"
+                                class="img-fluid rounded tw-w-full" style="max-height: 30rem;">
+                        @else
+                            <img src="{{ asset($blog->blog_image) }}" alt="{{ $blog->title }}"
+                                class="img-fluid rounded tw-w-full" style="max-height: 30rem;">
+                        @endif
                     @endif
                 </div>
                 <div class="tw-flex tw-mt-4">

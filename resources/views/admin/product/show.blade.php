@@ -35,7 +35,13 @@
                     @if ($product->product_image == null)
                         No Image
                     @else
-                        <img src="{{ asset('storage/' . $product->product_image) }}" alt="{{ $product->product_name }}">
+                        @if (Str::startsWith($product->product_image, 'uploads/'))
+                            <img src="{{ asset('storage/' . $product->product_image) }}"
+                                class="img-fluid rounded  !tw-w-full" alt="{{ $product->product_image }}">
+                        @else
+                            <img src="{{ asset($product->product_image) }}" class="img-fluid rounded  !tw-w-full"
+                                alt="{{ $product->product_image }}">
+                        @endif
                     @endif
                 </div>
                 <div class="tw-flex tw-justify-between tw-mt-4">

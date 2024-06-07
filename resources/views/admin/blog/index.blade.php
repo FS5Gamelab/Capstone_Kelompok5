@@ -47,13 +47,20 @@
                                             @if ($blog->blog_image == null)
                                                 No Image
                                             @else
-                                                <img src="storage/{{ $blog->blog_image }}" alt=""
-                                                    class="tw-w-16 tw-h-16">
+                                                @if (Str::startsWith($blog->blog_image, 'uploads/'))
+                                                    <img src="{{ asset('storage/' . $blog->blog_image) }}"
+                                                        class="img-fluid rounded tw-w-16 !tw-h-16"
+                                                        alt="{{ $blog->title }}">
+                                                @else
+                                                    <img src="{{ asset($blog->blog_image) }}"
+                                                        class="img-fluid rounded tw-w-16 !tw-h-16"
+                                                        alt="{{ $blog->title }}">
+                                                @endif
                                             @endif
                                         </td>
                                         <td>{{ $blog->title }}</td>
                                         <td>
-                                            <a href="/blogs/{{ $blog->slug }}" class="btn btn-sm btn-info me-2">
+                                            <a href="/blogs/{{ $blog->slug }}" class="btn btn-sm btn-info me-1">
                                                 <i class="bi bi-eye"></i>
                                             </a>
                                             <a href="javascript:void(0)" id="btn-edit" data-id="{{ $blog->id }}"
@@ -115,12 +122,19 @@
                             text: response.message,
                         })
                         let img;
+
                         if (response.blog.blog_image == null) {
                             img = "No Image";
                         } else {
-                            img =
-                                `<img src="storage/${response.blog.blog_image}" alt="" class="tw-w-16 tw-h-16">`;
+                            if (response.blog.blog_image.startsWith('uploads')) {
+                                img =
+                                    `<img src="storage/${response.blog.blog_image}" alt="" class="tw-w-16 tw-h-16">`;
+                            } else {
+                                img =
+                                    `<img src="${response.blog.blog_image}" alt="" class="tw-w-16 tw-h-16">`;
+                            }
                         }
+
                         let newRow = `
                     <tr id="index_${response.blog.id}">
                         <td>${img}</td>
@@ -247,8 +261,19 @@
                     $("#title").val(response.blog.title);
                     $("#description").val(response.blog.description);
                     $("trix-editor").val(response.blog.description);
-                    $("#preview2").attr("src", "storage/" + response.blog.blog_image);
-                    $("#preview2").show();
+                    if (response.blog.blog_image == null) {
+                        $("#preview2").hide();
+                    } else {
+                        if (response.blog.blog_image.startsWith('uploads')) {
+                            $("#preview2").attr("src", "storage/" + response.blog.blog_image);
+                            $("#preview2").show();
+                        } else {
+                            $("#preview2").attr("src", response.blog.blog_image);
+                            $("#preview2").show();
+                        }
+                    }
+                    // $("#preview2").attr("src", "storage/" + response.blog.blog_image);
+                    // $("#preview2").show();
                     $("#update-blog").attr("action", `blogs/${id}/update`);
                     $("#ubahModal").modal("show");
                 },
@@ -302,18 +327,23 @@
                         let img;
                         let stk;
                         let rating;
-                        if (response.blog.blog_image) {
-                            img = ` 
-                        <td><img src="storage/${response.blog.blog_image}" alt="" class="tw-w-16 tw-h-16"></td>
-                        
-                        `
+                        if (response.blog.blog_image == null) {
+                            img = "No Image";
                         } else {
-                            img = `<td>No Image</td>`
+                            if (response.blog.blog_image.startsWith('uploads')) {
+                                img =
+                                    `<img src="storage/${response.blog.blog_image}" alt="" class="tw-w-16 tw-h-16">`;
+                            } else {
+                                img =
+                                    `<img src="${response.blog.blog_image}" alt="" class="tw-w-16 tw-h-16">`;
+                            }
                         }
 
                         $("#index_" + id).html(
                             `
-                    ${img}
+                    <td>
+                        ${img}
+                        </td>
                     <td>${response.blog.title}</td>
                    
                     <td class="tw-text-nowrap">

@@ -20,8 +20,15 @@
                                         </h4>
                                     </div>
                                     @if ($product->product_image)
-                                        <img class="img-fluid tw-w-full !tw-h-60"
-                                            src="{{ asset('storage/' . $product->product_image) }}" alt="Card image cap">
+                                        @if (Str::startsWith($product->product_image, 'uploads/'))
+                                            <img src="{{ asset('storage/' . $product->product_image) }}"
+                                                class="img-fluid rounded-start !tw-h-60 !tw-w-full"
+                                                alt="{{ $product->product_image }}">
+                                        @else
+                                            <img src="{{ asset($product->product_image) }}"
+                                                class="img-fluid rounded-start !tw-h-60 !tw-w-full"
+                                                alt="{{ $product->product_image }}">
+                                        @endif
                                     @else
                                         <img class="img-fluid tw-w-full !tw-h-60"
                                             src="{{ asset('/static/images/samples/1.png') }}" alt="Card image cap">
@@ -54,35 +61,37 @@
                                     <p class="tw-text-sm">Rp. {{ number_format($product->price, 0, ',', '.') }}</p>
                                 </div>
                             </div>
-                            <div class="row">
-                                <div class="col-md-12">
-                                    @auth
-                                        <button class="button tw-w-full rounded mt-2" data-user="true"
-                                            data-product="{{ $product->id }}">
-                                            <span>Add to cart</span>
-                                            <div class="cart">
-                                                <svg viewBox="0 0 36 26">
-                                                    <polyline points="1 2.5 6 2.5 10 18.5 25.5 18.5 28.5 7.5 7.5 7.5">
-                                                    </polyline>
-                                                    <polyline points="15 13.5 17 15.5 22 10.5"></polyline>
-                                                </svg>
-                                            </div>
-                                        </button>
-                                    @else
-                                        <button class="button tw-w-full rounded mt-2" data-user="false"
-                                            data-product="{{ $product->id }}">
-                                            <span>Add to cart</span>
-                                            <div class="cart">
-                                                <svg viewBox="0 0 36 26">
-                                                    <polyline points="1 2.5 6 2.5 10 18.5 25.5 18.5 28.5 7.5 7.5 7.5">
-                                                    </polyline>
-                                                    <polyline points="15 13.5 17 15.5 22 10.5"></polyline>
-                                                </svg>
-                                            </div>
-                                        </button>
-                                    @endauth
+                            @if (!Auth::user() || Auth::user()->role == 'user')
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        @auth
+                                            <button class="button tw-w-full rounded mt-2" data-user="true"
+                                                data-product="{{ $product->id }}">
+                                                <span>Add to cart</span>
+                                                <div class="cart">
+                                                    <svg viewBox="0 0 36 26">
+                                                        <polyline points="1 2.5 6 2.5 10 18.5 25.5 18.5 28.5 7.5 7.5 7.5">
+                                                        </polyline>
+                                                        <polyline points="15 13.5 17 15.5 22 10.5"></polyline>
+                                                    </svg>
+                                                </div>
+                                            </button>
+                                        @else
+                                            <button class="button tw-w-full rounded mt-2" data-user="false"
+                                                data-product="{{ $product->id }}">
+                                                <span>Add to cart</span>
+                                                <div class="cart">
+                                                    <svg viewBox="0 0 36 26">
+                                                        <polyline points="1 2.5 6 2.5 10 18.5 25.5 18.5 28.5 7.5 7.5 7.5">
+                                                        </polyline>
+                                                        <polyline points="15 13.5 17 15.5 22 10.5"></polyline>
+                                                    </svg>
+                                                </div>
+                                            </button>
+                                        @endauth
+                                    </div>
                                 </div>
-                            </div>
+                            @endif
                         </div>
                     </div>
 

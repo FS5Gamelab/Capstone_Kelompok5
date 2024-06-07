@@ -2,20 +2,24 @@
     <div class="header-top">
         <div class="container">
             <div class="logo tw-hidden xl:tw-block">
-                <a href="/"><img src="{{ asset('/static/images/logo/logo.svg') }}" alt="Logo" style="height: 32px"></a>
+                <a href="/"><img src="{{ asset('/static/images/logo/logo.svg') }}" alt="Logo"
+                        style="height: 32px"></a>
             </div>
             <div class="header-top-right">
-                <div class="me-2">
-                    <a class="nav-link position-relative me-4" href="/cart">
-                        <i class="bi bi-cart bi-sub fs-4 text-gray-600 "></i>
+                @if (!Auth::user() || Auth::user()->role == 'user')
+                    <div class="me-2">
+                        <a class="nav-link position-relative me-4" href="/cart">
+                            <i class="bi bi-cart bi-sub fs-4 text-gray-600 "></i>
 
-                        <span class="position-absolute top-40 start-100 translate-middle-x badge rounded-pill bg-danger"
-                            id="cartCount">
-                            {{ $cartCount }}
-                        </span>
+                            <span
+                                class="position-absolute top-40 start-100 translate-middle-x badge rounded-pill bg-danger"
+                                id="cartCount">
+                                {{ $cartCount }}
+                            </span>
 
-                    </a>
-                </div>
+                        </a>
+                    </div>
+                @endif
                 <div class="theme-toggle d-flex gap-2 align-items-center mt-2 me-4">
                     <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
                         aria-hidden="true" role="img" class="iconify iconify--system-uicons" width="20"
@@ -64,12 +68,23 @@
                             </div>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end shadow-lg" aria-labelledby="topbarUserDropdown">
-                            <li><a class="dropdown-item" href="/profile">My Account</a></li>
-                            <li>
-                                <a class="dropdown-item" href="/checkout">
-                                    Orders
-                                </a>
-                            </li>
+                            <li><a class="dropdown-item" href="/profile"><i class="icon-mid bi bi-person me-2"></i> My
+                                    Profile</a></li>
+                            @if (Auth::user()->role == 'user')
+                                <li>
+                                    <a class="dropdown-item" href="/checkout">
+                                        <i class="bi bi-cart-fill me-2"></i>
+                                        Orders
+                                    </a>
+                                </li>
+                            @else
+                                <li>
+                                    <a class="dropdown-item" href="/dashboard">
+                                        <i class="bi bi-grid-fill me-2"></i>
+                                        Dashboard
+                                    </a>
+                                </li>
+                            @endif
                             <li>
                                 <hr class="dropdown-divider">
                             </li>

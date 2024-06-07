@@ -61,3 +61,9 @@
         </div>
     </div>
 </div>
+
+<script>
+    $('button[data-dismiss="modal"]').click(function() {
+        $("#modal-order").modal("hide");
+    });
+</script>

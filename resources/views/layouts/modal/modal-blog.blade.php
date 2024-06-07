@@ -13,7 +13,7 @@
                     <div class="form-group">
                         <label for="n-blog_image" class="form-label">Image</label>
                         <input type="file" name="blog_image" id="n-blog_image" class="form-control" accept="image/*">
-                        <img style="display: none;" class="img-preview tw-mt-2 tw-h-52" id="preview">
+                        <img style="display: none;" class="img-preview tw-mt-2 tw-h-52 tw-w-full" id="preview">
                     </div>
                     <div class="form-group mandatory">
                         <label for="n-title" class="form-label">Title</label>
@@ -55,7 +55,7 @@
                     <div class="form-group">
                         <label for="blog_image" class="form-label">Image</label>
                         <input type="file" name="blog_image" id="blog_image" class="form-control" accept="image/*">
-                        <img style="display: none;" class="img-preview2 tw-mt-2 tw-h-52" id="preview2">
+                        <img style="display: none;" class="img-preview2 tw-mt-2 tw-h-52 tw-w-full" id="preview2">
                     </div>
                     <div class="form-group mandatory">
                         <label for="title" class="form-label">Title</label>
@@ -87,6 +87,11 @@
     });
 </script>
 <script>
+    $(document).ready(function() {
+        $('#tambahModal').on('shown.bs.modal', function() {
+            $('#n-title').trigger('focus');
+        });
+    })
     $("#n-blog_image").change(function() {
         const image = document.querySelector("#n-blog_image");
         const imgPreview = document.querySelector(".img-preview");

@@ -55,7 +55,8 @@
                                 <label for="name"
                                     class="tw-font-semibold tw-text-sm tw-text-gray-400 tw-pb-1 tw-block form-label">Name</label>
                                 <input id="name" type="text" name="name"
-                                    class="tw-border tw-rounded-lg tw-px-3 py-2 mt-1 tw-text-sm tw-w-full dark:tw-bg-gray-700 tw-text-black dark:tw-text-white focus:tw-border-blue-500 focus:tw-ring-4 focus:tw-ring-blue-500" />
+                                    class="tw-border tw-rounded-lg tw-px-3 py-2 mt-1 tw-text-sm tw-w-full dark:tw-bg-gray-700 tw-text-black dark:tw-text-white focus:tw-border-blue-500 focus:tw-ring-4 focus:tw-ring-blue-500"
+                                    autofocus />
 
                                 <span class="tw-text-red-500 tw-text-xs mt-1 " id="name-error"></span>
 
