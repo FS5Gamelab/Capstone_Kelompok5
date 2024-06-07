@@ -27,9 +27,15 @@
                                                 class="tw-flex tw-flex-col tw-space-y-3 tw-py-6 tw-text-left sm:tw-flex-row sm:tw-space-x-5 sm:tw-space-y-0">
                                                 <div class="tw-shrink-0">
                                                     @if ($cart->product->product_image)
-                                                        <img class="tw-h-24 tw-w-24 tw-max-w-full tw-rounded-lg tw-object-cover"
-                                                            alt=""
-                                                            src="{{ asset('storage/' . $cart->product->product_image) }}" />
+                                                        @if (Str::startsWith($cart->product->product_image, 'uploads/'))
+                                                            <img src="{{ asset('storage/' . $cart->product->product_image) }}"
+                                                                class="tw-h-24 tw-w-24 tw-max-w-full tw-rounded-lg tw-object-cover"
+                                                                alt="{{ $cart->product->product_image }}">
+                                                        @else
+                                                            <img src="{{ asset($cart->product->product_image) }}"
+                                                                class="tw-h-24 tw-w-24 tw-max-w-full tw-rounded-lg tw-object-cover"
+                                                                alt="{{ $cart->product->product_image }}">
+                                                        @endif
                                                     @else
                                                         <img class="tw-h-24 tw-w-24 tw-max-w-full tw-rounded-lg tw-object-cover"
                                                             alt=""

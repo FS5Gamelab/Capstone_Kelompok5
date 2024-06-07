@@ -207,6 +207,17 @@ class OrderController extends Controller
             'message' => 'Payment success',
         ]);
     }
+    public function failed($id)
+    {
+        $order = Order::findOrFail($id);
+        $order->update([
+            'status' => 'failed',
+        ]);
+        return response()->json([
+            'success' => true,
+            'message' => 'Payment with order id ' . $id . ' failed',
+        ]);
+    }
 
 
     public function index()

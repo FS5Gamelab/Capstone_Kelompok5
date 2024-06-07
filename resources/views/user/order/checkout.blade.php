@@ -157,16 +157,53 @@
                                         }
                                     })
                                 },
-                                onPending: function(result) {},
-                                onError: function(result) {},
-                                onClose: function() {
+                                onClose: function(result) {
                                     Swal.fire({
                                         icon: 'warning',
                                         title: 'You Closed The Payment',
                                         text: "Don't Forget to Complete Your Payment Later",
                                         showConfirmButton: true,
                                     })
-                                }
+                                },
+                                onPending: function(result) {},
+                                onError: function(result) {
+                                    $("#loader").show();
+                                    $.ajax({
+                                        url: `/failed/${id}`,
+                                        type: 'POST',
+                                        data: {
+                                            "_token": "{{ csrf_token() }}"
+                                        },
+                                        success: function(response) {
+                                            $("#loader").hide();
+                                            $(`#status_${id}`).html(
+                                                `
+                                                <span class="badge bg-danger">failed</span>
+                                                `
+                                            );
+                                            $('#pay-button').hide();
+                                            Swal.fire({
+                                                icon: 'error',
+                                                title: `${response.message}`,
+                                                showConfirmButton: false,
+                                                timer: 3000
+                                            })
+                                            setTimeout(() => {
+                                                window.location
+                                                    .href =
+                                                    '/checkout/failed';
+                                            }, 1500)
+
+                                        },
+                                        error: function(xhr, status,
+                                            error) {
+                                            $('#loader').hide();
+                                            console.error('AJAX Error:',
+                                                error);
+                                        }
+                                    })
+                                },
+
                             });
                         } else {
                             Swal.fire({

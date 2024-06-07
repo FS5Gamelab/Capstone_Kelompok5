@@ -113,6 +113,7 @@ Route::middleware(['auth', 'auth.session', 'verified'])->group(function () {
     Route::get('/checkout/cancel', [OrderController::class, 'checkoutCancel'])->name('checkout-cancel');
     Route::post('/pay/{id}', [OrderController::class, 'pay'])->name('pay');
     Route::post('/success/{id}', [OrderController::class, 'success'])->name('success');
+    Route::post('/failed/{id}', [OrderController::class, 'failed'])->name('failed');
     Route::delete('/cart/{cartId}', [CartController::class, 'delete'])->name('cart.delete');
 
     Route::get('/order/{id}', [OrderController::class, 'detail'])->name('order.detail');
