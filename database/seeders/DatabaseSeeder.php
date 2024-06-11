@@ -96,9 +96,47 @@ class DatabaseSeeder extends Seeder
             ",
             "blog_image" => "static/images/samples/healthty.jpg",
         ]);
+        Blog::create([
+            "title" => "Menu baru! Sate Padang",
+            "slug" => "menu-baru-sate-padang",
+            "description" => "
+                <p>Kami akan segera merilis menu baru kami berupa makanan khas pulau minang yaitu sate padang. Kami akan mulai menjual menu ini pada tanggal 20 juni 2024  bagi costemer yang meyukai menu ini, kami menantikan pesanan anda.</p>
+            ",
+            "blog_image" => "static/images/samples/sate-padang.png",
+        ]);
+        Blog::create([
+            "title" => "Menu baru! Sate Madura",
+            "slug" => "menu-baru-sate-madura",
+            "description" => "
+                <p>Kami akan segera merilis menu baru kami berupa makanan khas madura yaitu sate madura. Kami akan mulai menjual menu ini pada tanggal 2 juli 2024  bagi costemer yang meyukai menu ini, kami menantikan pesanan anda.</p>
+            ",
+            "blog_image" => "static/images/samples/sate-madura.png",
+        ]);
+        Blog::create([
+            "title" => "Menu baru! Coto Makassar",
+            "slug" => "menu-baru-coto-makassar",
+            "description" => "
+                <p>Kami akan segera merilis menu baru kami yaitu Coto makassar . Kami akan mulai menjual menu ini pada tanggal 4 Agustus 2024  bagi costemer yang meyukai menu ini, kami menantikan pesanan anda.
+                </p>
+            ",
+            "blog_image" => "static/images/samples/coto-mks.png",
+        ]);
+        Blog::create([
+            "title" => "Kejutan!",
+            "slug" => "kejutan",
+            "description" => "
+                <p>Kami memberikan potongan harga sebesar 20% untuk semua produk Selera Negri bagi 10 coustamer pertama yang memesan produk kami pada hari peresmian pembukaan restoran selera negri! Yang akan dibuka pada tanggal 15 juni 2024. 
+                </p>
+            ",
+            "blog_image" => "static/images/samples/disc.png",
+        ]);
 
         $category = Category::create([
             "category_name" => "Main Course",
+            "user_id" => 3,
+        ]);
+        $category2 = Category::create([
+            "category_name" => "Sampingan",
             "user_id" => 3,
         ]);
 
@@ -108,8 +146,58 @@ class DatabaseSeeder extends Seeder
             'slug' => "nasi-goreng",
             "type" => "foods",
             "description" => "Nasi goreng spesial",
+            "price" => 12000,
+            "category_id" => $category->id,
+            "user_id" => 3,
+        ]);
+        Product::create([
+            "product_image" => "static/images/samples/ayam-bakar.png",
+            "product_name" => "Ayam Bakar",
+            'slug' => "ayam-bakar",
+            "type" => "foods",
+            "description" => "Ayam Bakar Spesial, Enak dan Murah",
             "price" => 20000,
             "category_id" => $category->id,
+            "user_id" => 3,
+        ]);
+        Product::create([
+            "product_image" => "static/images/samples/nasi-kuning.png",
+            "product_name" => "Nasi Kuning",
+            'slug' => "nasi-kuning",
+            "type" => "foods",
+            "description" => "Nasi kuning yang gurih dan enak",
+            "price" => 12000,
+            "category_id" => $category->id,
+            "user_id" => 3,
+        ]);
+        Product::create([
+            "product_image" => "static/images/samples/eggnog.png",
+            "product_name" => "Eggnog",
+            'slug' => "eggnog",
+            "type" => "drinks",
+            "description" => "Minuman manis dari kuning telur yang dikocok ditambah air dan gula atau susu. Sebagai perisa adalah bubuk vanili, pala, atau kayu manis. ",
+            "price" => 10000,
+            "category_id" => $category2->id,
+            "user_id" => 3,
+        ]);
+        Product::create([
+            "product_image" => "static/images/samples/es-teh.png",
+            "product_name" => "Es Teh",
+            'slug' => "es-teh",
+            "type" => "drinks",
+            "description" => "Minuman manis",
+            "price" => 5000,
+            "category_id" => $category2->id,
+            "user_id" => 3,
+        ]);
+        Product::create([
+            "product_image" => "static/images/samples/hot-coffe.png",
+            "product_name" => "Hot Coffe",
+            'slug' => "hot-coffe",
+            "type" => "drinks",
+            "description" => "Kopi panas yang enak",
+            "price" => 7000,
+            "category_id" => $category2->id,
             "user_id" => 3,
         ]);
     }
