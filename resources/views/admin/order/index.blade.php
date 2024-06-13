@@ -129,9 +129,6 @@
     @include('layouts.loader')
     @include('layouts.modal.modal-user')
 @endsection
-@section('css')
-    @vite(['resources/scss/pages/simple-datatables.scss', 'resources/js/pages/simple-datatables.js'])
-@endsection
 @section('js')
     <script>
         $("#loader").hide();

@@ -102,9 +102,13 @@
                                 <div class="col-md-4">
                                     <div class="p-2 border rounded">
                                         @if ($review->product->product_image)
-                                            <img class="rounded"
-                                                src="{{ asset('storage/' . $review->product->product_image) }}"
-                                                alt="">
+                                            @if (Str::startsWith($review->product->product_image, 'uploads/'))
+                                                <img src="{{ asset('storage/' . $review->product->product_image) }}"
+                                                    class="img-fluid rounded" alt="{{ $review->product->product_image }}">
+                                            @else
+                                                <img src="{{ asset($review->product->product_image) }}"
+                                                    class="img-fluid rounded" alt="{{ $review->product->product_image }}">
+                                            @endif
                                         @else
                                             <img class="rounded" src="{{ asset('static/images/samples/sate.png') }}"
                                                 alt="">

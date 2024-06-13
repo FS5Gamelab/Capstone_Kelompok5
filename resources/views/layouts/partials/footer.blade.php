@@ -29,7 +29,7 @@
                 <li class="nav-item mb-2">
                     <a class="nav-link p-0 text-muted">
                         <i class="fas fa-envelope me-1"></i>
-                        info@example.com
+                        seleranegeri@contact.us
                     </a>
                 </li>
                 <li class="nav-item mb-2">

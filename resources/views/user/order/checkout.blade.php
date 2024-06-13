@@ -96,8 +96,6 @@
     @include('layouts.modal.modal-user')
 @endSection
 @section('css')
-    @vite(['resources/scss/pages/simple-datatables.scss', 'resources/js/pages/simple-datatables.js'])
-
     <style>
         .ps--active-x>.ps__rail-x {
             display: none;
