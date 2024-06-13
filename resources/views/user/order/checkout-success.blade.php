@@ -202,7 +202,6 @@
             display: none;
         }
     </style>
-    @vite(['resources/js/pages/rater-js.js'])
 @endSection
 
 @section('js')

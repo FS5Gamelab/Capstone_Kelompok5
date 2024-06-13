@@ -43,7 +43,7 @@
     </div>
 </div>
 
-@vite(['resources/js/pages/rater-js.js'])
+
 
 <script>
     $(document).ready(function() {

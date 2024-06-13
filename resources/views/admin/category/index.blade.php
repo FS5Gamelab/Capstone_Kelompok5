@@ -80,13 +80,8 @@
     @include('layouts.loader')
     @include('layouts.modal.modal-category')
 @endsection
-@section('css')
-    @vite(['resources/scss/pages/simple-datatables.scss', 'resources/js/pages/simple-datatables.js'])
-@endsection
 
 @section('js')
-    @vite(['resources/js/pages/parsley.js'])
-
     <script>
         $("#loader").hide();
         $("#btn-add").click(function() {

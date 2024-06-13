@@ -73,8 +73,6 @@
     @include('layouts.modal.modal-reservation')
 @endsection
 @section('css')
-    @vite(['resources/scss/pages/simple-datatables.scss', 'resources/js/pages/simple-datatables.js'])
-    @vite(['resources/js/pages/parsley.js'])
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 @endsection

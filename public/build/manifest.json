@@ -1,0 +1,92 @@
+{
+  "node_modules/bootstrap-icons/font/fonts/bootstrap-icons.woff2": {
+    "file": "assets/bootstrap-icons-476adf42.woff2",
+    "src": "node_modules/bootstrap-icons/font/fonts/bootstrap-icons.woff2"
+  },
+  "node_modules/simple-datatables/src/date.js": {
+    "file": "assets/date-7ae319bf.js",
+    "imports": [
+      "resources/js/app.js"
+    ],
+    "isDynamicEntry": true,
+    "src": "node_modules/simple-datatables/src/date.js"
+  },
+  "public/static/fonts/nunito-latin-300-normal.woff": {
+    "file": "assets/nunito-latin-300-normal-152a993a.woff",
+    "src": "public/static/fonts/nunito-latin-300-normal.woff"
+  },
+  "public/static/fonts/nunito-latin-300-normal.woff2": {
+    "file": "assets/nunito-latin-300-normal-ce8a080d.woff2",
+    "src": "public/static/fonts/nunito-latin-300-normal.woff2"
+  },
+  "public/static/fonts/nunito-latin-400-normal.woff": {
+    "file": "assets/nunito-latin-400-normal-6a10fc2f.woff",
+    "src": "public/static/fonts/nunito-latin-400-normal.woff"
+  },
+  "public/static/fonts/nunito-latin-400-normal.woff2": {
+    "file": "assets/nunito-latin-400-normal-5e2f97ea.woff2",
+    "src": "public/static/fonts/nunito-latin-400-normal.woff2"
+  },
+  "public/static/fonts/nunito-latin-600-normal.woff": {
+    "file": "assets/nunito-latin-600-normal-428a6676.woff",
+    "src": "public/static/fonts/nunito-latin-600-normal.woff"
+  },
+  "public/static/fonts/nunito-latin-600-normal.woff2": {
+    "file": "assets/nunito-latin-600-normal-4e1f5eed.woff2",
+    "src": "public/static/fonts/nunito-latin-600-normal.woff2"
+  },
+  "public/static/fonts/nunito-latin-700-normal.woff": {
+    "file": "assets/nunito-latin-700-normal-70134519.woff",
+    "src": "public/static/fonts/nunito-latin-700-normal.woff"
+  },
+  "public/static/fonts/nunito-latin-700-normal.woff2": {
+    "file": "assets/nunito-latin-700-normal-923eb1ee.woff2",
+    "src": "public/static/fonts/nunito-latin-700-normal.woff2"
+  },
+  "public/static/fonts/nunito-latin-800-normal.woff": {
+    "file": "assets/nunito-latin-800-normal-44037052.woff",
+    "src": "public/static/fonts/nunito-latin-800-normal.woff"
+  },
+  "public/static/fonts/nunito-latin-800-normal.woff2": {
+    "file": "assets/nunito-latin-800-normal-0e63ca0b.woff2",
+    "src": "public/static/fonts/nunito-latin-800-normal.woff2"
+  },
+  "resources/css/app.css": {
+    "file": "assets/app-c8ce658a.css",
+    "isEntry": true,
+    "src": "resources/css/app.css"
+  },
+  "resources/js/app.js": {
+    "dynamicImports": [
+      "node_modules/simple-datatables/src/date.js"
+    ],
+    "file": "assets/app-56fdd735.js",
+    "isEntry": true,
+    "src": "resources/js/app.js"
+  },
+  "resources/js/initTheme.js": {
+    "file": "assets/initTheme-fdc68c5b.js",
+    "isEntry": true,
+    "src": "resources/js/initTheme.js"
+  },
+  "resources/scss/app.scss": {
+    "file": "assets/app-8e0fdfe7.css",
+    "isEntry": true,
+    "src": "resources/scss/app.scss"
+  },
+  "resources/scss/bootstrap.scss": {
+    "file": "assets/bootstrap-5bdec6cc.css",
+    "isEntry": true,
+    "src": "resources/scss/bootstrap.scss"
+  },
+  "resources/scss/pages/auth.scss": {
+    "file": "assets/auth-ba5d42e8.css",
+    "isEntry": true,
+    "src": "resources/scss/pages/auth.scss"
+  },
+  "resources/scss/themes/dark/app-dark.scss": {
+    "file": "assets/app-dark-876de4ad.css",
+    "isEntry": true,
+    "src": "resources/scss/themes/dark/app-dark.scss"
+  }
+}

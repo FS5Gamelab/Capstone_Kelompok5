@@ -135,7 +135,6 @@
     @include('layouts.loader')
 @endsection
 @section('css')
-    @vite(['resources/js/pages/parsley.js'])
 @endsection
 @section('js')
     <script>

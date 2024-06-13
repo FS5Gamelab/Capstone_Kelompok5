@@ -148,7 +148,6 @@
     </section>
 @endsection
 @section('css')
-    @vite(['resources/scss/pages/simple-datatables.scss', 'resources/js/pages/simple-datatables.js'])
     <style>
         .comment-column p {
             max-width: 300px;
