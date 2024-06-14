@@ -47,21 +47,21 @@
                             <tbody class="tw-text-sm">
                                 @foreach ($products as $product)
                                     <tr id="index_{{ $product->id }}">
-                                        @if ($product->product_image)
-                                            @if (Str::startsWith($product->product_image, 'uploads/'))
-                                                <img src="{{ asset('storage/' . $product->product_image) }}"
-                                                    class="img-fluid rounded tw-w-16 tw-h-16"
-                                                    alt="{{ $product->product_name }}">
+                                        <td>
+                                            @if ($product->product_image)
+                                                @if (Str::startsWith($product->product_image, 'uploads/'))
+                                                    <img src="{{ asset('storage/' . $product->product_image) }}"
+                                                        class="img-fluid rounded tw-w-16 tw-h-16"
+                                                        alt="{{ $product->product_name }}">
+                                                @else
+                                                    <img src="{{ asset($product->product_image) }}"
+                                                        class="img-fluid rounded tw-w-16 tw-h-16"
+                                                        alt="{{ $product->product_name }}">
+                                                @endif
                                             @else
-                                                <img src="{{ asset($product->product_image) }}"
-                                                    class="img-fluid rounded tw-w-16 tw-h-16"
-                                                    alt="{{ $product->product_name }}">
-                                            @endif
-                                        @else
-                                            <td>
                                                 No Image
-                                            </td>
-                                        @endif
+                                            @endif
+                                        </td>
                                         <td>{{ $product->product_name }}</td>
                                         <td>
                                             @if ($product->category)
