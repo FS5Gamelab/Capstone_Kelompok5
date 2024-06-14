@@ -217,6 +217,7 @@
                     },
 
                     error: function(error) {
+                        $("#loader").hide();
                         Swal.fire({
                             icon: 'error',
                             title: 'Oops...',
