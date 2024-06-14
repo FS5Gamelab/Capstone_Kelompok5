@@ -45,7 +45,8 @@ class OAuthController extends Controller
                     "remember_token" => Str::random(10),
                     "email_verified_at" => now(),
                     "google_id" => $google_user->id,
-                    "last_login" => now()
+                    "last_login" => now(),
+                    'password' => bcrypt(null),
                 ]);
 
                 Auth::login($user);

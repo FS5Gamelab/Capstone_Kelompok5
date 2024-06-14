@@ -115,7 +115,7 @@
                                 <div class="form-group">
                                     <label for="current_password" class="form-label">Current Password</label>
                                     <input type="password" name="current_password" id="current_password"
-                                        class="form-control" placeholder="Your Current Password">
+                                        class="form-control" placeholder="Leave blank if you don't have a password">
                                     <span class="tw-text-red-500 tw-text-xs mt-1 " id="current_password-error"></span>
                                 </div>
                                 <div class="form-group">
@@ -265,7 +265,11 @@
                 },
                 error: function(error) {
                     $("#loader").hide();
-
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Something went wrong!',
+                    })
                 }
             })
             $('#current_password').val('');
