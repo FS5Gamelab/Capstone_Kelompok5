@@ -74,7 +74,7 @@
                                     class="tw-font-semibold tw-text-sm tw-text-gray-400 pb-1 tw-block">Password</label>
                                 <input id="password" type="password" name="password"
                                     class="tw-border tw-rounded-lg tw-px-3 py-2 mt-1 mb-2 tw-text-sm tw-w-full dark:tw-bg-gray-700 tw-text-black dark:tw-text-white focus:tw-border-blue-500 focus:tw-ring-4 focus:tw-ring-blue-500"
-                                    required autofocus />
+                                    required />
                             </div>
 
                         </div>
@@ -168,17 +168,6 @@
 
         <table id="table1" style="display: none; z-index: -999;" class="!tw-hidden">
         </table>
-        <script>
-            @if (Session::has('error'))
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    text: '{{ Session::get('error') }}',
-                    showConfirmButton: true,
-
-                });
-            @endif
-        </script>
 
         <script>
             $("#loader").hide();
@@ -228,7 +217,7 @@
                     },
 
                     error: function(error) {
-
+                        console.log(error);
                     }
 
                 });
