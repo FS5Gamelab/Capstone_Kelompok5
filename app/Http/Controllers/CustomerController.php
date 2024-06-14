@@ -179,7 +179,6 @@ class CustomerController extends Controller
     public function securityUpdate(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'current_password' => 'required',
             'password' => 'required|min:8|confirmed'
         ]);
 

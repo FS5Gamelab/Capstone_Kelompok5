@@ -217,7 +217,12 @@
                     },
 
                     error: function(error) {
-                        console.log(error);
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: 'The provided credentials do not match our records.',
+                            showConfirmButton: true,
+                        })
                     }
 
                 });
