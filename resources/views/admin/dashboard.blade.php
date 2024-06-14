@@ -247,6 +247,9 @@
             </div>
         </section>
     </div>
+
+    @include('layouts.hide')
+
 @endsection
 @section('css')
     <style>

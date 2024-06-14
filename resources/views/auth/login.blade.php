@@ -10,6 +10,12 @@
         <link rel="shortcut icon" href="{{ asset('/static/images/logo/favicon.svg') }}" type="image/x-icon">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+        <style>
+            .dataTable-wrapper {
+                display: none;
+            }
+        </style>
     </head>
 
     <body>
@@ -46,7 +52,7 @@
             <div class=" py-3 sm:tw-max-w-xl sm:tw-mx-auto tw-w-full">
                 <div
                     class=" px-4 py-10 dark:tw-bg-gray-800 tw-bg-gray-50 tw-mx-8 md:tw-mx-0 tw-shadow tw-rounded-3xl sm:tw-p-10 ">
-                    <div class="tw-max-w-md tw-mx-auto tw-text-white">
+                    <div class="tw-max-w-md py-4 tw-mx-auto tw-text-white">
                         <div class="tw-flex tw-items-center tw-space-x-5 tw-justify-center ">
                             <img src="{{ asset('/static/images/logo/logo.svg') }}" alt=""
                                 class="img-fluid tw-pt-4 sm:tw-pt-0">
@@ -155,7 +161,13 @@
         </form>
 
         @include('layouts.loader')
+        <div id="basic" class="!tw-hidden">
+        </div>
+        <div id="basic-edit" class="!tw-hidden">
+        </div>
 
+        <table id="table1" style="display: none; z-index: -999;" class="!tw-hidden">
+        </table>
         <script>
             @if (Session::has('error'))
                 Swal.fire({

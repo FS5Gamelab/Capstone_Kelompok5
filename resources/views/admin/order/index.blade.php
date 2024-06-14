@@ -128,6 +128,9 @@
 
     @include('layouts.loader')
     @include('layouts.modal.modal-user')
+
+    <div id="basic" class="!tw-hidden"></div>
+    <div id="basic-edit" class="!tw-hidden"></div>
 @endsection
 @section('js')
     <script>

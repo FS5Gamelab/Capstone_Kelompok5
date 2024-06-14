@@ -160,6 +160,7 @@
     </section>
 
     @include('layouts.loader')
+    @include('layouts.hide')
 
 @endsection
 @section('js')

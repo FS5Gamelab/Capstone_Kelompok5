@@ -59,12 +59,12 @@
                                             @endif
                                         </td>
                                         <td>{{ $blog->title }}</td>
-                                        <td>
-                                            <a href="/blogs/{{ $blog->slug }}" class="btn btn-sm btn-info me-1">
+                                        <td class="tw-text-nowrap">
+                                            <a href="/blogs/{{ $blog->slug }}" class="btn btn-sm btn-info me-2">
                                                 <i class="bi bi-eye"></i>
                                             </a>
                                             <a href="javascript:void(0)" id="btn-edit" data-id="{{ $blog->id }}"
-                                                class="btn btn-primary btn-sm"><i class="bi bi-pencil"></i>
+                                                class="btn btn-primary btn-sm me-2"><i class="bi bi-pencil"></i>
                                             </a>
                                             <a href="javascript:void(0)" id="btn-delete" data-id="{{ $blog->id }}"
                                                 class="btn btn-danger btn-sm"><i class="bi bi-trash"></i>
@@ -81,6 +81,8 @@
 
     @include('layouts.loader')
     @include('layouts.modal.modal-blog')
+    <div id="basic" class="!tw-hidden"></div>
+    <div id="basic-edit" class="!tw-hidden"></div>
 @endsection
 @section('js')
     <script>

@@ -140,6 +140,8 @@
 
     @include('layouts.loader')
     @include('layouts.modal.modal-user')
+    @include('layouts.hide')
+
 @endSection
 @section('css')
     <style>

@@ -73,6 +73,9 @@
 
     @include('layouts.loader')
     @include('layouts.modal.modal-category')
+
+    <div id="basic" class="!tw-hidden"></div>
+    <div id="basic-edit" class="!tw-hidden"></div>
 @endsection
 @section('js')
     <script>

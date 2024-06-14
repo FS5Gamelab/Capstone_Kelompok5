@@ -71,6 +71,7 @@ class ProductController extends Controller
                 'type' => $request->type,
                 'product_image' => $product_image,
                 'category_id' => $request->category_id,
+                "in_stock" => 1,
             ]);
             $category = Category::find($request->category_id);
             return response()->json([

@@ -129,6 +129,8 @@
 
     @include('layouts.loader')
     @include('layouts.modal.modal-product')
+    <div id="basic" class="!tw-hidden"></div>
+    <div id="basic-edit" class="!tw-hidden"></div>
 @endsection
 @section('js')
     <script>
@@ -168,6 +170,8 @@
                             title: 'Success',
                             text: response.message,
                         })
+                        console.log(response);
+                        let stk;
                         let img;
                         if (response.product.product_image == null) {
                             img = "No Image";
@@ -200,9 +204,9 @@
                                 <i class="bi bi-star-fill tw-text-yellow-200"></i>
                             </span>    
                         </td>
-                        <td class="text-center">
+                        
                             ${stk}
-                        </td>
+                   
                         <td class="tw-text-nowrap">
                             <a href="/products/${response.product.slug}" class="btn btn-sm btn-info me-2">
                                 <i class="bi bi-eye"></i>

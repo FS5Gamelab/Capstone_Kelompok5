@@ -206,4 +206,6 @@
         </div>
     </div>
     {{-- End Contact Us Section --}}
+
+    @include('layouts.hide')
 @endsection

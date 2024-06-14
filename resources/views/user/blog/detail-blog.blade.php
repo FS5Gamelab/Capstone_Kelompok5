@@ -27,4 +27,6 @@
             </div>
         </div>
     </section>
+    @include('layouts.hide')
+
 @endsection

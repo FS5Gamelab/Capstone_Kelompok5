@@ -71,6 +71,8 @@
 
     @include('layouts.loader')
     @include('layouts.modal.modal-reservation')
+    <div id="basic" class="!tw-hidden"></div>
+    <div id="basic-edit" class="!tw-hidden"></div>
 @endsection
 @section('css')
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">

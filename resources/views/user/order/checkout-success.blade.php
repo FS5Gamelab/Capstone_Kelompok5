@@ -195,10 +195,16 @@
     @include('layouts.loader')
     @include('layouts.modal.modal-comment')
     @include('layouts.modal.modal-comment-edit')
+
+    <table id="table1"></table>
 @endSection
 @section('css')
     <style>
         .ps--active-x>.ps__rail-x {
+            display: none;
+        }
+
+        .dataTable-wrapper {
             display: none;
         }
     </style>

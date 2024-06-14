@@ -72,6 +72,9 @@
     </div>
 
     @include('layouts.loader')
+
+    <div id="basic" class="!tw-hidden"></div>
+    <div id="basic-edit" class="!tw-hidden"></div>
 @endsection
 
 @section('js')

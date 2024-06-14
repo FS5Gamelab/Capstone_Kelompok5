@@ -156,4 +156,7 @@
             </div>
         </div>
     </div>
+
+    @include('layouts.hide')
+
 @endsection

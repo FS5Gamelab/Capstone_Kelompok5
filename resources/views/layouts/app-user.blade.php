@@ -38,6 +38,7 @@
             </div>
         </div>
 
+
         <script>
             let triggerBurger = document.getElementById('trigger-burger');
             let mainNavbar = document.getElementById('main-navbar');

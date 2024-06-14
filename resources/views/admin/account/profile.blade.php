@@ -145,6 +145,7 @@
     </div>
 
     @include('layouts.loader')
+    @include('layouts.hide')
 @endsection
 @section('js')
     <script>

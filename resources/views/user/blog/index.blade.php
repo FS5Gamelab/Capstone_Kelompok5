@@ -3,18 +3,20 @@
 @section('main-content')
     <div class="row">
         @foreach ($blogs as $blog)
-            <div class="col-md-12">
+            <div class="col-xl-12">
                 <div style="max-height: 15rem;" class="card mb-3 overflow-hidden">
                     <div class="row g-0">
                         @if ($blog->blog_image != null)
                             <div class="col-md-4">
-                                @if (Str::startsWith($blog->blog_image, 'uploads/'))
-                                    <img src="{{ asset('storage/' . $blog->blog_image) }}"
-                                        class="img-fluid rounded-start !tw-h-60 !tw-w-full" alt="{{ $blog->title }}">
-                                @else
-                                    <img src="{{ asset($blog->blog_image) }}"
-                                        class="img-fluid rounded-start !tw-h-60 !tw-w-full" alt="{{ $blog->title }}">
-                                @endif
+                                <a href="/blog/{{ $blog->slug }}">
+                                    @if (Str::startsWith($blog->blog_image, 'uploads/'))
+                                        <img src="{{ asset('storage/' . $blog->blog_image) }}"
+                                            class="img-fluid rounded-start !tw-h-60 !tw-w-full" alt="{{ $blog->title }}">
+                                    @else
+                                        <img src="{{ asset($blog->blog_image) }}"
+                                            class="img-fluid rounded-start !tw-h-60 !tw-w-full" alt="{{ $blog->title }}">
+                                    @endif
+                                </a>
                             </div>
                             <div class="col-md-8">
                             @else
@@ -43,6 +45,8 @@
     </div>
     @endforeach
     </div>
+
+    @include('layouts.hide')
 @endsection
 
 @section('css')

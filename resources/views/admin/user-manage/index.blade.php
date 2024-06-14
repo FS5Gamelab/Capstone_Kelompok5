@@ -55,7 +55,7 @@
                                         <td>{{ $user->address }}</td>
                                         <td>{{ $user->role }}</td>
 
-                                        <td>
+                                        <td class="tw-text-nowrap">
                                             <a href="javascript:void(0)" class="btn btn-danger btn-sm"
                                                 data-id="{{ $user->id }}" id="btn-delete">
                                                 <i class="bi bi-trash"></i>
@@ -74,6 +74,9 @@
 
     @include('layouts.loader')
     @include('layouts.modal.modal-admin-user')
+
+    <div id="basic" class="!tw-hidden"></div>
+    <div id="basic-edit" class="!tw-hidden"></div>
 @endsection
 
 @section('js')

@@ -10,6 +10,11 @@
         <link rel="shortcut icon" href="{{ asset('/static/images/logo/favicon.svg') }}" type="image/x-icon">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <style>
+            .dataTable-wrapper {
+                display: none;
+            }
+        </style>
     </head>
 
     <body>
@@ -52,7 +57,7 @@
                             <i class="bi bi-arrow-left"></i>
                         </a>
                     </div>
-                    <div class="tw-max-w-md tw-mx-auto tw-text-white">
+                    <div class="tw-max-w-md py-4 tw-mx-auto tw-text-white">
                         <div class="tw-flex tw-items-center tw-space-x-5 tw-justify-center">
                             <img src="{{ asset('/static/images/logo/logo.svg') }}" alt="" class="img-fluid">
                         </div>
@@ -102,7 +107,22 @@
         </form>
 
         @include('layouts.loader')
-
+        <div id="basic" class="!tw-hidden">
+        </div>
+        <div id="basic-edit" class="!tw-hidden">
+        </div>
+        <table id="table1" class="!tw-hidden">
+            <thead>
+                <tr>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody class="tw-text-sm">
+                <tr>
+                    <td></td>
+                </tr>
+            </tbody>
+        </table>
         <script>
             console.log($('#email').val());
             $("#loader").hide();
