@@ -69,8 +69,8 @@
                 <h1 class="mb-5">The Best Chef In Town</h1>
             </div>
 
-            <div class="row g-4">
-                <div class=" col-md-5 " style="flex: 0 0 auto; width: 20%;">
+            <div class="row g-4 justify-content-center">
+                <div class=" col-lg-2 col-md-4 ">
                     <div class="team-item rounded">
                         <img class="img-fluid rounded-top " src="{{ asset('static/images/faces/1.jpg') }}" alt="">
                         <div class="team-content text-center py-3 bg-dark rounded-bottom">
@@ -88,7 +88,7 @@
                     </div>
                 </div>
 
-                <div class=" col-md-5 " style="flex: 0 0 auto; width: 20%;">
+                <div class=" col-lg-2 col-md-4 ">
                     <div class="team-item rounded">
                         <img class="img-fluid rounded-top " src="{{ asset('static/images/faces/2.jpg') }}" alt="">
                         <div class="team-content text-center py-3 bg-dark rounded-bottom">
@@ -106,7 +106,7 @@
                     </div>
                 </div>
 
-                <div class=" col-md-5 " style="flex: 0 0 auto; width: 20%;">
+                <div class=" col-lg-2 col-md-4 ">
                     <div class="team-item rounded">
                         <img class="img-fluid rounded-top " src="{{ asset('static/images/faces/3.jpg') }}" alt="">
                         <div class="team-content text-center py-3 bg-dark rounded-bottom">
@@ -124,7 +124,7 @@
                     </div>
                 </div>
 
-                <div class=" col-md-5 " style="flex: 0 0 auto; width: 20%;">
+                <div class=" col-lg-2 col-md-4 ">
                     <div class="team-item rounded">
                         <img class="img-fluid rounded-top " src="{{ asset('static/images/faces/4.jpg') }}" alt="">
                         <div class="team-content text-center py-3 bg-dark rounded-bottom">
@@ -142,7 +142,7 @@
                     </div>
                 </div>
 
-                <div class=" col-md-5 " style="flex: 0 0 auto; width: 20%;">
+                <div class=" col-lg-2 col-md-4 ">
                     <div class="team-item rounded">
                         <img class="img-fluid rounded-top " src="{{ asset('static/images/faces/5.jpg') }}"
                             alt="">
