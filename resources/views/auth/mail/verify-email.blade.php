@@ -20,7 +20,7 @@
             <h2 class="mt2">Hey {{ $name }},</h2>
             <div class="alert alert-info d-flex align-items-center justify-content-center">
                 You are receiving this email because you must verify your email address.
-                <a href="http://localhost:8000/verify-email/{{ $id }}/{{ $token }}"
+                <a href="https://msib-6-restaurant-03.educalab.id/verify-email/{{ $id }}/{{ $token }}"
                     class="btn btn-primary">
                     Verify Email
                 </a>

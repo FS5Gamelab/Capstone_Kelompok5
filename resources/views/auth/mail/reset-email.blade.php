@@ -19,7 +19,7 @@
             <h2 class="mt2">Hey {{ $name }},</h2>
             <div class="alert alert-info d-flex align-items-center justify-content-center">
                 You are receiving this email because we received a password reset request for your account.
-                <a href="http://localhost:8000/password/reset/{{ $token }}" class="btn btn-primary">
+                <a href="https://msib-6-restaurant-03.educalab.id/password/reset/{{ $token }}" class="btn btn-primary">
                     Reset Password
                 </a>
             </div>
