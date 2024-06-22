@@ -21,7 +21,6 @@ class OrderController extends Controller
                 "cart_id" => json_encode($request->ids),
                 "user_id" => auth()->user()->id,
                 "total_price" => $request->total,
-                "note" => $request->note
             ]);
             $order = Order::findOrFail($order->id);
             $total_price = $order->total_price;
@@ -168,8 +167,9 @@ class OrderController extends Controller
                 'cart_total' => $cart->cart_total,
                 'product' => [
                     'product_name' => $cart->product->product_name ?? 'Product Deleted',
-                    'price' => $cart->product->price ?? 0
-                ]
+                    'price' => $cart->product->price ?? 0,
+                ],
+                'note' => $cart->note ?? ''
             ];
         });
         return response()->json([

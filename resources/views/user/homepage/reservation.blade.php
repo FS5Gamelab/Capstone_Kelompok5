@@ -271,11 +271,23 @@
             $("#loader").show();
 
             $('.tw-text-red-500').text('');
+            let table = parseInt($('#table').val());
+            if (table > 0) {
+                table = parseInt($('#table').val());
+            } else {
+                table = 0;
+            }
+            let people = parseInt($('#people').val());
+            if (people > 0) {
+                people = parseInt($('#people').val());
+            } else {
+                people = 0;
+            }
             let formData = {
                 name: $('#name').val(),
                 phone: $('#phone').val(),
-                people: parseInt($('#people').val()),
-                table: parseInt($('#table').val()),
+                people: people,
+                table: table,
                 date: $('#date-choose').val(),
                 time: $('#time-choose').val(),
                 total_price: parseInt($('#total-price').text().replace(/\./g, '')),
@@ -308,8 +320,13 @@
                         Swal.fire({
                             icon: 'success',
                             title: `${response.message}`,
-                            showConfirmButton: true,
+                            showConfirmButton: false,
+                            timer: 2000
                         });
+                        setTimeout(() => {
+                            window.location.href = "/my-reservations";
+                        }, 2000);
+
                         $('#reservation-form')[0].reset();
                         $("#reservation-menu").empty();
                         totalPrice = 0;
@@ -328,6 +345,7 @@
                             }
                         });
                         let errors = response.errors;
+                        console.log(errors);
                         $('#name-error').text(errors.name ? errors.name[0] : '');
                         $('#phone-error').text(errors.phone ? errors.phone[0] : '');
                         $('#people-error').text(errors.people ? errors.people[0] : '');

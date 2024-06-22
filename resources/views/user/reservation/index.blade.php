@@ -51,10 +51,12 @@
                                                 Detail
                                             </a>
                                             @if ($reservation->status == 'pending')
-                                                <a href="javascript:void(0)" data-id="{{ $reservation->id }}"
-                                                    id="pay-button" class="btn btn-info btn-sm">
-                                                    Pay
-                                                </a>
+                                                <span id="btn-pay">
+                                                    <a href="javascript:void(0)" data-id="{{ $reservation->id }}"
+                                                        id="pay-button" class="btn btn-info btn-sm">
+                                                        Pay
+                                                    </a>
+                                                </span>
                                             @endif
                                         </td>
                                     </tr>
@@ -67,6 +69,9 @@
         </div>
     </section>
     @include('layouts.loader')
+
+    <div id="basic" class="!tw-hidden"></div>
+    <div id="basic-edit" class="!tw-hidden"></div>
 
     <div class="modal fade" id="modal-reservation" tabindex="-1" role="dialog" aria-labelledby="modalReservationLabel"
         aria-hidden="true">
@@ -237,7 +242,8 @@
                                                 <span class="badge bg-info">paid</span>
                                                 `
                                             );
-                                            $('#pay-button').hide();
+                                            $(`#btn-pay a[data-id="${id}"]`)
+                                                .hide();
                                             Swal.fire({
                                                 icon: 'success',
                                                 title: `${response.message}`,
@@ -277,7 +283,8 @@
                                                 <span class="badge bg-danger">failed</span>
                                                 `
                                             );
-                                            $('#pay-button').hide();
+                                            $(`#btn-pay a[data-id="${id}"]`)
+                                                .hide();
                                             Swal.fire({
                                                 icon: 'error',
                                                 title: `${response.message}`,

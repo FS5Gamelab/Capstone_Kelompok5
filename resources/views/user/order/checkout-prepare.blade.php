@@ -98,19 +98,20 @@
 
                                                                 </div>
                                                             </li>
+                                                            <div class="!tw-my-2 tw-border-b">
+                                                                <div class="row">
+                                                                    <div class="col-3 !tw-text-sm">
+                                                                        Note
+                                                                    </div>
+                                                                    <div class="col-9 text-end !tw-text-xs">
+                                                                        {{ $cart->note }}
+                                                                    </div>
+                                                                </div>
+                                                            </div>
                                                         @endforeach
                                                     </div>
                                                 </ul>
                                             </div>
-                                            @if ($order->note)
-                                                <div class="!tw-mt-16">
-                                                    <p class="!tw-text-sm">Note:</p>
-                                                    <p class="!tw-text-xs mt-2">
-                                                        {{ $order->note }}
-                                                    </p>
-                                                </div>
-                                            @endif
-
                                         </div>
                                     </div>
                                 </div>

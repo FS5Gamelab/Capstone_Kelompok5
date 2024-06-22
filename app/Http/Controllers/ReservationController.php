@@ -60,8 +60,8 @@ class ReservationController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'required',
             'phone' => 'required|min:10|max:15',
-            'people' => 'required|min:1|max:10',
-            'table' => 'required|min:1|max:10',
+            'people' => 'required|min:1|max:10|numeric',
+            'table' => 'required|min:1|max:10|numeric',
             'date' => 'required|date_format:d-M-Y', // Validasi format tanggal
             'time' => 'required|date_format:H:i', // Validasi format waktu
         ]);

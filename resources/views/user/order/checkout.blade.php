@@ -14,7 +14,6 @@
                                 <tr>
                                     <th>Product</th>
                                     <th>Address</th>
-                                    <th>Note</th>
                                     <th>Total</th>
                                     <th>Status</th>
                                     <th data-sortable="false">Action</th>
@@ -46,7 +45,6 @@
                                                 </ul>
                                             </td>
                                             <td>{{ $order->user->address }}</td>
-                                            <td>{{ $order->note }}</td>
                                             <td class="tw-text-nowrap">Rp.
                                                 {{ number_format($order->total_price, 0, ',', '.') }}
                                             </td>
@@ -71,10 +69,12 @@
                                                     Detail
                                                 </a>
                                                 @if ($order->status == 'pending')
-                                                    <a href="javascript:void(0)" data-id="{{ $order->id }}"
-                                                        id="pay-button" class="btn btn-info btn-sm">
-                                                        Pay
-                                                    </a>
+                                                    <span id="btn-pay">
+                                                        <a href="javascript:void(0)" data-id="{{ $order->id }}"
+                                                            id="pay-button" class="btn btn-info btn-sm">
+                                                            Pay
+                                                        </a>
+                                                    </span>
                                                 @endif
                                             </td>
                                         </tr>
@@ -140,7 +140,8 @@
                                                 <span class="badge bg-info">prepare</span>
                                                 `
                                             );
-                                            $('#pay-button').hide();
+                                            $(`#btn-pay a[data-id="${id}"]`)
+                                                .hide();
                                             Swal.fire({
                                                 icon: 'success',
                                                 title: `${response.message}`,
@@ -182,7 +183,8 @@
                                                 <span class="badge bg-danger">failed</span>
                                                 `
                                             );
-                                            $('#pay-button').hide();
+                                            $(`#btn-pay a[data-id="${id}"]`)
+                                                .hide();
                                             Swal.fire({
                                                 icon: 'error',
                                                 title: `${response.message}`,
@@ -238,30 +240,40 @@
 
                         // Clear previous content
                         $('#cart-items').empty();
-                        $('#note').text('');
                         $('#total-price').text('');
                         // Insert new content
                         response.carts.forEach(cart => {
                             $('#cart-items').append(`
-                    <div class="col-md-6">
+                    <div class="col-6">
                         <div class="row">
-                            <div class="col-md-2 tw-font-bold">
+                            <div class="col-2 tw-font-bold">
                                 ${cart.quantity}
                             </div>
-                            <div class="col-md-10">
+                            <div class="col-10">
                                 ${cart.product.product_name}
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-6">
                         <div class="row">
-                            <div class="col-md-6 !tw-text-xs">
+                            <div class="col-6 !tw-text-xs text-nowrap">
                                 &#64;Rp${cart.product.price.toLocaleString('id-ID')}
                             </div>
-                            <div class="col-md-6 tw-font-bold">
+                            <div class="col-6 tw-font-bold text-nowrap">
                                 Rp${cart.cart_total.toLocaleString('id-ID')}
                             </div>
                         </div>
+                    </div>
+                    <div class="col-12 tw-border-b my-2">
+                       <div class="row tw-flex justify-content-between">
+                           <div class="col-3">
+                                Note
+                           </div>
+                           <div class="col-9 text-end">
+                                ${cart.note}
+                           </div>
+                       </div>
+
                     </div>
                 `);
                         });
@@ -269,7 +281,6 @@
                             $("#cancel").show();
                             $("#reason").text(response.order.cancel_reason);
                         }
-                        $('#note').text(response.order.note);
                         $('#total-price').text(
                             `Rp${response.order.total_price.toLocaleString('id-ID')}`);
 

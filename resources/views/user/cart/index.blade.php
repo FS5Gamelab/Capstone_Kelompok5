@@ -100,6 +100,10 @@
                                                     </div>
                                                 </div>
                                             </li>
+                                            <div class="form-group tw-mt-2">
+                                                <textarea class="form-control" placeholder="Leave a note here" id="note" data-id="{{ $cart->id }}"
+                                                    name="note">{{ $cart->note ?? '' }}</textarea>
+                                            </div>
                                         </div>
                                     @endforeach
 
@@ -119,10 +123,7 @@
                         </div>
                     </div> --}}
 
-                            <div class="form-group tw-mt-6">
-                                <label for="note">Note</label>
-                                <textarea class="form-control" placeholder="Leave a note here" id="note" name="note"></textarea>
-                            </div>
+
                             <div class="tw-mt-3 tw-flex tw-items-center tw-justify-between tw-border-t tw-border-b py-2">
                                 <p class="tw-text-sm tw-font-medium tw-text-gray-400">Total</p>
                                 <p class="tw-text-2xl tw-font-semibold tw-text-gray-900 dark:tw-text-gray-200"
@@ -365,6 +366,30 @@
     </script>
 
     <script>
+        $(document).on("change", "#note", function() {
+            $("#loader").show();
+            let token = $("meta[name='csrf-token']").attr("content");
+            let id = $(this).data("id");
+            let note = $(this).val();
+            $.ajax({
+                url: `/cart-note/${id}`,
+                type: "POST",
+                cache: false,
+                data: {
+                    "_token": token,
+                    "note": note
+                },
+                success: function(response) {
+                    $("#loader").hide();
+                    if (response.success) {
+                        $(this).text(note);
+                    }
+                },
+            })
+        })
+    </script>
+
+    <script>
         $("#loader").hide();
         $(document).ready(function() {
             $('#checkout-button').on('click', function(e) {
@@ -373,7 +398,6 @@
 
                 let ids = [];
                 let total = parseInt($('#total').attr('data-value'));
-                let note = $('#note').val();
                 $('#checkout-form input[name="ids[]"]').each(function() {
                     ids.push($(this).val());
                 });
@@ -381,7 +405,6 @@
                 let formData = {
                     "ids": ids,
                     "total": total,
-                    "note": note,
                     "_token": '{{ csrf_token() }}'
                 };
 

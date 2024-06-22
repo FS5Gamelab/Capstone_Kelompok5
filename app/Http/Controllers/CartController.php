@@ -63,6 +63,17 @@ class CartController extends Controller
         ]);
     }
 
+    public function updateNote($id)
+    {
+        $cart = Cart::find($id);
+        $cart->note = request()->note;
+        $cart->save();
+        return response()->json([
+            'success' => true,
+            'message' => 'Note updated',
+        ]);
+    }
+
     public function delete($cartId)
     {
         $cart = Cart::findOrFail($cartId);

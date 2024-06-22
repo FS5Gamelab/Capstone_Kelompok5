@@ -102,6 +102,7 @@ Route::middleware(['auth', 'auth.session', 'verified'])->group(function () {
 
 
     Route::get('/cart', [CartController::class, 'index'])->name('cart');
+    Route::post('/cart-note/{id}', [CartController::class, 'updateNote'])->name('cart.note');
     Route::post('/checkout', [OrderController::class, 'checkOut'])->name('checkout');
     Route::get('/checkout', [OrderController::class, 'checkoutIndex'])->name('checkout-index');
     Route::get('/checkout/pending', [OrderController::class, 'checkoutPending'])->name('checkout-pending');

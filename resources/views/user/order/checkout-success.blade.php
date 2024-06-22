@@ -82,6 +82,19 @@
 
                                                                         </div>
                                                                     </div>
+
+
+                                                                    <div class="!tw-my-2 tw-border-b mb-2">
+                                                                        <div class="row">
+                                                                            <div class="col-3 !tw-text-sm">
+                                                                                Note
+                                                                            </div>
+                                                                            <div class="col-9 text-end !tw-text-xs">
+                                                                                {{ $cart->note }}
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+
                                                                     <div id="cart_{{ $cart->id }}">
 
                                                                         @if ($cart->review == null)
@@ -156,15 +169,6 @@
                                                     </div>
                                                 </ul>
                                             </div>
-                                            @if ($order->note)
-                                                <div class="!tw-mt-16">
-                                                    <p class="!tw-text-sm">Note:</p>
-                                                    <p class="!tw-text-xs mt-2">
-                                                        {{ $order->note }}
-                                                    </p>
-                                                </div>
-                                            @endif
-
                                         </div>
                                     </div>
                                 </div>

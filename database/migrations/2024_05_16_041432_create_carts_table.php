@@ -19,6 +19,7 @@ return new class extends Migration
             $table->uuid('review_id')->nullable();
             $table->integer('quantity')->default(1);
             $table->integer('cart_total')->nullable();
+            $table->string('note')->nullable();
             $table->boolean('checked_out')->default(false);
             $table->timestamps();
 
