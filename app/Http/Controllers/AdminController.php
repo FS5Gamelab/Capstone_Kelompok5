@@ -21,13 +21,38 @@ class AdminController extends Controller
         $userCount = User::where('role', 'user')->count();
         $orderCount = Order::where('status', '!=', null)->where('status', '!=', 'pending')->count();
         $reservationCount = Reservation::all()->count();
-        $reservations = Reservation::where('date', Carbon::today()->format('Y-m-d'))->get();
+        $reservations = Reservation::where('date', Carbon::today()->format('Y-m-d'))->where('status', 'paid')->orWhere('status', 'completed')->get();
+        $currentMonth = Carbon::now()->month;
+        $currentYear = Carbon::now()->year;
+
+        // Mengambil semua pesanan dengan status 'success' untuk bulan ini
+        $orders = Order::where('status', 'success')
+            ->whereYear('created_at', $currentYear)
+            ->whereMonth('created_at', $currentMonth)
+            ->get()
+            ->groupBy(function ($date) {
+                return Carbon::parse($date->created_at)->format('d'); // Mengelompokkan berdasarkan hari
+            });
+
+        $orderData = [];
+        foreach ($orders as $day => $orderGroup) {
+            $orderData[] = [
+                'day' => $day,
+                'total' => $orderGroup->sum('total_price'),
+                'count' => $orderGroup->count()
+            ];
+        }
+        // Mengurutkan data berdasarkan hari
+        usort($orderData, function ($a, $b) {
+            return $a['day'] - $b['day'];
+        });
         return view('admin.dashboard', [
             'productCount' => $productCount,
             'userCount' => $userCount,
             'orderCount' => $orderCount,
             'reservationCount' => $reservationCount,
-            'reservations' => $reservations
+            'reservations' => $reservations,
+            'orderData' => $orderData
         ]);
     }
     public function getOrderData()
@@ -74,7 +99,7 @@ class AdminController extends Controller
                 break;
         }
 
-        $reservations = Reservation::whereDate('date', $date)->get();
+        $reservations = Reservation::whereDate('date', $date)->where('status', 'paid')->orWhere('status', 'completed')->get();
 
         return response()->json($reservations);
     }

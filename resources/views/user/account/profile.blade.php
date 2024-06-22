@@ -81,7 +81,7 @@
                                 <div class="form-group mandatory">
                                     <label for="address" class="form-label">Address</label>
                                     <input type="text" name="address" id="address" class="form-control"
-                                        placeholder="Your Phone" value="{{ Auth::user()->address }}">
+                                        placeholder="Your Address" value="{{ Auth::user()->address }}">
                                     <span class="tw-text-red-500 tw-text-xs mt-1 " id="address-error"></span>
 
                                 </div>

@@ -77,6 +77,12 @@
                                         Orders
                                     </a>
                                 </li>
+                                <li>
+                                    <a class="dropdown-item" href="/my-reservations">
+                                        <i class="bi bi-card-checklist me-2"></i>
+                                        Reservations
+                                    </a>
+                                </li>
                             @else
                                 <li>
                                     <a class="dropdown-item" href="/dashboard">
@@ -115,7 +121,11 @@
         <div class="container d-flex align-items-center justify-content-center">
             <ul>
                 <li class="menu-item">
-                    <a href="/" class='menu-link'>
+                    <a href="
+                    @if (!auth()->user() || auth()->user()->role == 'user') /
+                    @else
+                        /homepage @endif"
+                        class='menu-link'>
                         Home
                     </a>
                 </li>

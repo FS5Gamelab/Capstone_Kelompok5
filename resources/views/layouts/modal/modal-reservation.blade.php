@@ -25,6 +25,26 @@
                         <input type="number" name="people" id="people" class="form-control">
                     </div>
                     <div class="form-group mandatory">
+                        <label for="table" class="form-label">Table No</label>
+                        <select name="table" id="table" class="form-control form-select">
+                            <option value="" hidden>Select Table</option>
+                            @for ($i = 1; $i <= 10; $i++)
+                                <option value="{{ $i }}">{{ $i }}</option>
+                            @endfor
+                        </select>
+                    </div>
+                    <div class="form-group mandatory">
+                        <label for="status" class="form-label">Status</label>
+                        <select name="status" id="status" class="form-control form-select text-capitalize">
+                            <option value="" disabled>Select Status</option>
+                            <option value="pending">Pending</option>
+                            <option value="paid">Paid</option>
+                            <option value="completed">Completed</option>
+                            <option value="cancelled">Cancelled</option>
+                            <option value="failed">Failed</option>
+                        </select>
+                    </div>
+                    <div class="form-group mandatory">
                         <label for="date-choose" class="form-label">Date</label>
                         <input type="date" class="form-control mb-3 flatpickr-no-config" placeholder="Select date.."
                             id="date-choose">

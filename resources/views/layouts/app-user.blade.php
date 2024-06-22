@@ -16,7 +16,7 @@
 
         <style>
             #main-navbar.bg-main-navbar {
-                background-color: #171722;
+                background-color: #22223C;
             }
         </style>
         @yield('css')

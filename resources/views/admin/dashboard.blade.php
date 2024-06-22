@@ -94,13 +94,23 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-12">
+                            <div class="col-md-6">
                                 <div class="card">
                                     <div class="card-header">
                                         <h4>Success Orders Recapitulation</h4>
                                     </div>
                                     <div class="card-body">
                                         <div id="chart-orders"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h4>Success Orders This Month</h4>
+                                    </div>
+                                    <div class="card-body">
+                                        <div id="month-orders"></div>
                                     </div>
                                 </div>
                             </div>
@@ -128,7 +138,7 @@
                                 <div id="content">
                                     <ul class="timeline" id="timeline">
                                         @if ($reservations->count() == 0)
-                                            <p>No reservation today</p>
+                                            <p>No reservation for the selected date</p>
                                         @else
                                             @foreach ($reservations as $reservation)
                                                 <li class="event"
@@ -141,6 +151,9 @@
                                                     <p>
                                                         <small>{{ $reservation->people }} people</small>
                                                     </p>
+                                                    <p>
+                                                        <small>Table {{ $reservation->table }}</small>
+                                                    </p>
                                                 </li>
                                             @endforeach
                                         @endif
@@ -149,87 +162,6 @@
                             </div>
                         </div>
                         <div class="row">
-                            {{-- <div class="col-12 col-xl-4">
-                                <div class="card">
-                                    <div class="card-header">
-                                        <h4>Profile Visit</h4>
-                                    </div>
-                                    <div class="card-body">
-                                        <div class="row">
-                                            <div class="col-6">
-                                                <div class="d-flex align-items-center">
-                                                    <svg class="bi text-primary" width="32" height="32"
-                                                        fill="blue" style="width:10px">
-                                                        <use
-                                                            xlink:href="assets/static/images/bootstrap-icons.svg#circle-fill" />
-                                                    </svg>
-                                                    <h5 class="mb-0 ms-3">Europe</h5>
-                                                </div>
-                                            </div>
-                                            <div class="col-6">
-                                                <h5 class="mb-0">862</h5>
-                                            </div>
-                                            <div class="col-12">
-                                                <div id="chart-europe"></div>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-6">
-                                                <div class="d-flex align-items-center">
-                                                    <svg class="bi text-success" width="32" height="32"
-                                                        fill="blue" style="width:10px">
-                                                        <use
-                                                            xlink:href="assets/static/images/bootstrap-icons.svg#circle-fill" />
-                                                    </svg>
-                                                    <h5 class="mb-0 ms-3">America</h5>
-                                                </div>
-                                            </div>
-                                            <div class="col-6">
-                                                <h5 class="mb-0">375</h5>
-                                            </div>
-                                            <div class="col-12">
-                                                <div id="chart-america"></div>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-7">
-                                                <div class="d-flex align-items-center">
-                                                    <svg class="bi text-success" width="32" height="32"
-                                                        fill="blue" style="width:10px">
-                                                        <use
-                                                            xlink:href="assets/static/images/bootstrap-icons.svg#circle-fill" />
-                                                    </svg>
-                                                    <h5 class="mb-0 ms-3">India</h5>
-                                                </div>
-                                            </div>
-                                            <div class="col-5">
-                                                <h5 class="mb-0 text-end">625</h5>
-                                            </div>
-                                            <div class="col-12">
-                                                <div id="chart-india"></div>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-6">
-                                                <div class="d-flex align-items-center">
-                                                    <svg class="bi text-danger" width="32" height="32"
-                                                        fill="blue" style="width:10px">
-                                                        <use
-                                                            xlink:href="assets/static/images/bootstrap-icons.svg#circle-fill" />
-                                                    </svg>
-                                                    <h5 class="mb-0 ms-3">Indonesia</h5>
-                                                </div>
-                                            </div>
-                                            <div class="col-6">
-                                                <h5 class="mb-0">1025</h5>
-                                            </div>
-                                            <div class="col-12">
-                                                <div id="chart-indonesia"></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div> --}}
                             <div class="col-12">
                                 <div class="card">
                                     <div class="card-header">
@@ -539,6 +471,7 @@
                                         <h5 class="!tw-text-lg !tw-font-semibold">${reservation.name}</h5>
                                         <p><small>${reservation.phone}</small></p>
                                         <p><small>${reservation.people} people</small></p>
+                                        <p><small>Table ${reservation.table}</small></p>
                                     </li>
                                 `;
                             });
@@ -554,6 +487,47 @@
 
             // Fetch default reservations for today on page load
             fetchReservations('today');
+        });
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            let orderData = @json($orderData);
+
+            let days = orderData.map(data => data.day);
+            let totals = orderData.map(data => data.total);
+            let counts = orderData.map(data => data.count);
+
+            let options = {
+                chart: {
+                    type: 'line',
+                    height: 350
+                },
+                series: [{
+                        name: 'Total Orders',
+                        data: totals
+                    },
+                    {
+                        name: 'Order Count',
+                        data: counts
+                    }
+                ],
+                xaxis: {
+                    categories: days
+                },
+                // title: {
+                //     text: 'Success Orders This Month',
+                //     floating: true,
+                //     offsetY: 330,
+                //     align: 'center',
+                //     style: {
+                //         color: '#7ABA78'
+                //     }
+                // }
+            };
+
+            let chart = new ApexCharts(document.querySelector("#month-orders"), options);
+            chart.render();
         });
     </script>
 @endsection

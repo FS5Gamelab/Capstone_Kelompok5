@@ -145,7 +145,8 @@
                     },
 
                     error: function(error) {
-
+                        $("#loader").hide();
+                        console.log(error);
                     }
 
                 });

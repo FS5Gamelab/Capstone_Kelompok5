@@ -79,8 +79,10 @@ class CustomerController extends Controller
         } else {
             $cartCount = 0;
         }
+        $menus = Product::where('in_stock', 1)->get();
         return view('user.homepage.reservation', [
             'cartCount' => $cartCount,
+            'menus' => $menus
         ]);
     }
     public function blog()

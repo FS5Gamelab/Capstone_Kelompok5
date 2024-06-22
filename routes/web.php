@@ -116,6 +116,11 @@ Route::middleware(['auth', 'auth.session', 'verified'])->group(function () {
 
     Route::get('/order/{id}', [OrderController::class, 'detail'])->name('order.detail');
 
+    Route::get('/my-reservations', [ReservationController::class, 'myReservation'])->name('my-reservations');
+    Route::get('/detail-reservation/{id}', [ReservationController::class, 'detailReservation'])->name('detail-reservation');
+    Route::post('/pay-reservation/{id}', [ReservationController::class, 'payReservation'])->name('pay-reservation');
+    Route::post('/success-reservation/{id}', [ReservationController::class, 'successReservation'])->name('success-reservation');
+    Route::post('/failed-reservation/{id}', [ReservationController::class, 'failedReservation'])->name('failed-reservation');
 
     Route::get('/profile', [CustomerController::class, 'profile'])->name('profile');
     Route::put('/profile/update', [CustomerController::class, 'profileUpdate'])->name('profile-update');
