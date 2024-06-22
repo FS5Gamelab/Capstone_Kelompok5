@@ -144,7 +144,7 @@
                             <div class="!tw-mt-5">
                                 <div class="row d-flex align-items-center tw-justify-between">
                                     <div class="col-4 text-muted">Table</div>
-                                    <div class="col-8 text-end" id="table"></div>
+                                    <div class="col-8 text-end" id="tableFor"></div>
                                 </div>
                             </div>
 
@@ -189,7 +189,7 @@
                     $("#loader").hide();
                     $('#details').empty();
                     $('#time').empty();
-                    $('#table').empty();
+                    $('#tableFor').empty();
                     $('#total-price').empty();
                     $('#dp-price').empty();
                     if (response.menus.length > 0) {
@@ -227,7 +227,7 @@
 
                     }
                     $('#time').text(`${response.reservation.date} ${response.reservation.time}`);
-                    $('#table').text(
+                    $('#tableFor').text(
                         `Table ${response.reservation.table} for ${response.reservation.people} people`
                     );
                     $('#total-price').text(
