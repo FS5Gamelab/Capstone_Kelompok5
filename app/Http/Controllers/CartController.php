@@ -13,8 +13,20 @@ class CartController extends Controller
 {
     public function index()
     {
+        $carts = Cart::where('user_id', auth()->user()->id)->where('checked_out', 0)->get();
+        foreach ($carts as $cart) {
+            if ($cart->product->stock == 0) {
+                $this->delete($cart->id);
+            }
+            if ($cart->product->stock < $cart->quantity) {
+                $cart->update([
+                    'quantity' => $cart->product->stock,
+                    'cart_total' => $cart->product->price * $cart->product->stock
+                ]);
+            }
+        }
         return view('user.cart.index', [
-            'carts' => Cart::where('user_id', auth()->user()->id)->where('checked_out', 0)->get(),
+            'carts' => $carts,
             'total' => Cart::where('user_id', auth()->user()->id)->where('checked_out', 0)->sum('cart_total'),
             'cartCount' => Cart::where('user_id', auth()->user()->id)->where('checked_out', 0)->count()
         ]);
@@ -34,8 +46,15 @@ class CartController extends Controller
         $cartCount = Cart::where('user_id', auth()->user()->id)->where('checked_out', 0)->count();
         if ($cart) {
             if ($request->change == "+" || $request->change == "add to cart") {
-                $cart->increment('quantity', $quantity);
-                $cart->increment('cart_total', $product->price * $quantity);
+                if ($product->stock < $cart->quantity + 1) {
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'Stock not enough, only ' . $product->stock . ' left',
+                    ]);
+                } else {
+                    $cart->increment('quantity', $quantity);
+                    $cart->increment('cart_total', $product->price * $quantity);
+                }
             } elseif ($request->change == "-") {
                 if ($cart->quantity == 1) {
                     $cart->delete();

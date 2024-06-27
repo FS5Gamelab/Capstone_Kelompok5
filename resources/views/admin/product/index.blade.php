@@ -96,10 +96,10 @@
 
                                         </td>
                                         <td class="text-center">
-                                            @if ($product->in_stock)
-                                                <i class="bi bi-check text-success"></i>
+                                            @if ($product->stock == 0)
+                                                <span class="badge bg-danger">0</span>
                                             @else
-                                                <i class="bi bi-x text-danger"></i>
+                                                <span class="badge bg-success">{{ $product->stock }}</span>
                                             @endif
                                         </td>
                                         <td class="tw-text-nowrap">
@@ -142,6 +142,7 @@
             $("#n-type").val("");
             $("#n-description").val("");
             $("#n-price").val("");
+            $("#n-stock").val("");
             $("#n-product_image").val("");
             $("#preview").hide();
             $("preview").attr("src", "");
@@ -170,7 +171,6 @@
                             title: 'Success',
                             text: response.message,
                         })
-                        console.log(response);
                         let stk;
                         let img;
                         if (response.product.product_image == null) {
@@ -184,11 +184,12 @@
                                     `<img src="${response.product.product_image}" alt="" class="tw-w-16 tw-h-16">`;
                             }
                         }
-                        if (response.product.in_stock == 1) {
+                        if (response.product.stock == 0) {
                             stk =
-                                `<td class="text-center"><i class="bi bi-check text-success"></i></td>`
+                                `<td class="text-center"><span class="badge bg-danger">0</span></td>`
                         } else {
-                            stk = `<td class="text-center"><i class="bi bi-x text-danger"></i></td>`
+                            stk =
+                                `<td class="text-center"><span class="badge bg-success">${response.product.stock}</span></td>`
                         }
                         let newRow = `
                     <tr id="index_${response.product.id}">
@@ -331,6 +332,7 @@
                     $("#type").val(response.product.type);
                     $("#description").val(response.product.description);
                     $("#price").val(response.product.price);
+                    $("#stock").val(response.product.stock);
                     if (response.product.product_image == null) {
                         $("#preview2").hide();
                     } else {
@@ -344,7 +346,6 @@
                     }
                     // $("#preview2").attr("src", "storage/" + response.product.product_image);
                     // $("#preview2").show();
-                    $("#in_stock").val(response.product.in_stock);
                     $("#update-product").attr("action", `products/${id}/update`);
                     $("#ubahModal").modal("show");
                 },
@@ -410,11 +411,12 @@
                             }
                         }
 
-                        if (response.product.in_stock == 1) {
+                        if (response.product.stock == 0) {
                             stk =
-                                `<td class="text-center"><i class="bi bi-check text-success"></i></td>`
+                                `<td class="text-center"><span class="badge bg-danger">0</span></td>`
                         } else {
-                            stk = `<td class="text-center"><i class="bi bi-x text-danger"></i></td>`
+                            stk =
+                                `<td class="text-center"><span class="badge bg-success">${response.product.stock}</span></td>`
                         }
 
                         if (response.product.average_rating == 0) {

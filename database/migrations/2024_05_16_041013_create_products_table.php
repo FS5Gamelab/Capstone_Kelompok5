@@ -21,6 +21,7 @@ return new class extends Migration
             $table->text('description');
             $table->integer('price');
             $table->string('product_image')->nullable();
+            $table->integer('stock')->default(0)->nullable();
             $table->boolean('in_stock')->default(true);
             $table->timestamps();
             $table->softDeletes();

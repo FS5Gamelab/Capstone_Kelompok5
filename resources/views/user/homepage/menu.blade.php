@@ -64,22 +64,35 @@
                             @if (!Auth::user() || Auth::user()->role == 'user')
                                 <div class="row">
                                     <div class="col-md-12">
-                                        @auth
-                                            <button class="button tw-w-full rounded mt-2" data-user="true"
-                                                data-product="{{ $product->id }}">
-                                                <span>Add to cart</span>
-                                                <div class="cart">
-                                                    <svg viewBox="0 0 36 26">
-                                                        <polyline points="1 2.5 6 2.5 10 18.5 25.5 18.5 28.5 7.5 7.5 7.5">
-                                                        </polyline>
-                                                        <polyline points="15 13.5 17 15.5 22 10.5"></polyline>
-                                                    </svg>
-                                                </div>
-                                            </button>
+                                        @if ($product->stock > 0)
+                                            @auth
+                                                <button class="button-stock tw-w-full rounded mt-2" data-user="true"
+                                                    data-product="{{ $product->id }}">
+                                                    <span>Add to cart</span>
+                                                    <div class="cart">
+                                                        <svg viewBox="0 0 36 26">
+                                                            <polyline points="1 2.5 6 2.5 10 18.5 25.5 18.5 28.5 7.5 7.5 7.5">
+                                                            </polyline>
+                                                            <polyline points="15 13.5 17 15.5 22 10.5"></polyline>
+                                                        </svg>
+                                                    </div>
+                                                </button>
+                                            @else
+                                                <button class="button-stock tw-w-full rounded mt-2" data-user="false"
+                                                    data-product="{{ $product->id }}">
+                                                    <span>Add to cart</span>
+                                                    <div class="cart">
+                                                        <svg viewBox="0 0 36 26">
+                                                            <polyline points="1 2.5 6 2.5 10 18.5 25.5 18.5 28.5 7.5 7.5 7.5">
+                                                            </polyline>
+                                                            <polyline points="15 13.5 17 15.5 22 10.5"></polyline>
+                                                        </svg>
+                                                    </div>
+                                                </button>
+                                            @endauth
                                         @else
-                                            <button class="button tw-w-full rounded mt-2" data-user="false"
-                                                data-product="{{ $product->id }}">
-                                                <span>Add to cart</span>
+                                            <button class="button tw-w-full rounded mt-2">
+                                                <span>Out of Stock</span>
                                                 <div class="cart">
                                                     <svg viewBox="0 0 36 26">
                                                         <polyline points="1 2.5 6 2.5 10 18.5 25.5 18.5 28.5 7.5 7.5 7.5">
@@ -88,7 +101,8 @@
                                                     </svg>
                                                 </div>
                                             </button>
-                                        @endauth
+                                        @endif
+
                                     </div>
                                 </div>
                             @endif
@@ -107,7 +121,7 @@
 @endsection
 @section('css')
     <style>
-        .button {
+        .button-stock {
             --background: #362A89;
             --text: #fff;
             --cart: #fff;
@@ -287,12 +301,124 @@
                 box-sizing: inherit;
             }
         }
+
+        .button {
+            --background: #58575e;
+            --text: #fff;
+            --cart: #fff;
+            --tick: var(--background);
+            position: relative;
+            border: none;
+            background: none;
+            padding: 8px 28px;
+            border-radius: 8px;
+            -webkit-appearance: none;
+            -webkit-tap-highlight-color: transparent;
+            -webkit-mask-image: -webkit-radial-gradient(white, black);
+            overflow: hidden;
+            cursor: not-allowed;
+            text-align: center;
+            min-width: 144px;
+            color: var(--text);
+            background: var(--background);
+
+            span {
+                font-size: 14px;
+                font-weight: 500;
+                display: block;
+                position: relative;
+                padding-left: 24px;
+                margin-left: -8px;
+                line-height: 26px;
+                transform: translateY(var(--span-y, 0));
+                transition: transform .7s ease;
+
+                &:before,
+                &:after {
+                    content: '';
+                    width: var(--w, 2px);
+                    height: var(--h, 14px);
+                    border-radius: 1px;
+                    position: absolute;
+                    left: var(--l, 8px);
+                    top: var(--t, 6px);
+                    background: currentColor;
+                    transform: scale(.75) rotate(var(--icon-r, 0deg)) translateY(var(--icon-y, 0));
+                    transition: transform .65s ease .05s;
+                }
+
+                &:after {
+                    --w: 14px;
+                    --h: 2px;
+                    --l: 2px;
+                    --t: 12px;
+                }
+            }
+
+            .cart {
+                position: absolute;
+                left: 50%;
+                top: 50%;
+                margin: -13px 0 0 -18px;
+                transform-origin: 12px 23px;
+                transform: translateX(-120px) rotate(-18deg);
+
+                &:before,
+                &:after {
+                    content: '';
+                    position: absolute;
+                }
+
+                &:before {
+                    width: 6px;
+                    height: 6px;
+                    border-radius: 50%;
+                    box-shadow: inset 0 0 0 2px var(--cart);
+                    bottom: 0;
+                    left: 9px;
+                    filter: drop-shadow(11px 0 0 var(--cart));
+                }
+
+                &:after {
+                    width: 16px;
+                    height: 9px;
+                    background: var(--cart);
+                    left: 9px;
+                    bottom: 7px;
+                    transform-origin: 50% 100%;
+                    transform: perspective(4px) rotateX(-6deg) scaleY(var(--fill, 0));
+                    transition: transform 1.2s ease var(--fill-d);
+                }
+
+                svg {
+                    z-index: 1;
+                    width: 36px;
+                    height: 26px;
+                    display: block;
+                    position: relative;
+                    fill: none;
+                    stroke: var(--cart);
+                    stroke-width: 2px;
+                    stroke-linecap: round;
+                    stroke-linejoin: round;
+
+                    polyline {
+                        &:last-child {
+                            stroke: var(--tick);
+                            stroke-dasharray: 10px;
+                            stroke-dashoffset: var(--offset, 10px);
+                            transition: stroke-dashoffset .4s ease var(--offset-d);
+                        }
+                    }
+                }
+            }
+        }
     </style>
 @endsection
 @section('js')
     <script>
         $("#loader").hide();
-        buttons = document.querySelectorAll('.button');
+        buttons = document.querySelectorAll('.button-stock');
         buttons.forEach(button => button.addEventListener('click', e => {
             if (!button.classList.contains('loading')) {
                 $("#loader").show();
@@ -332,11 +458,7 @@
                                     text: `${response.message}`,
                                     showConfirmButton: true,
                                     confirmButtonText: 'OK',
-                                }).then((result) => {
-                                    if (result.isConfirmed) {
-                                        window.location.href = '/profile';
-                                    }
-                                });
+                                })
                             }
                         },
 

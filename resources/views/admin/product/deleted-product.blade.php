@@ -40,7 +40,7 @@
                                     <th>Price</th>
                                     <th>Total Review</th>
                                     <th>Rating</th>
-                                    <th>Status</th>
+                                    <th>Stock</th>
                                     <th data-sortable="false">Action</th>
                                 </tr>
                             </thead>
@@ -86,10 +86,10 @@
 
                                         </td>
                                         <td class="text-center">
-                                            @if ($product->in_stock)
-                                                <i class="bi bi-check text-success"></i>
+                                            @if ($product->stock == 0)
+                                                <span class="badge bg-danger">0</span>
                                             @else
-                                                <i class="bi bi-x text-danger"></i>
+                                                <span class="badge bg-success">{{ $product->stock }}</span>
                                             @endif
                                         </td>
                                         <td class="tw-text-nowrap">

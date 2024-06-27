@@ -343,23 +343,32 @@
                 },
                 success: function(response) {
                     $("#loader").hide();
-                    $("#cartCount").text(response.cartCount);
-                    quantity = quantity + 1;
-                    $("#quantity" + dataNumber).text(quantity);
-                    cart_total = price * quantity;
-                    $("#cart_total" + dataNumber).attr('data-value', cart_total);
-                    $("#cart_total" + dataNumber).text("Rp. " + cart_total
-                        .toLocaleString('id-ID', {
+                    if (response.success) {
+                        $("#cartCount").text(response.cartCount);
+                        quantity = quantity + 1;
+                        $("#quantity" + dataNumber).text(quantity);
+                        cart_total = price * quantity;
+                        $("#cart_total" + dataNumber).attr('data-value', cart_total);
+                        $("#cart_total" + dataNumber).text("Rp. " + cart_total
+                            .toLocaleString('id-ID', {
+                                minimumFractionDigits: 0,
+                                maximumFractionDigits: 0
+                            }))
+                        total = total + price;
+                        $("#total").attr('data-value', total);
+                        $("#total").text("Rp. " + total.toLocaleString('id-ID', {
                             minimumFractionDigits: 0,
                             maximumFractionDigits: 0
-                        }))
-                    total = total + price;
-                    $("#total").attr('data-value', total);
-                    $("#total").text("Rp. " + total.toLocaleString('id-ID', {
-                        minimumFractionDigits: 0,
-                        maximumFractionDigits: 0
-                    }));
-
+                        }));
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: `${response.message}`,
+                            showConfirmButton: true,
+                            confirmButtonText: 'OK',
+                        })
+                    }
                 },
             })
         });
@@ -435,7 +444,7 @@
                                 backdrop: false
                             }).then((result) => {
                                 if (result.isConfirmed) {
-                                    window.location.href = '/profile';
+                                    window.location.reload();
                                 }
                             })
                         }

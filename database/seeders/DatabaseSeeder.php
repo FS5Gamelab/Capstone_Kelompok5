@@ -149,6 +149,7 @@ class DatabaseSeeder extends Seeder
             "price" => 12000,
             "category_id" => $category->id,
             "user_id" => 3,
+            "stock" => 20,
         ]);
         Product::create([
             "product_image" => "static/images/samples/ayam-bakar.png",
@@ -159,6 +160,8 @@ class DatabaseSeeder extends Seeder
             "price" => 20000,
             "category_id" => $category->id,
             "user_id" => 3,
+            "stock" => 20,
+
         ]);
         Product::create([
             "product_image" => "static/images/samples/nasi-kuning.png",
@@ -169,6 +172,8 @@ class DatabaseSeeder extends Seeder
             "price" => 12000,
             "category_id" => $category->id,
             "user_id" => 3,
+            "stock" => 20,
+
         ]);
         Product::create([
             "product_image" => "static/images/samples/eggnog.png",
@@ -179,6 +184,8 @@ class DatabaseSeeder extends Seeder
             "price" => 10000,
             "category_id" => $category2->id,
             "user_id" => 3,
+            "stock" => 20,
+
         ]);
         Product::create([
             "product_image" => "static/images/samples/es-teh.png",
@@ -189,6 +196,8 @@ class DatabaseSeeder extends Seeder
             "price" => 5000,
             "category_id" => $category2->id,
             "user_id" => 3,
+            "stock" => 20,
+
         ]);
         Product::create([
             "product_image" => "static/images/samples/hot-coffe.png",
@@ -199,6 +208,8 @@ class DatabaseSeeder extends Seeder
             "price" => 7000,
             "category_id" => $category2->id,
             "user_id" => 3,
+            "stock" => 20,
+
         ]);
     }
 }

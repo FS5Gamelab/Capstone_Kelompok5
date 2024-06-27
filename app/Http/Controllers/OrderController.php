@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Cart;
 use App\Models\Order;
+use App\Models\Product;
 use Illuminate\Http\Request;
 
 class OrderController extends Controller
@@ -14,50 +15,67 @@ class OrderController extends Controller
         if (auth()->user()->address == null && auth()->user()->phone == null) {
             return response()->json([
                 'success' => false,
-                'message' => 'Address and Phone number must be filled'
+                'message' => 'Address and Phone number must be filled',
+                'redirect' => '/profile'
             ]);
         } else {
-            $order = Order::create([
-                "cart_id" => json_encode($request->ids),
-                "user_id" => auth()->user()->id,
-                "total_price" => $request->total,
-            ]);
-            $order = Order::findOrFail($order->id);
-            $total_price = $order->total_price;
-            // Set your Merchant Server Key
-            \Midtrans\Config::$serverKey = config('midtrans.serverKey');
-            // Set to Development/Sandbox Environment (default). Set to true for Production Environment (accept real transaction).
-            \Midtrans\Config::$isProduction = config('midtrans.isProduction');
-            // Set sanitization on (default)
-            \Midtrans\Config::$isSanitized = config('midtrans.isSanitized');
-            // Set 3DS transaction for credit card to true
-            \Midtrans\Config::$is3ds = config('midtrans.is3ds');
+            $carts = Cart::whereIn('id', $request->ids)->get();
+            foreach ($carts as $cart) {
+                if ($cart->product->stock < $cart->quantity) {
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'Stock not enough for ' . $cart->product->product_name . ', only ' . $cart->product->stock . ' left',
+                        'redirect' => '/cart'
+                    ]);
+                } else {
+                    $product = Product::find($cart->product_id);
+                    $product->update([
+                        "stock" => $product->stock - $cart->quantity
+                    ]);
 
-            $params = array(
-                'transaction_details' => array(
-                    'order_id' => $order->id,
-                    'gross_amount' => $total_price,
-                ),
-            );
-            $snapToken = \Midtrans\Snap::getSnapToken($params);
+                    $order = Order::create([
+                        "cart_id" => json_encode($request->ids),
+                        "user_id" => auth()->user()->id,
+                        "total_price" => $request->total,
+                    ]);
+                    $order = Order::findOrFail($order->id);
+                    $total_price = $order->total_price;
+                    // Set your Merchant Server Key
+                    \Midtrans\Config::$serverKey = config('midtrans.serverKey');
+                    // Set to Development/Sandbox Environment (default). Set to true for Production Environment (accept real transaction).
+                    \Midtrans\Config::$isProduction = config('midtrans.isProduction');
+                    // Set sanitization on (default)
+                    \Midtrans\Config::$isSanitized = config('midtrans.isSanitized');
+                    // Set 3DS transaction for credit card to true
+                    \Midtrans\Config::$is3ds = config('midtrans.is3ds');
 
-            $order->update([
-                'snap_token' => $snapToken,
-                'status' => 'pending',
-            ]);
+                    $params = array(
+                        'transaction_details' => array(
+                            'order_id' => $order->id,
+                            'gross_amount' => $total_price,
+                        ),
+                    );
+                    $snapToken = \Midtrans\Snap::getSnapToken($params);
 
-            foreach ($request->ids as $id) {
-                $cart = Cart::find($id);
-                $cart->update([
-                    "order_id" => $order->id,
-                    "checked_out" => 1,
+                    $order->update([
+                        'snap_token' => $snapToken,
+                        'status' => 'pending',
+                    ]);
 
-                ]);
+                    foreach ($request->ids as $id) {
+                        $cart = Cart::find($id);
+                        $cart->update([
+                            "order_id" => $order->id,
+                            "checked_out" => 1,
+
+                        ]);
+                    }
+                    return response()->json([
+                        'success' => true,
+                        'message' => 'Cart checked out',
+                    ]);
+                }
             }
-            return response()->json([
-                'success' => true,
-                'message' => 'Cart checked out',
-            ]);
         }
         // return to_route('checkout-index')->with('success', 'Cart checked out');
     }
@@ -65,7 +83,21 @@ class OrderController extends Controller
     public function checkoutIndex()
     {
         $orders = Order::where('user_id', auth()->user()->id)->where('status', '!=', null)->latest()->get();
-
+        foreach ($orders as $order) {
+            if ($order->status == 'pending' && $order->created_at < now()->subDays(1)) {
+                $order->update([
+                    'status' => 'failed',
+                ]);
+                $cartIds = json_decode($order->cart_id, true);
+                $carts = Cart::whereIn('id', $cartIds)->get();
+                foreach ($carts as $cart) {
+                    $product = Product::find($cart->product_id);
+                    $product->update([
+                        'stock' => $product->stock + $cart->quantity
+                    ]);
+                }
+            }
+        }
         $carts = [];
         foreach ($orders as $order) {
             $cartIds = json_decode($order->cart_id, true);
@@ -213,6 +245,14 @@ class OrderController extends Controller
         $order->update([
             'status' => 'failed',
         ]);
+        $cartIds = json_decode($order->cart_id, true);
+        $carts = Cart::whereIn('id', $cartIds)->get();
+        foreach ($carts as $cart) {
+            $product = Product::find($cart->product_id);
+            $product->update([
+                'stock' => $product->stock + $cart->quantity
+            ]);
+        }
         return response()->json([
             'success' => true,
             'message' => 'Payment with order id ' . $id . ' failed',
@@ -223,7 +263,21 @@ class OrderController extends Controller
     public function index()
     {
         $orders = Order::where('status', '!=', null)->where('status', '!=', 'pending')->latest()->get();
-
+        foreach ($orders as $order) {
+            if ($order->status == 'pending' && $order->created_at < now()->subDays(1)) {
+                $order->update([
+                    'status' => 'failed',
+                ]);
+                $cartIds = json_decode($order->cart_id, true);
+                $carts = Cart::whereIn('id', $cartIds)->get();
+                foreach ($carts as $cart) {
+                    $product = Product::find($cart->product_id);
+                    $product->update([
+                        'stock' => $product->stock + $cart->quantity
+                    ]);
+                }
+            }
+        }
         $carts = [];
         foreach ($orders as $order) {
             $cartIds = json_decode($order->cart_id, true);
@@ -242,6 +296,16 @@ class OrderController extends Controller
             "status" => $request->status,
             "cancel_reason" => $request->cancel_reason
         ]);
+        if ($request->status == 'cancelled') {
+            $cartIds = json_decode($order->cart_id, true);
+            $carts = Cart::whereIn('id', $cartIds)->get();
+            foreach ($carts as $cart) {
+                $product = Product::find($cart->product_id);
+                $product->update([
+                    'stock' => $product->stock + $cart->quantity
+                ]);
+            }
+        }
         return response()->json([
             'success' => true,
         ]);

@@ -71,7 +71,7 @@ class ProductController extends Controller
                 'type' => $request->type,
                 'product_image' => $product_image,
                 'category_id' => $request->category_id,
-                "in_stock" => 1,
+                "stock" => $request->stock,
             ]);
             $category = Category::find($request->category_id);
             return response()->json([
@@ -151,7 +151,7 @@ class ProductController extends Controller
                 "user_id" => auth()->user()->id,
                 'description' => $request->description,
                 'type' => $request->type,
-                "in_stock" => $request->in_stock,
+                "stock" => $request->stock,
                 'product_image' => $product_image,
                 'category_id' => $request->category_id,
             ]);

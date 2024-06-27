@@ -36,7 +36,7 @@ class CustomerController extends Controller
         } else {
             $cartCount = 0;
         }
-        $products = Product::where('in_stock', 1)->get();
+        $products = Product::all();
         foreach ($products as $product) {
             $product->rating = number_format($product->reviews()->avg('rating'), 1, '.', '');
         }

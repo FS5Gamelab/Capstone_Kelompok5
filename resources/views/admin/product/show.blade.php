@@ -82,12 +82,12 @@
                         </p>
                     </div>
                     <div class="tw-w-full">
-                        <label class="form-label">Status</label>
+                        <label class="form-label">Stock</label>
                         <p class="tw-text-gray-700 dark:tw-text-gray-200">
-                            @if ($product->in_stock == 0)
-                                <span class="badge bg-danger">Out of Stock</span>
+                            @if ($product->stock == 0)
+                                <span class="badge bg-danger">0</span>
                             @else
-                                <span class="badge bg-success">In Stock</span>
+                                <span class="badge bg-success">{{ $product->stock }}</span>
                             @endif
                         </p>
                     </div>

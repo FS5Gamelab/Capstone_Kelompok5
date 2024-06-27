@@ -49,6 +49,10 @@
                         <label for="n-price" class="form-label">Price</label>
                         <input type="number" name="price" id="n-price" class="form-control">
                     </div>
+                    <div class="form-group mandatory">
+                        <label for="n-stock" class="form-label">Stock</label>
+                        <input type="number" name="stock" id="n-stock" class="form-control" min="0">
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Close</button>
@@ -109,16 +113,8 @@
                         <textarea name="description" id="description" class="form-control"></textarea>
                     </div>
                     <div class="form-group mandatory">
-                        <label for="in_stock" class="form-label">Stock</label>
-                        <select name="in_stock" id="in_stock" class="form-control">
-                            <option value="" hidden>Select Stock</option>
-                            <option value="1">
-                                Available
-                            </option>
-                            <option value="0">
-                                Unavailable
-                            </option>
-                        </select>
+                        <label for="stock" class="form-label">Stock</label>
+                        <input type="number" name="stock" id="stock" class="form-control" min="0">
                     </div>
                     <div class="form-group mandatory">
                         <label for="price" class="form-label">Price</label>
