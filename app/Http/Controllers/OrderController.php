@@ -18,65 +18,65 @@ class OrderController extends Controller
                 'message' => 'Address and Phone number must be filled',
                 'redirect' => '/profile'
             ]);
-        } else {
-            $carts = Cart::whereIn('id', $request->ids)->get();
-            foreach ($carts as $cart) {
-                if ($cart->product->stock < $cart->quantity) {
-                    return response()->json([
-                        'success' => false,
-                        'message' => 'Stock not enough for ' . $cart->product->product_name . ', only ' . $cart->product->stock . ' left',
-                        'redirect' => '/cart'
-                    ]);
-                } else {
-                    $product = Product::find($cart->product_id);
-                    $product->update([
-                        "stock" => $product->stock - $cart->quantity
-                    ]);
-
-                    $order = Order::create([
-                        "cart_id" => json_encode($request->ids),
-                        "user_id" => auth()->user()->id,
-                        "total_price" => $request->total,
-                    ]);
-                    $order = Order::findOrFail($order->id);
-                    $total_price = $order->total_price;
-                    // Set your Merchant Server Key
-                    \Midtrans\Config::$serverKey = config('midtrans.serverKey');
-                    // Set to Development/Sandbox Environment (default). Set to true for Production Environment (accept real transaction).
-                    \Midtrans\Config::$isProduction = config('midtrans.isProduction');
-                    // Set sanitization on (default)
-                    \Midtrans\Config::$isSanitized = config('midtrans.isSanitized');
-                    // Set 3DS transaction for credit card to true
-                    \Midtrans\Config::$is3ds = config('midtrans.is3ds');
-
-                    $params = array(
-                        'transaction_details' => array(
-                            'order_id' => $order->id,
-                            'gross_amount' => $total_price,
-                        ),
-                    );
-                    $snapToken = \Midtrans\Snap::getSnapToken($params);
-
-                    $order->update([
-                        'snap_token' => $snapToken,
-                        'status' => 'pending',
-                    ]);
-
-                    foreach ($request->ids as $id) {
-                        $cart = Cart::find($id);
-                        $cart->update([
-                            "order_id" => $order->id,
-                            "checked_out" => 1,
-
-                        ]);
-                    }
-                    return response()->json([
-                        'success' => true,
-                        'message' => 'Cart checked out',
-                    ]);
-                }
-            }
         }
+        $carts = Cart::whereIn('id', $request->ids)->get();
+        foreach ($carts as $cart) {
+            if ($cart->product->stock < $cart->quantity) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Stock not enough for ' . $cart->product->product_name . ', only ' . $cart->product->stock . ' left',
+                    'redirect' => '/cart'
+                ]);
+                break;
+            }
+            $product = Product::find($cart->product_id);
+            $product->update([
+                "stock" => $product->stock - $cart->quantity
+            ]);
+        }
+
+        $order = Order::create([
+            "cart_id" => json_encode($request->ids),
+            "user_id" => auth()->user()->id,
+            "total_price" => $request->total,
+        ]);
+        $order = Order::findOrFail($order->id);
+        $total_price = $order->total_price;
+        // Set your Merchant Server Key
+        \Midtrans\Config::$serverKey = config('midtrans.serverKey');
+        // Set to Development/Sandbox Environment (default). Set to true for Production Environment (accept real transaction).
+        \Midtrans\Config::$isProduction = config('midtrans.isProduction');
+        // Set sanitization on (default)
+        \Midtrans\Config::$isSanitized = config('midtrans.isSanitized');
+        // Set 3DS transaction for credit card to true
+        \Midtrans\Config::$is3ds = config('midtrans.is3ds');
+
+        $params = array(
+            'transaction_details' => array(
+                'order_id' => $order->id,
+                'gross_amount' => $total_price,
+            ),
+        );
+        $snapToken = \Midtrans\Snap::getSnapToken($params);
+
+        $order->update([
+            'snap_token' => $snapToken,
+            'status' => 'pending',
+        ]);
+
+        foreach ($request->ids as $id) {
+            $cart = Cart::find($id);
+            $cart->update([
+                "order_id" => $order->id,
+                "checked_out" => 1,
+
+            ]);
+        }
+        return response()->json([
+            'success' => true,
+            'message' => 'Cart checked out',
+        ]);
+
         // return to_route('checkout-index')->with('success', 'Cart checked out');
     }
 
