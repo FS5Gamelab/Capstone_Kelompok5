@@ -21,7 +21,7 @@ class AdminController extends Controller
         $userCount = User::where('role', 'user')->count();
         $orderCount = Order::where('status', '!=', null)->where('status', '!=', 'pending')->count();
         $reservationCount = Reservation::all()->count();
-        $reservations = Reservation::where('date', Carbon::today()->format('Y-m-d'))->where('status', 'paid')->orWhere('status', 'completed')->get();
+        $reservations = Reservation::where('date', Carbon::today()->format('Y-m-d'))->where('status', 'paid')->get();
         $currentMonth = Carbon::now()->month;
         $currentYear = Carbon::now()->year;
 
@@ -99,7 +99,7 @@ class AdminController extends Controller
                 break;
         }
 
-        $reservations = Reservation::whereDate('date', $date)->where('status', 'paid')->orWhere('status', 'completed')->get();
+        $reservations = Reservation::whereDate('date', $date)->where('status', 'paid')->get();
 
         return response()->json($reservations);
     }
