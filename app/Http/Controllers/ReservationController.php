@@ -74,7 +74,7 @@ class ReservationController extends Controller
         } else {
             $date = \Carbon\Carbon::createFromFormat('d-M-Y', $request->input('date'))->format('Y-m-d');
             $time = $request->input('time');
-            $reservation = Reservation::where('date', $date)->where('time', $time)->where('table', $request->input('table'))->first();
+            $reservation = Reservation::where('date', $date)->where('time', $time)->where('table', $request->input('table'))->where('status', '!=', 'completed')->first();
             if ($reservation) {
                 return response()->json([
                     'success' => "same",
